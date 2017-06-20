@@ -10,12 +10,11 @@ public class JdbcDaoConnection implements DaoConnection {
 	private Connection connection;
 	private boolean inTransaction = false;
 
-	JdbcDaoConnection(Connection connection) {
-		super();
+	public JdbcDaoConnection(Connection connection) {
 		this.connection = connection;
 	}
 
-	Connection getConnection() {
+	public Connection getConnection() {
 		return connection;
 	}
 
@@ -47,7 +46,6 @@ public class JdbcDaoConnection implements DaoConnection {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	@Override

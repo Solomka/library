@@ -13,17 +13,11 @@ public abstract class DaoFactory {
 
 	public abstract DaoConnection getConnection();
 
-	public abstract CityDao createCityDao();
+	// class level dao - can call methods from one dao class
+	public abstract BookDao createBookDao();
 
-	public abstract PersonDao createPersonDao();
-
-	public abstract TeamDao createTeamDao();
-
-	public abstract CityDao createCityDao(DaoConnection connection);
-
-	public abstract PersonDao createPersonDao(DaoConnection connection);
-
-	public abstract TeamDao createTeamDao(DaoConnection connection);
+	// business level dao - can call methods from many dao classes
+	public abstract BookDao createBookDao(DaoConnection connection);
 
 	/** return JdbcDaoFactory/ JdbcTemplateFactory/ HibernateFactory */
 	public static DaoFactory getInstance() {

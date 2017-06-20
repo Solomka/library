@@ -6,15 +6,11 @@ import java.sql.SQLException;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import ua.training.dao.BookDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
-import ua.training.model.dao.CityDao;
-import ua.training.model.dao.PersonDao;
-import ua.training.model.dao.TeamDao;
 
 public class JdbcDaoFactory extends DaoFactory {
-
-	private static final String DB_URL = "url";
 
 	private DataSource dataSource;
 
@@ -23,32 +19,14 @@ public class JdbcDaoFactory extends DaoFactory {
 		try {
 
 			InitialContext ic = new InitialContext();
-			dataSource = (DataSource) ic.lookup("java:comp/env/jdbc/football");
+			dataSource = (DataSource) ic.lookup("java:comp/env/jdbc/library");
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	@Override
-	public CityDao createCityDao() {
-		try {
-			return new JdbcCityDao(dataSource.getConnection(), true);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public PersonDao createPersonDao() {
-		return null;// new JdbcPersonDao(connection);
-	}
-
-	@Override
-	public TeamDao createTeamDao() {
-		return null;// return new JdbcTeamDao();
-	}
-
+	/** create custom JdbcDAOConnection */
 	@Override
 	public DaoConnection getConnection() {
 		try {
@@ -59,24 +37,19 @@ public class JdbcDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	public CityDao createCityDao(DaoConnection connection) {
-		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
-		Connection sqlConnection = jdbcConnection.getConnection();
-		return new JdbcCityDao(sqlConnection);
-
+	public BookDao createBookDao() {
+		try {
+			return new JdbcBookDaoImpl(dataSource.getConnection());
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public PersonDao createPersonDao(DaoConnection connection) {
+	public BookDao createBookDao(DaoConnection connection) {
 		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
 		Connection sqlConnection = jdbcConnection.getConnection();
-		return new JdbcPersonDao(sqlConnection);
-	}
-
-	@Override
-	public TeamDao createTeamDao(DaoConnection connection) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JdbcBookDaoImpl(sqlConnection);
 	}
 
 }
