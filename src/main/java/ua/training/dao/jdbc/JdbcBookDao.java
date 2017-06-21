@@ -15,9 +15,9 @@ import ua.training.dao.BookDao;
 import ua.training.entity.Availability;
 import ua.training.entity.Book;
 
-public class JdbcBookDaoImpl implements BookDao {
+public class JdbcBookDao implements BookDao {
 
-	// queries
+	// SQL queries
 	private static final String SELECT_ALL_FROM_BOOK = "SELECT * FROM book ORDER BY title";
 	private static final String SELECT_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
 	private static final String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, imprint_date, availability) VALUES ( ?, ?, ?, ?, ? )";
@@ -27,7 +27,8 @@ public class JdbcBookDaoImpl implements BookDao {
 	private static final String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.imprint_date, book.availability"
 			+ "FROM book INNER JOIN book_author USING (id_book) INNER JOIN author USING (id_author)"
 			+ "WHERE author.surname LIKE '%?%'";
-	// fields
+
+	// DB table fields
 	private static final String ID_BOOK = "id_book";
 	private static final String ISBN = "isbn";
 	private static final String TITLE = "title";
@@ -36,9 +37,16 @@ public class JdbcBookDaoImpl implements BookDao {
 	private static final String AVAILABILITY = "availability";
 
 	private Connection connection;
+	private boolean connectionShouldBeClosed;
 
-	public JdbcBookDaoImpl(Connection connection) {
+	public JdbcBookDao(Connection connection) {
 		this.connection = connection;
+		connectionShouldBeClosed = false;
+	}
+
+	public JdbcBookDao(Connection connection, boolean connectionShouldBeClosed) {
+		this.connection = connection;
+		this.connectionShouldBeClosed = connectionShouldBeClosed;
 	}
 
 	public void setConnection(Connection connection) {
@@ -68,7 +76,6 @@ public class JdbcBookDaoImpl implements BookDao {
 			if (resultSet.next()) {
 				book = Optional.of(extractBookFromResultSet(resultSet));
 			}
-
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -85,6 +92,7 @@ public class JdbcBookDaoImpl implements BookDao {
 			query.setDate(4, Date.valueOf(book.getImprintDate()));
 			query.setString(5, book.getAvailability().getValue());
 			query.executeUpdate();
+
 			ResultSet keys = query.getGeneratedKeys();
 			if (keys.next()) {
 				book.setId(keys.getLong(1));
@@ -92,7 +100,6 @@ public class JdbcBookDaoImpl implements BookDao {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	@Override
@@ -153,6 +160,17 @@ public class JdbcBookDaoImpl implements BookDao {
 		return books;
 	}
 
+	@Override
+	public void close() {
+		if (connectionShouldBeClosed) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	private Book extractBookFromResultSet(ResultSet resultSet) throws SQLException {
 
 		return new Book.Builder().setId(resultSet.getLong(ID_BOOK)).setIsbn(resultSet.getString(ISBN))
@@ -161,4 +179,5 @@ public class JdbcBookDaoImpl implements BookDao {
 						resultSet.getDate(IMPRINT_DATE).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 				.setAvailability(Availability.valueOf(resultSet.getString(AVAILABILITY))).build();
 	}
+
 }

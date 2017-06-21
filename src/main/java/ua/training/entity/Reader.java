@@ -15,16 +15,16 @@ public class Reader extends User {
 	private String address;
 	private String readerCardNumber;
 
-	public Reader(Long id, String login, String password, Role role) {
-		super(id, login, password, role);
+	public Reader(/*Long id, String login, String password, Role role*/) {
+		//super(id, login, password, role);
 	}
 
-	public static class Builder implements IBuilder<Reader> {
+	public static class Builder extends User.Builder<Builder>  {
 
 		private Reader reader;
 
-		public Builder(Long id, String login, String password, Role role) {
-			reader = new Reader(id, login, password, role);
+		public Builder() {
+			user = reader = new Reader();
 		}
 
 		public Builder setName(String name) {

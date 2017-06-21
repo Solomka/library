@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import ua.training.dao.BookDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
+import ua.training.dao.UserDao;
 
 public class JdbcDaoFactory extends DaoFactory {
 
@@ -17,7 +18,6 @@ public class JdbcDaoFactory extends DaoFactory {
 	/** load database connection pool (using JNDI) */
 	public JdbcDaoFactory() {
 		try {
-
 			InitialContext ic = new InitialContext();
 			dataSource = (DataSource) ic.lookup("java:comp/env/jdbc/library");
 
@@ -35,11 +35,28 @@ public class JdbcDaoFactory extends DaoFactory {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	@Override
+	public UserDao createUserDao() {
+		try{
+			return new JdbcUserDao(dataSource.getConnection(), true);
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public UserDao createUserDao(DaoConnection connection) {
+		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection)connection;
+		Connection sqlConnection = jdbcConnection.getConnection();
+		return new JdbcUserDao(sqlConnection);
+	}
+
 
 	@Override
 	public BookDao createBookDao() {
 		try {
-			return new JdbcBookDaoImpl(dataSource.getConnection());
+			return new JdbcBookDao(dataSource.getConnection(), true);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -49,7 +66,8 @@ public class JdbcDaoFactory extends DaoFactory {
 	public BookDao createBookDao(DaoConnection connection) {
 		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
 		Connection sqlConnection = jdbcConnection.getConnection();
-		return new JdbcBookDaoImpl(sqlConnection);
+		return new JdbcBookDao(sqlConnection);
 	}
 
+	
 }

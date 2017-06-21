@@ -9,9 +9,13 @@ public abstract class DaoFactory {
 	public static final String DB_FILE = "/db.properties";
 	private static final String DB_FACTORY_CLASS = "factory.class";
 
-	private static DaoFactory instance;
+	private static DaoFactory daoFactory;
 
 	public abstract DaoConnection getConnection();
+
+	public abstract UserDao createUserDao();
+
+	public abstract UserDao createUserDao(DaoConnection connection);
 
 	// class level dao - can call methods from one dao class
 	public abstract BookDao createBookDao();
@@ -19,20 +23,23 @@ public abstract class DaoFactory {
 	// business level dao - can call methods from many dao classes
 	public abstract BookDao createBookDao(DaoConnection connection);
 
-	/** return JdbcDaoFactory/ JdbcTemplateFactory/ HibernateFactory */
-	public static DaoFactory getInstance() {
-		if (instance == null) {
+	/** Factory not Singleton */
+	public static DaoFactory getDaoFactory() {
+		if (daoFactory == null) {
 			try {
 				InputStream inputStream = DaoFactory.class.getResourceAsStream(DB_FILE);
 				Properties dbProps = new Properties();
 				dbProps.load(inputStream);
 				String factoryClass = dbProps.getProperty(DB_FACTORY_CLASS);
-				instance = (DaoFactory) Class.forName(factoryClass).newInstance();
+				System.out.println("Factory class: " + factoryClass);
+				daoFactory = (DaoFactory) Class.forName(factoryClass).newInstance();
 
 			} catch (IOException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		return instance;
+
+		return daoFactory;
 	}
+
 }

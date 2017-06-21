@@ -24,6 +24,23 @@ public abstract class User implements Serializable {
 		this.password = password;
 		this.role = role;
 	}
+	
+	public static class Builder<T extends Builder> {
+		protected User user;
+		public  Builder(){
+			
+		}
+		public T setLogin(String login){
+			user.login = login;
+			return (T)this;
+		}
+		
+		public User build() {
+			// TODO Auto-generated method stub
+			return user;
+		}
+		
+	}
 
 	public Long getId() {
 		return id;
