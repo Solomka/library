@@ -1,4 +1,4 @@
-package ua.training.service.impl;
+package ua.training.service;
 
 import java.util.List;
 import java.util.Optional;

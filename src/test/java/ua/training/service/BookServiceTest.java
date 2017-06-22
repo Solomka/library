@@ -10,7 +10,7 @@ import ua.training.entity.Availability;
 import ua.training.entity.Book;
 import ua.training.entity.Librarian;
 import ua.training.entity.Role;
-import ua.training.service.impl.BookService;
+import ua.training.service.BookService;
 
 public class BookServiceTest {
 

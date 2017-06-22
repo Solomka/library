@@ -1,0 +1,25 @@
+package ua.training.controller.command;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ua.training.entity.Book;
+import ua.training.service.BookService;
+
+public class AllBooksCommand implements Command {
+
+	private BookService bookService = BookService.getInstance();
+
+	@Override
+	public String execute(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<Book> books = bookService.getAllBooks();
+		request.setAttribute("books", books);
+		return "allBooks";
+	}
+
+}

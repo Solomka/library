@@ -189,7 +189,7 @@ public class JdbcBookDao implements BookDao {
 		return new Book.Builder().setId(resultSet.getLong(ID_BOOK)).setIsbn(resultSet.getString(ISBN))
 				.setTitle(resultSet.getString(TITLE)).setPublisher(resultSet.getString(PUBLISHER))
 				.setImprintDate(
-						resultSet.getDate(IMPRINT_DATE).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-				.setAvailability(Availability.valueOf(resultSet.getString(AVAILABILITY))).build();
+						resultSet.getDate(IMPRINT_DATE).toLocalDate())
+				.setAvailability(Availability.forValue(resultSet.getString(AVAILABILITY))).build();
 	}
 }

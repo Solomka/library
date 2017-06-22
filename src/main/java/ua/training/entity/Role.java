@@ -19,7 +19,7 @@ public enum Role {
 		return value;
 	}
 
-	public Role forValue(String value) {
+	public static Role forValue(String value) {
 		for (Role role : Role.values()) {
 			if (role.getValue().equals(value)) {
 				return role;

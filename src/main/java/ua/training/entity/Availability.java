@@ -19,7 +19,7 @@ public enum Availability {
 		return value;
 	}
 
-	public Availability forValue(String value) {
+	public static Availability forValue(String value) {
 		for (final Availability availability : Availability.values()) {
 			if (availability.getValue().equals(value)) {
 				return availability;
