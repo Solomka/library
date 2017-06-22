@@ -113,46 +113,20 @@ public class BookInstance implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((book == null) ? 0 : book.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((inventoryNumber == null) ? 0 : inventoryNumber.hashCode());
-		result = prime * result + rowNumber;
-		result = prime * result + shelfNumber;
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BookInstance other = (BookInstance) obj;
-		if (book == null) {
-			if (other.book != null)
-				return false;
-		} else if (!book.equals(other.book))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (inventoryNumber == null) {
-			if (other.inventoryNumber != null)
-				return false;
-		} else if (!inventoryNumber.equals(other.inventoryNumber))
-			return false;
-		if (rowNumber != other.rowNumber)
-			return false;
-		if (shelfNumber != other.shelfNumber)
-			return false;
-		if (status != other.status)
-			return false;
-		return true;
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		BookInstance bookInstance = (BookInstance) obj;
+		
+		if(id != null ? !id.equals(bookInstance.id) : bookInstance.id != null) return false;
+		return inventoryNumber != null ? inventoryNumber.equals(bookInstance.inventoryNumber) : bookInstance.inventoryNumber == null;
 	}
 
 	@Override

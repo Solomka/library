@@ -1,5 +1,11 @@
 package ua.training.entity;
 
+/**
+ * Class that represents users' roles
+ * 
+ * @author Solomka
+ *
+ */
 public enum Role {
 	LIBRARIAN("Librarian"), STUDENT("Student");
 

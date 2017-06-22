@@ -6,7 +6,9 @@ import java.util.Properties;
 
 /**
  * Abstract class that represents dao factory that produces many DAOs for a
- * single database implementation that is loaded from the db.properties file
+ * single database implementation 
+ * <p>
+ * Abstract class instance implementation is loaded from db.properties
  * 
  * @author Solomka
  *

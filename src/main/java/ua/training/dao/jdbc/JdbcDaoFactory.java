@@ -13,7 +13,7 @@ import ua.training.dao.UserDao;
 
 /**
  * Class represents dao factory that produces many DAOs for a Jdbc database
- * implementation and use database connection pool for getting connections with
+ * implementation and use database connection pool for getting connections to
  * db
  * 
  * @author Solomka

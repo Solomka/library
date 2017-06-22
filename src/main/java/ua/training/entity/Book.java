@@ -72,12 +72,19 @@ public class Book implements Serializable {
 		}
 
 		public Builder setBookInstances(List<BookInstance> bookInstances) {
-			book.bookInstances = bookInstances;
+			book.bookInstances = new ArrayList<>();
+			for (BookInstance bookInstance : bookInstances) {
+				book.bookInstances.add(bookInstance);
+			}
+
 			return this;
 		}
 
 		public Builder setAuthors(List<Author> authors) {
-			book.authors = authors;
+			book.authors = new ArrayList<>();
+			for (Author author : authors) {
+				book.authors.add(author);
+			}
 			return this;
 		}
 
@@ -141,7 +148,10 @@ public class Book implements Serializable {
 	}
 
 	public void setBookInstances(List<BookInstance> bookInstances) {
-		this.bookInstances = bookInstances;
+		this.bookInstances = new ArrayList<>();
+		for (BookInstance bookInstance : bookInstances) {
+			this.bookInstances.add(bookInstance);
+		}
 	}
 
 	public List<Author> getAuthors() {
@@ -149,71 +159,30 @@ public class Book implements Serializable {
 	}
 
 	public void setAuthors(List<Author> authors) {
-		this.authors = authors;
+		this.authors = new ArrayList<>();
+		for (Author author : authors) {
+			this.authors.add(author);
+		}
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((authors == null) ? 0 : authors.hashCode());
-		result = prime * result + ((availability == null) ? 0 : availability.hashCode());
-		result = prime * result + ((bookInstances == null) ? 0 : bookInstances.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((imprintDate == null) ? 0 : imprintDate.hashCode());
 		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
-		result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Book other = (Book) obj;
-		if (authors == null) {
-			if (other.authors != null)
-				return false;
-		} else if (!authors.equals(other.authors))
-			return false;
-		if (availability != other.availability)
-			return false;
-		if (bookInstances == null) {
-			if (other.bookInstances != null)
-				return false;
-		} else if (!bookInstances.equals(other.bookInstances))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (imprintDate == null) {
-			if (other.imprintDate != null)
-				return false;
-		} else if (!imprintDate.equals(other.imprintDate))
-			return false;
-		if (isbn == null) {
-			if (other.isbn != null)
-				return false;
-		} else if (!isbn.equals(other.isbn))
-			return false;
-		if (publisher == null) {
-			if (other.publisher != null)
-				return false;
-		} else if (!publisher.equals(other.publisher))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		return true;
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+
+		Book book = (Book) obj;
+
+		if (id != null ? !id.equals(book.id) : book.id != null)	return false;
+		return isbn != null ? isbn.equals(book.isbn) : book.isbn == null;
 	}
 
 	@Override

@@ -18,7 +18,6 @@ public class Reader extends User {
 	public Reader() {
 	}
 
-	/** Curiously-Recurring Generic Pattern" (CRGP)  */
 	public static class Builder extends User.Builder<Builder> {
 
 		private Reader reader;
@@ -133,61 +132,23 @@ public class Reader extends User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((patronymic == null) ? 0 : patronymic.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((readerCardNumber == null) ? 0 : readerCardNumber.hashCode());
-		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Reader other = (Reader) obj;
-		if (address == null) {
-			if (other.address != null)
-				return false;
-		} else if (!address.equals(other.address))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (patronymic == null) {
-			if (other.patronymic != null)
-				return false;
-		} else if (!patronymic.equals(other.patronymic))
-			return false;
-		if (phone == null) {
-			if (other.phone != null)
-				return false;
-		} else if (!phone.equals(other.phone))
-			return false;
-		if (readerCardNumber == null) {
-			if (other.readerCardNumber != null)
-				return false;
-		} else if (!readerCardNumber.equals(other.readerCardNumber))
-			return false;
-		if (surname == null) {
-			if (other.surname != null)
-				return false;
-		} else if (!surname.equals(other.surname))
-			return false;
-		return true;
+		if (this == obj) return true;
+		if (!super.equals(obj) || getClass() != obj.getClass())	return false;
+
+		Reader reader = (Reader) obj;
+
+		if (email != null ? !email.equals(reader.email) : reader.email != null)	return false;
+		if (phone != null ? !phone.equals(reader.phone) : reader.phone != null)	return false;
+		return readerCardNumber != null ? readerCardNumber.equals(reader.readerCardNumber)
+				: reader.readerCardNumber == null;
 	}
 
 	@Override
@@ -199,7 +160,5 @@ public class Reader extends User {
 				.append(", readerCardNumber=").append(readerCardNumber).append("] ");
 		return builder2.toString();
 	}
-
-	
 
 }

@@ -18,14 +18,14 @@ public abstract class User implements Serializable {
 
 	}
 
-	public abstract static class Builder<T extends Builder<T>> implements IBuilder<User>{
+	public abstract static class Builder<T extends Builder<T>> {
 		protected User user;
 
 		public Builder() {
 		}
-		
-		/** The solution for the unchecked cast warning. */
-	    public abstract T getThis();
+
+		/** solution for the unchecked cast warning. */
+		public abstract T getThis();
 
 		public T setId(Long id) {
 			user.id = id;
@@ -91,37 +91,19 @@ public abstract class User implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (login == null) {
-			if (other.login != null)
-				return false;
-		} else if (!login.equals(other.login))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (role != other.role)
-			return false;
-		return true;
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+
+		User user = (User) obj;
+
+		if (id != null ? !id.equals(user.id) : user.id != null)	return false;
+		if (login != null ? !login.equals(user.login) : user.login != null)	return false;
+		return password != null ? password.equals(user.password) : user.password == null;
 	}
 
 	@Override
