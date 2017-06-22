@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import ua.training.entity.Availability;
 import ua.training.entity.Book;
+import ua.training.entity.Librarian;
+import ua.training.entity.Role;
 import ua.training.service.impl.BookService;
 
 public class BookServiceTest {
@@ -23,6 +25,14 @@ public class BookServiceTest {
 		service.createBook(book);
 		System.out.println("Book id: " + book.getId());
 
+	}
+
+	@Test
+	public void testCreateLibrarian() {
+		Librarian librarian = new Librarian.Builder().setId(new Long("1")).setLogin("bla").setPassword("bla")
+				.setRole(Role.LIBRARIAN).setEmail("sol.yaremko@gmail.com").setName("A").setSurname("B")
+				.setPatronymic("C").build();
+		System.out.println("Libraraian: " + librarian);
 	}
 
 }

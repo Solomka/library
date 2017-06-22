@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import ua.training.dao.UserDao;
 import ua.training.entity.Librarian;
 import ua.training.entity.Reader;
@@ -14,6 +17,8 @@ import ua.training.entity.Role;
 import ua.training.entity.User;
 
 public class JdbcUserDao implements UserDao {
+
+	private static final Logger LOGGER = LogManager.getLogger(JdbcUserDao.class);
 
 	private static final String SELECT_USER_BY_LOGIN = "select * from users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian "
 			+ "union"

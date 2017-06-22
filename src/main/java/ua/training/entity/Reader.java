@@ -15,11 +15,11 @@ public class Reader extends User {
 	private String address;
 	private String readerCardNumber;
 
-	public Reader(/*Long id, String login, String password, Role role*/) {
-		//super(id, login, password, role);
+	public Reader() {
 	}
 
-	public static class Builder extends User.Builder<Builder>  {
+	/** Curiously-Recurring Generic Pattern" (CRGP)  */
+	public static class Builder extends User.Builder<Builder> {
 
 		private Reader reader;
 
@@ -63,10 +63,14 @@ public class Reader extends User {
 		}
 
 		@Override
+		public Builder getThis() {
+			return this;
+		}
+
+		@Override
 		public Reader build() {
 			return reader;
 		}
-
 	}
 
 	public String getName() {
@@ -189,11 +193,13 @@ public class Reader extends User {
 	@Override
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
-		builder2.append("Reader [name=").append(name).append(", surname=").append(surname).append(", patronymic=")
-				.append(patronymic).append(", email=").append(email).append(", phone=").append(phone)
-				.append(", address=").append(address).append(", readerCardNumber=").append(readerCardNumber)
-				.append("]");
+		builder2.append("Reader [ [super: ").append(super.toString()).append("], name=").append(name)
+				.append(", surname=").append(surname).append(", patronymic=").append(patronymic).append(", email=")
+				.append(email).append(", phone=").append(phone).append(", address=").append(address)
+				.append(", readerCardNumber=").append(readerCardNumber).append("] ");
 		return builder2.toString();
 	}
+
+	
 
 }

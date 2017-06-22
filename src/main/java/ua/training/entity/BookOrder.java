@@ -17,6 +17,7 @@ public class BookOrder implements Serializable {
 	private LocalDateTime fulfilmentDate;
 	private LocalDateTime pickUpDate;
 	private LocalDateTime returnDate;
+	private Librarian librarian;
 
 	public BookOrder() {
 
@@ -57,6 +58,11 @@ public class BookOrder implements Serializable {
 
 		public Builder setReturnDate(LocalDateTime returnDate) {
 			bookOrder.returnDate = returnDate;
+			return this;
+		}
+
+		public Builder setLibrarian(Librarian librarian) {
+			bookOrder.librarian = librarian;
 			return this;
 		}
 
@@ -123,6 +129,14 @@ public class BookOrder implements Serializable {
 		this.returnDate = returnDate;
 	}
 
+	public Librarian getLibrarian() {
+		return librarian;
+	}
+
+	public void setLibrarian(Librarian librarian) {
+		this.librarian = librarian;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -131,6 +145,7 @@ public class BookOrder implements Serializable {
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((fulfilmentDate == null) ? 0 : fulfilmentDate.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((librarian == null) ? 0 : librarian.hashCode());
 		result = prime * result + ((pickUpDate == null) ? 0 : pickUpDate.hashCode());
 		result = prime * result + ((reader == null) ? 0 : reader.hashCode());
 		result = prime * result + ((returnDate == null) ? 0 : returnDate.hashCode());
@@ -166,6 +181,11 @@ public class BookOrder implements Serializable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (librarian == null) {
+			if (other.librarian != null)
+				return false;
+		} else if (!librarian.equals(other.librarian))
+			return false;
 		if (pickUpDate == null) {
 			if (other.pickUpDate != null)
 				return false;
@@ -186,12 +206,12 @@ public class BookOrder implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder builder2 = new StringBuilder();
-		builder2.append("BookOrder [id=").append(id).append(", bookInstance=").append(bookInstance).append(", reader=")
+		StringBuilder builder = new StringBuilder();
+		builder.append("BookOrder [id=").append(id).append(", bookInstance=").append(bookInstance).append(", reader=")
 				.append(reader).append(", creationDate=").append(creationDate).append(", fulfilmentDate=")
 				.append(fulfilmentDate).append(", pickUpDate=").append(pickUpDate).append(", returnDate=")
-				.append(returnDate).append("]");
-		return builder2.toString();
+				.append(returnDate).append(", librarian=").append(librarian).append("]");
+		return builder.toString();
 	}
 
 }

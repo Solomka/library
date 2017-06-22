@@ -18,28 +18,38 @@ public abstract class User implements Serializable {
 
 	}
 
-	public User(Long id, String login, String password, Role role) {
-		this.id = id;
-		this.login = login;
-		this.password = password;
-		this.role = role;
-	}
-	
-	public static class Builder<T extends Builder> {
+	public abstract static class Builder<T extends Builder<T>> implements IBuilder<User>{
 		protected User user;
-		public  Builder(){
-			
-		}
-		public T setLogin(String login){
-			user.login = login;
-			return (T)this;
+
+		public Builder() {
 		}
 		
+		/** The solution for the unchecked cast warning. */
+	    public abstract T getThis();
+
+		public T setId(Long id) {
+			user.id = id;
+			return getThis();
+		}
+
+		public T setLogin(String login) {
+			user.login = login;
+			return getThis();
+		}
+
+		public T setPassword(String password) {
+			user.password = password;
+			return getThis();
+		}
+
+		public T setRole(Role role) {
+			user.role = role;
+			return getThis();
+		}
+
 		public User build() {
-			// TODO Auto-generated method stub
 			return user;
 		}
-		
 	}
 
 	public Long getId() {

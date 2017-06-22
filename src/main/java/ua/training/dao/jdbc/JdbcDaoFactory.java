@@ -11,11 +11,21 @@ import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
 import ua.training.dao.UserDao;
 
+/**
+ * Class represents dao factory that produces many DAOs for a Jdbc database
+ * implementation and use database connection pool for getting connections with
+ * db
+ * 
+ * @author Solomka
+ *
+ */
 public class JdbcDaoFactory extends DaoFactory {
 
 	private DataSource dataSource;
 
-	/** load database connection pool (using JNDI) */
+	/**
+	 * Get data source by means of JNDI mechanism
+	 */
 	public JdbcDaoFactory() {
 		try {
 			InitialContext ic = new InitialContext();
@@ -26,7 +36,13 @@ public class JdbcDaoFactory extends DaoFactory {
 		}
 	}
 
-	/** create custom JdbcDAOConnection */
+	/**
+	 * Get custom Connection wrapper for correct transaction execution
+	 * 
+	 * @return a connection to the data source
+	 * @exception SQLException
+	 *                if a database access error occurs
+	 */
 	@Override
 	public DaoConnection getConnection() {
 		try {
@@ -35,23 +51,22 @@ public class JdbcDaoFactory extends DaoFactory {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public UserDao createUserDao() {
-		try{
+		try {
 			return new JdbcUserDao(dataSource.getConnection(), true);
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
 	public UserDao createUserDao(DaoConnection connection) {
-		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection)connection;
+		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
 		Connection sqlConnection = jdbcConnection.getConnection();
 		return new JdbcUserDao(sqlConnection);
 	}
-
 
 	@Override
 	public BookDao createBookDao() {
@@ -69,5 +84,4 @@ public class JdbcDaoFactory extends DaoFactory {
 		return new JdbcBookDao(sqlConnection);
 	}
 
-	
 }

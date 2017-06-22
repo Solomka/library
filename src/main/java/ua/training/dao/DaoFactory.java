@@ -4,6 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Abstract class that represents dao factory that produces many DAOs for a
+ * single database implementation that is loaded from the db.properties file
+ * 
+ * @author Solomka
+ *
+ */
 public abstract class DaoFactory {
 
 	public static final String DB_FILE = "/db.properties";
@@ -31,7 +38,6 @@ public abstract class DaoFactory {
 				Properties dbProps = new Properties();
 				dbProps.load(inputStream);
 				String factoryClass = dbProps.getProperty(DB_FACTORY_CLASS);
-				System.out.println("Factory class: " + factoryClass);
 				daoFactory = (DaoFactory) Class.forName(factoryClass).newInstance();
 
 			} catch (IOException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {

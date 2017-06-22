@@ -13,19 +13,14 @@ public class Librarian extends User {
 	private String email;
 
 	public Librarian() {
-
 	}
 
-	public Librarian(Long id, String login, String password, Role role) {
-		super(id, login, password, role);
-	}
-
-	public static class Builder implements IBuilder<Librarian> {
+	public static class Builder extends User.Builder<Builder> {
 
 		private Librarian librarian;
 
-		public Builder(Long id, String login, String password, Role role) {
-			librarian = new Librarian(id, login, password, role);
+		public Builder() {
+			user = librarian = new Librarian();
 		}
 
 		public Builder setName(String name) {
@@ -45,6 +40,11 @@ public class Librarian extends User {
 
 		public Builder setEmail(String email) {
 			librarian.email = email;
+			return this;
+		}
+
+		@Override
+		public Builder getThis() {
 			return this;
 		}
 
@@ -133,9 +133,15 @@ public class Librarian extends User {
 	@Override
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
-		builder2.append("Librarian [name=").append(name).append(", surname=").append(surname).append(", patronymic=")
-				.append(patronymic).append(", email=").append(email).append("]");
+		builder2.append("Librarian [ [super: ").append(super.toString()).append("], name=").append(name)
+				.append(", surname=").append(surname).append(", patronymic=").append(patronymic).append(", email=")
+				.append(email).append("] ");
 		return builder2.toString();
 	}
 
+	
+
+	
+
+	
 }
