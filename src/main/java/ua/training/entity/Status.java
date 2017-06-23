@@ -19,12 +19,19 @@ public enum Status {
 		return value;
 	}
 
+	/**
+	 * Provides Status for a given String value
+	 * 
+	 * @param value
+	 *            value describing Status
+	 * @return Status or RuntimeException if appropriate status wasn't found
+	 */
 	public static Status forValur(String value) {
 		for (final Status status : Status.values()) {
 			if (status.getValue().equals(value)) {
 				return status;
 			}
 		}
-		throw new IllegalArgumentException();
+		throw new RuntimeException("Status with such string value doesn't exist");
 	}
 }

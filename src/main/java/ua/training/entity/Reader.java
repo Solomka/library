@@ -140,15 +140,23 @@ public class Reader extends User {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (!super.equals(obj) || getClass() != obj.getClass())	return false;
+		if (this == obj) {
+			return true;
+		}
+		if ((!super.equals(obj)) || (getClass() != obj.getClass())) {
+			return false;
+		}
 
 		Reader reader = (Reader) obj;
 
-		if (email != null ? !email.equals(reader.email) : reader.email != null)	return false;
-		if (phone != null ? !phone.equals(reader.phone) : reader.phone != null)	return false;
-		return readerCardNumber != null ? readerCardNumber.equals(reader.readerCardNumber)
-				: reader.readerCardNumber == null;
+		if ((email != null) ? !email.equals(reader.email) : reader.email != null) {
+			return false;
+		}
+		if ((phone != null) ? !phone.equals(reader.phone) : reader.phone != null) {
+			return false;
+		}
+		return ((readerCardNumber != null) ? readerCardNumber.equals(reader.readerCardNumber)
+				: reader.readerCardNumber == null);
 	}
 
 	@Override

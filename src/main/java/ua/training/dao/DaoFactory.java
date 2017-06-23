@@ -6,7 +6,7 @@ import java.util.Properties;
 
 /**
  * Abstract class that represents dao factory that produces many DAOs for a
- * single database implementation 
+ * single database implementation
  * <p>
  * Abstract class instance implementation is loaded from db.properties
  * 
@@ -32,7 +32,6 @@ public abstract class DaoFactory {
 	// business level dao - can call methods from many dao classes
 	public abstract BookDao createBookDao(DaoConnection connection);
 
-	/** Factory not Singleton */
 	public static DaoFactory getDaoFactory() {
 		if (daoFactory == null) {
 			try {

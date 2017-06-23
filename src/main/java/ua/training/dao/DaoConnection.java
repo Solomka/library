@@ -1,7 +1,7 @@
 package ua.training.dao;
 
 /**
- * Interface that must be implemented by custom Connection wrapper
+ * Interface that have to be implemented by custom Connection wrapper
  * 
  * @author Solomka
  *

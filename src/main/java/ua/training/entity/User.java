@@ -88,7 +88,6 @@ public abstract class User implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		return result;
@@ -96,14 +95,19 @@ public abstract class User implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
+			return false;
+		}
 
 		User user = (User) obj;
 
-		if (id != null ? !id.equals(user.id) : user.id != null)	return false;
-		if (login != null ? !login.equals(user.login) : user.login != null)	return false;
-		return password != null ? password.equals(user.password) : user.password == null;
+		if ((login != null) ? !login.equals(user.login) : user.login != null) {
+			return false;
+		}
+		return ((password != null) ? password.equals(user.password) : user.password == null);
 	}
 
 	@Override

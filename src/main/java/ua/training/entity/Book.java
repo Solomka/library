@@ -169,20 +169,22 @@ public class Book implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
+			return false;
+		}
 
 		Book book = (Book) obj;
 
-		if (id != null ? !id.equals(book.id) : book.id != null)	return false;
-		return isbn != null ? isbn.equals(book.isbn) : book.isbn == null;
+		return ((isbn != null) ? isbn.equals(book.isbn) : book.isbn == null);
 	}
 
 	@Override

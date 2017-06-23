@@ -19,12 +19,19 @@ public enum Role {
 		return value;
 	}
 
+	/**
+	 * Provides Role for a given String value
+	 * 
+	 * @param value
+	 *            value describing Role
+	 * @return Role or RuntimeException if appropriate role wasn't found
+	 */
 	public static Role forValue(String value) {
 		for (Role role : Role.values()) {
 			if (role.getValue().equals(value)) {
 				return role;
 			}
 		}
-		throw new IllegalArgumentException();
+		throw new RuntimeException("Role with such string value doesn't exist");
 	}
 }

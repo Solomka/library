@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Generic interface that must be implemented by dao implementations for CRUD
+ * Generic interface that have to be implemented by dao implementations for CRUD
  * realization
  * 
  * @author Solomka

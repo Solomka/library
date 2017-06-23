@@ -97,12 +97,16 @@ public class Librarian extends User {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (!super.equals(obj) || getClass() != obj.getClass())	return false;
+		if (this == obj) {
+			return true;
+		}
+		if ((!super.equals(obj)) || (getClass() != obj.getClass())) {
+			return false;
+		}
 
 		Librarian librarian = (Librarian) obj;
 
-		return email != null ? email.equals(librarian.email) : librarian.email == null;
+		return ((email != null) ? email.equals(librarian.email) : librarian.email == null);
 	}
 
 	@Override
