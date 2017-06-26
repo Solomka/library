@@ -1,4 +1,4 @@
-package ua.training.dao;
+package ua.training.model.dao;
 
 import java.util.List;
 import java.util.Optional;

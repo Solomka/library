@@ -21,7 +21,7 @@ class CommandFactory {
 	}
 
 	static Command getCommand(HttpServletRequest request) {
-		Command command = commands.getOrDefault(request.getRequestURI().replaceAll("/library", ""), new AllBooksCommand());
+		Command command = commands.getOrDefault(request.getRequestURI().replaceAll(request.getContextPath(), ""), new AllBooksCommand());
 		return command;
 	}
 

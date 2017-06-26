@@ -1,10 +1,6 @@
-package ua.training.service;
+package ua.training.model.service;
 
-import java.util.Optional;
-
-import ua.training.dao.DaoFactory;
-import ua.training.dao.UserDao;
-import ua.training.entity.Reader;
+import ua.training.model.dao.DaoFactory;
 
 public class UserService {
 

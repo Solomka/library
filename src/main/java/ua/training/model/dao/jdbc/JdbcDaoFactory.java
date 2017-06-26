@@ -1,4 +1,4 @@
-package ua.training.dao.jdbc;
+package ua.training.model.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import ua.training.dao.BookDao;
-import ua.training.dao.DaoConnection;
-import ua.training.dao.DaoFactory;
-import ua.training.dao.UserDao;
+import ua.training.model.dao.BookDao;
+import ua.training.model.dao.DaoConnection;
+import ua.training.model.dao.DaoFactory;
+import ua.training.model.dao.UserDao;
 
 /**
  * Class represents dao factory that produces many DAOs for a Jdbc database

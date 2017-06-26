@@ -1,4 +1,4 @@
-package ua.training.entity;
+package ua.training.model.entity;
 
 /**
  * Basic interface for GoF Builder pattern realization

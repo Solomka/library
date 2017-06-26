@@ -1,4 +1,4 @@
-package ua.training.dao;
+package ua.training.model.dao;
 
 import java.io.IOException;
 import java.io.InputStream;

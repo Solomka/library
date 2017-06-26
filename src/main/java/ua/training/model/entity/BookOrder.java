@@ -1,4 +1,4 @@
-package ua.training.entity;
+package ua.training.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

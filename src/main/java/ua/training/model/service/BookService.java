@@ -1,4 +1,4 @@
-package ua.training.service;
+package ua.training.model.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import ua.training.dao.BookDao;
-import ua.training.dao.DaoFactory;
-import ua.training.entity.Book;
+import ua.training.model.dao.BookDao;
+import ua.training.model.dao.DaoFactory;
+import ua.training.model.entity.Book;
 
 public class BookService {
 

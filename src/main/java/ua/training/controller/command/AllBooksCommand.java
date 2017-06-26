@@ -7,8 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.training.entity.Book;
-import ua.training.service.BookService;
+import ua.training.controller.page.Page;
+import ua.training.model.entity.Book;
+import ua.training.model.service.BookService;
 
 public class AllBooksCommand implements Command {
 
@@ -19,7 +20,7 @@ public class AllBooksCommand implements Command {
 			throws ServletException, IOException {
 		List<Book> books = bookService.getAllBooks();
 		request.setAttribute("books", books);
-		return "allBooks";
+		return Page.ALL_BOOKS;
 	}
 
 }

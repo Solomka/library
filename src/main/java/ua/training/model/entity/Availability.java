@@ -1,4 +1,4 @@
-package ua.training.entity;
+package ua.training.model.entity;
 
 /**
  * Class that represents availability of the library book

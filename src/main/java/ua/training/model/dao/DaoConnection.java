@@ -1,4 +1,4 @@
-package ua.training.dao;
+package ua.training.model.dao;
 
 /**
  * Interface that have to be implemented by custom Connection wrapper

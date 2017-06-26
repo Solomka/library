@@ -1,4 +1,4 @@
-package ua.training.dao.jdbc;
+package ua.training.model.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import ua.training.dao.DaoConnection;
+import ua.training.model.dao.DaoConnection;
 
 /**
  * Class that represents Connection wrapper for providing correct transaction

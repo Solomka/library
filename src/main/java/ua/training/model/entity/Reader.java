@@ -1,4 +1,4 @@
-package ua.training.entity;
+package ua.training.model.entity;
 
 public class Reader extends User {
 

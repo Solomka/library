@@ -1,8 +1,8 @@
-package ua.training.dao;
+package ua.training.model.dao;
 
 import java.util.Optional;
 
-import ua.training.entity.User;
+import ua.training.model.entity.User;
 
 public interface UserDao extends GenericDao<User, Long>, AutoCloseable{
 	

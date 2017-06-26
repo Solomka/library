@@ -1,4 +1,4 @@
-package ua.training.dao.jdbc;
+package ua.training.model.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +13,9 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import ua.training.dao.BookDao;
-import ua.training.entity.Availability;
-import ua.training.entity.Book;
+import ua.training.model.dao.BookDao;
+import ua.training.model.entity.Availability;
+import ua.training.model.entity.Book;
 
 public class JdbcBookDao implements BookDao {
 

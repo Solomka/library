@@ -1,0 +1,11 @@
+#loginCont {
+	width: 500px;
+}
+
+tr.selected {
+	background-color: #B0BED9 !important;
+}
+
+.btn {
+	border-color: #191919;
+}

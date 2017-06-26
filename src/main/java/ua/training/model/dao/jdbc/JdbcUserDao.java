@@ -1,4 +1,4 @@
-package ua.training.dao.jdbc;
+package ua.training.model.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,11 +10,11 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import ua.training.dao.UserDao;
-import ua.training.entity.Librarian;
-import ua.training.entity.Reader;
-import ua.training.entity.Role;
-import ua.training.entity.User;
+import ua.training.model.dao.UserDao;
+import ua.training.model.entity.Librarian;
+import ua.training.model.entity.Reader;
+import ua.training.model.entity.Role;
+import ua.training.model.entity.User;
 
 public class JdbcUserDao implements UserDao {
 

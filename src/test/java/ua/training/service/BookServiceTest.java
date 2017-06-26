@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import ua.training.entity.Availability;
-import ua.training.entity.Book;
-import ua.training.entity.Librarian;
-import ua.training.entity.Role;
-import ua.training.service.BookService;
+import ua.training.model.entity.Availability;
+import ua.training.model.entity.Book;
+import ua.training.model.entity.Librarian;
+import ua.training.model.entity.Role;
+import ua.training.model.service.BookService;
 
 public class BookServiceTest {
 

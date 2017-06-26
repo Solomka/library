@@ -1,50 +1,45 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ page session="true"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- LOCALE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@include file="header.jsp"%>
 
-<!DOCTYPE html>
-<html lang="en">
-<body>
-	<h2>All Books</h2>
+<div class="row-fluid">
+	<div class="span12" align="center">
 
-	<br>
-	<br>
-	<br>
+		<h2>All Books</h2>
 
-	<table>
-		<thead>
-			<tr>
+		<br> <br> <br>
 
-				<th>#</th>
-				<th>ISBN</th>
-				<th>Title</th>
-				<th>Publisher</th>
-				<th>Imprint date</th>
-				<th>Availability</th>
-				<th>Action</th>
-
-			</tr>
-		</thead>
-
-		<tbody>
-			<c:forEach items="${books}" var="book" varStatus="status">
+		<table>
+			<thead>
 				<tr>
 
-					<td>${status.index + 1}</td>
-					<td>${book.isbn}</td>
-					<td>${book.title}</td>
-					<td>${book.publisher}</td>
-					<td>${book.imprintDate}</td>
-					<td>${book.availability}</td>
-					<td>Action</td>
-
+					<th>#</th>
+					<th>ISBN</th>
+					<th>Title</th>
+					<th>Publisher</th>
+					<th>Imprint date</th>
+					<th>Availability</th>
+					<th>Action</th>
 
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-</body>
-</html>
+			</thead>
+
+			<tbody>
+				<c:forEach items="${books}" var="book" varStatus="status">
+					<tr>
+
+						<td>${status.index + 1}</td>
+						<td>${book.isbn}</td>
+						<td>${book.title}</td>
+						<td>${book.publisher}</td>
+						<td>${book.imprintDate}</td>
+						<td>${book.availability}</td>
+						<td>Action</td>
+
+
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<%@include file="footer.jsp"%>
