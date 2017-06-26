@@ -34,8 +34,7 @@ public class FrontController extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		System.out.println(request.getContextPath());
+
 		String requestResultPage = null;
 
 		requestResultPage = CommandFactory.getCommand(request).execute(request, response);
