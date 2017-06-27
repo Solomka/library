@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.training.controller.page.Page;
+import ua.training.controller.constants.Page;
 import ua.training.model.entity.Book;
 import ua.training.model.service.BookService;
 

@@ -3,7 +3,7 @@
 <div class="row-fluid">
 	<div class="span12" align="center">
 
-		<h2>All Books</h2>
+		<h2><fmt:message key="library.allBooks" bundle="${rb}"/></h2>
 
 		<br> <br> <br>
 

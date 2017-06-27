@@ -22,23 +22,23 @@ public class JdbcBookDao implements BookDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookDao.class);
 
 	// SQL queries
-	private static final String SELECT_ALL_FROM_BOOK = "SELECT * FROM book ORDER BY title";
-	private static final String SELECT_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
-	private static final String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, imprint_date, availability) VALUES ( ?, ?, ?, ?, ? )";
-	private static final String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, imprint_date=?, availability=? WHERE id_book=?";
-	private static final String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
-	private static final String SEARCH_BY_TITLE = "SELECT * FROM book WHERE title LIKE '%?%'";
-	private static final String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.imprint_date, book.availability"
+	private static  String SELECT_ALL_FROM_BOOK = "SELECT * FROM book ORDER BY title";
+	private static  String SELECT_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
+	private static  String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, imprint_date, availability) VALUES ( ?, ?, ?, ?, ? )";
+	private static  String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, imprint_date=?, availability=? WHERE id_book=?";
+	private static  String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
+	private static  String SEARCH_BY_TITLE = "SELECT * FROM book WHERE title LIKE '%?%'";
+	private static  String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.imprint_date, book.availability"
 			+ "FROM book INNER JOIN book_author USING (id_book) INNER JOIN author USING (id_author)"
 			+ "WHERE author.surname LIKE '%?%'";
 
 	// DB table fields
-	private static final String ID_BOOK = "id_book";
-	private static final String ISBN = "isbn";
-	private static final String TITLE = "title";
-	private static final String PUBLISHER = "publisher";
-	private static final String IMPRINT_DATE = "imprint_date";
-	private static final String AVAILABILITY = "availability";
+	private static  String ID_BOOK = "id_book";
+	private static  String ISBN = "isbn";
+	private static  String TITLE = "title";
+	private static  String PUBLISHER = "publisher";
+	private static  String IMPRINT_DATE = "imprint_date";
+	private static  String AVAILABILITY = "availability";
 
 	private Connection connection;
 	private boolean connectionShouldBeClosed;

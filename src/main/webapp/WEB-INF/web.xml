@@ -2,18 +2,25 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-	metadata-complete="true" version="3.0">
+	version="3.0">
 	<display-name>Archetype Created Web Application</display-name>
 
-	<servlet>
-		<servlet-name>FrontController</servlet-name>
-		<servlet-class>ua.training.controller.FrontController</servlet-class>
-	</servlet>
+	<jsp-config>
+		<taglib>
+			<taglib-uri>customtags</taglib-uri>
+			<taglib-location>/WEB-INF/tld/userData.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 	
-	<servlet-mapping>
-		<servlet-name>FrontController</servlet-name>
-		<url-pattern>/allBooks</url-pattern>
-	</servlet-mapping>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/errors/pageNotFound.jsp</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/WEB-INF/views/errors/internalServerError.jsp</location>
+	</error-page>
 
 	<resource-ref>
 		<description>Library Pool</description>

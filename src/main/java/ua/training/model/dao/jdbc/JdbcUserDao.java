@@ -21,10 +21,18 @@ public class JdbcUserDao implements UserDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcUserDao.class);
 
 	private static final String SELECT_USER_BY_LOGIN = "select * from users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian "
-			+ "union"
-			+ "select * from users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader";
+			+ "union "
+			+ "select * from users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader "
+			+ "WHERE users.login=?";
 
-	private static final String ROLE = "user.role";
+	private static String ID = "id_user";
+	private static String LOGIN = "login";
+	private static String PASSWORD = "password";
+	private static String ROLE = "role";
+	private static String LIBRARIAN_NAME = "librarian.name";
+	private static String LIBRARIAN_SURNAME = "librarian.surname";
+	private static String LIBRARIAN_PATRONYMIC = "librarian.patronymic";
+	private static String LIBRARIAN_EMAIL = "librarian.email";
 
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
@@ -103,9 +111,10 @@ public class JdbcUserDao implements UserDao {
 		return null;
 	}
 
-	private Librarian extractLibrarianFromResultSet(ResultSet resultSet) {
+	private Librarian extractLibrarianFromResultSet(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return new Librarian.Builder().setId(resultSet.getLong(ID)).setLogin(resultSet.getString(LOGIN))
+				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE))).build();
 	}
 
 	@Override

@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ua.training.controller.command.AllBooksCommand;
+import ua.training.controller.command.ChangeLocaleCommand;
 import ua.training.controller.command.Command;
+import ua.training.controller.command.GetLoginPageCommand;
+import ua.training.controller.command.LoginCommand;
+import ua.training.controller.command.LogoutCommand;
 
 class CommandFactory {
 
@@ -18,10 +22,15 @@ class CommandFactory {
 
 	static {
 		commands.put("allBooks", new AllBooksCommand());
+		commands.put("changeLocale", new ChangeLocaleCommand());
+		commands.put("login", new LoginCommand());
+		commands.put("getLoginPage", new GetLoginPageCommand());
+		commands.put("logout", new LogoutCommand());
 	}
 
 	static Command getCommand(HttpServletRequest request) {
-		Command command = commands.getOrDefault(request.getRequestURI().replaceAll(request.getContextPath(), ""), new AllBooksCommand());
+		String str = request.getRequestURI().replaceAll(".*/", "");
+		Command command = commands.getOrDefault(str, new AllBooksCommand());
 		return command;
 	}
 

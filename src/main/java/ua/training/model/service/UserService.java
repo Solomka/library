@@ -1,8 +1,17 @@
 package ua.training.model.service;
 
+import java.util.Optional;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import ua.training.model.dao.DaoFactory;
+import ua.training.model.dao.UserDao;
+import ua.training.model.entity.User;
 
 public class UserService {
+
+	private static final Logger LOGGER = LogManager.getLogger(UserService.class);
 
 	private DaoFactory daoFactory;
 
@@ -18,10 +27,15 @@ public class UserService {
 		return Holder.INSTANCE;
 	}
 
+	public Optional<User> getUserByLogin(String login) {
+		LOGGER.info("Get user by login");
+		try (UserDao userDao = daoFactory.createUserDao()) {
+			return userDao.getUserByLogin(login);
+		}
+	}
 	/*
-	public void userReturnBook(String login, Long bookId) {
-		Optional<Reader> reader = userDao.getUserByLogin(login);
-		// business logic
-	} */
+	 * public void userReturnBook(String login, Long bookId) { Optional<Reader>
+	 * reader = userDao.getUserByLogin(login); // business logic }
+	 */
 
 }
