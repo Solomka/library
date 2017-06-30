@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 @WebFilter("/*")
-public class AppPathFilter implements Filter{
+public class RequestPathFilter implements Filter{
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -29,9 +29,11 @@ public class AppPathFilter implements Filter{
 		String path = req.getRequestURI().substring(req.getContextPath().length());
 
 		if (path.startsWith("/resources/")) {
-		    chain.doFilter(request, response); // Goes to default servlet.
+			// Goes to default servlet
+		    chain.doFilter(request, response); 
 		} else {
-		    request.getRequestDispatcher("controller" + path).forward(request, response); // Goes to your controller.
+			// Goes to front controller
+		    request.getRequestDispatcher("controller" + path).forward(request, response); 
 		}
 		
 	}

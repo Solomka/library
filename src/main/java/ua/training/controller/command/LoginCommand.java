@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ua.training.controller.constants.Page;
-import ua.training.controller.utils.Util;
 import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
@@ -30,7 +29,7 @@ public class LoginCommand implements Command{
 		 addUserToSession(request.getSession(), user.get());
 
        //  Util.redirectTo(request, response, Page.INDEX);
-		return Page.INDEX;
+		return Page.ALL_BOOKS;
 	}
 	
 	 private void addUserToSession(HttpSession session, User user)

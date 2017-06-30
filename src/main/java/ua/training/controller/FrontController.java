@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
  * Application HTTP Front Servlet
  */
 
-//@WebServlet(urlPatterns={"/controller/*"}) 
 @WebServlet(urlPatterns={"/controller/*"}) 
 public class FrontController extends HttpServlet {
 

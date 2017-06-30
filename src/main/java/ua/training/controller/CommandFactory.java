@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ua.training.controller.command.AllBooksCommand;
-import ua.training.controller.command.ChangeLocaleCommand;
 import ua.training.controller.command.Command;
 import ua.training.controller.command.GetLoginPageCommand;
 import ua.training.controller.command.LoginCommand;
@@ -21,16 +20,23 @@ class CommandFactory {
 	private static Map<String, Command> commands = new HashMap<>();
 
 	static {
-		commands.put("allBooks", new AllBooksCommand());
-		commands.put("changeLocale", new ChangeLocaleCommand());
-		commands.put("login", new LoginCommand());
-		commands.put("getLoginPage", new GetLoginPageCommand());
-		commands.put("logout", new LogoutCommand());
+		commands.put("GET:", new HomeCommand());
+		commands.put("GET:login", new GetLoginPageCommand());
+		commands.put("POST:login", new LoginCommand());
+		commands.put("GET:logout", new LogoutCommand());
+		commands.put("GET:books", new AllBooksCommand());		
 	}
 
 	static Command getCommand(HttpServletRequest request) {
-		String str = request.getRequestURI().replaceAll(".*/", "");
-		Command command = commands.getOrDefault(str, new AllBooksCommand());
+
+		String method = request.getMethod().toUpperCase();
+		String path = request.getRequestURI();
+		path = path.replaceAll(".*/controller/", "").replaceAll(".*/controller/*/", "").replaceAll("\\d+", "");
+
+		String key = method + ":" + path;
+		System.out.println("String: " + key);
+
+		Command command = commands.getOrDefault(key, new HomeCommand());
 		return command;
 	}
 

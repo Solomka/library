@@ -62,43 +62,44 @@
 <body>
 	<div class="container">
 
-		<div class="navbar navbar-inverse">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">Main</a>
-				</div>
-				<ul class="nav navbar-nav">
-					<li><a href="allBooks">Books</a></li>
-				</ul>
-
-				<ul class="nav navbar-nav navbar-right">
-
-					<c:if test="${not empty user }">
-						<!-- Custom tag  -->
-						<li><p class="navbar-text">
-								<udt:user-data user="${user}" />
-							</p></li>
-					</c:if>
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#"><i class="fa fa-language"
-							aria-hidden="true"></i><span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="changeLocale?lang=EN">EN</a></li>
-							<li><a href="changeLocale?lang=UA">UA</a></li>
-							<li><a href="changeLocale?lang=RU">RU</a></li>
-
-						</ul></li>
-					<c:choose>
-						<c:when test="${not empty user}">
-							<li><a href="logout"><span
-									class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-						</c:when>
-						<c:otherwise>
-
-							<li><a href="getLoginPage"><span
-									class="glyphicon glyphicon-log-in"></span> Login</a></li>
-						</c:otherwise>
-					</c:choose>
-				</ul>
+		<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="./">Main</a>
 			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="./books">Books</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+
+				<c:if test="${not empty user }">
+					<!-- Custom tag  -->
+					<li><p class="navbar-text">
+							<udt:user-data user="${user}" />
+						</p></li>
+				</c:if>
+
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"><i class="fa fa-language"
+						aria-hidden="true"></i><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="?lang=EN">EN</a></li>
+						<li><a href="?lang=UK">UK</a></li>
+
+					</ul></li>
+
+				<c:choose>
+					<c:when test="${empty user}">
+						<li><a href="./login"><span
+								class="glyphicon glyphicon-log-out"></span> Login</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="./logout"><span
+								class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+					</c:otherwise>
+				</c:choose>
+				
+			</ul>
 		</div>
+		</nav>
