@@ -84,8 +84,8 @@
 					data-toggle="dropdown" href="#"><i class="fa fa-language"
 						aria-hidden="true"></i><span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="?lang=EN">EN</a></li>
-						<li><a href="?lang=UK">UK</a></li>
+						<li><a href="./locale?lang=EN">EN</a></li>
+						<li><a href="./locale?lang=UK">UK</a></li>
 
 					</ul></li>
 

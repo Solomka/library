@@ -13,6 +13,7 @@ public class LogoutCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		System.out.println("Log out =)");
 		request.getSession().invalidate();
 		return Page.LOGIN;
 	}

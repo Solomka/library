@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ua.training.controller.command.AllBooksCommand;
+import ua.training.controller.command.ChangeLocaleCommand;
 import ua.training.controller.command.Command;
 import ua.training.controller.command.GetLoginPageCommand;
 import ua.training.controller.command.LoginCommand;
@@ -22,6 +23,7 @@ class CommandFactory {
 	static {
 		commands.put("GET:", new HomeCommand());
 		commands.put("GET:login", new GetLoginPageCommand());
+		commands.put("GET:locale", new ChangeLocaleCommand());
 		commands.put("POST:login", new LoginCommand());
 		commands.put("GET:logout", new LogoutCommand());
 		commands.put("GET:books", new AllBooksCommand());		

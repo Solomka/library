@@ -10,8 +10,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(urlPatterns = { "/*" })
+import ua.training.controller.constants.Page;
+
+//@WebFilter(urlPatterns = { "/*" })
 public class LocaleFilter implements Filter {
 
 	private final static String LANG = "lang";
@@ -31,13 +34,15 @@ public class LocaleFilter implements Filter {
 			changeLocale(req);
 		}
 
-		chain.doFilter(request, response);
+		//request.getRequestDispatcher(Page.HOME).forward(request, response);
+		//chain.doFilter(request, response);
 	}
 
 	private void changeLocale(HttpServletRequest request) {
 		String chosenLanguage = request.getParameter(LANG);
 		System.out.println("Chosen language: " + chosenLanguage);
 		request.getSession(true).setAttribute(LOCALE, AppLocale.forValue(chosenLanguage));
+		
 	}
 
 	@Override
