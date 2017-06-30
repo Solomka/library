@@ -1,11 +1,12 @@
 <%@include file="header.jsp"%>
 
-<div class="row-fluid">
-	<div class="span12" align="center">
-
-		<h2><fmt:message key="library.allBooks" bundle="${rb}"/></h2>
-
-		<br> <br> <br>
+<div class="container-fluid" align="center">
+	<div class="row-fluid pg-title">
+		<h2>
+			<fmt:message key="library.allBooks" bundle="${rb}" />
+		</h2>
+	</div>
+	<div class="row-fluid">
 
 		<table>
 			<thead>

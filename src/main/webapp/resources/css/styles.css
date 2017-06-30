@@ -1,9 +1,6 @@
-body {
-	background-color: green;
-}
-#loginCont {
-	width: 500px;
-}
+.pg-title {
+	margin-bottom: 5%;
+	}
 
 tr.selected {
 	background-color: #B0BED9 !important;

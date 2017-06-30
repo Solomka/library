@@ -14,7 +14,8 @@ import org.apache.log4j.Logger;
  * Application HTTP Front Servlet
  */
 
-@WebServlet(urlPatterns={"/"}) 
+//@WebServlet(urlPatterns={"/controller/*"}) 
+@WebServlet(urlPatterns={"/controller/*"}) 
 public class FrontController extends HttpServlet {
 
 	private static final Logger LOGGER = Logger.getLogger(FrontController.class);
@@ -42,6 +43,7 @@ public class FrontController extends HttpServlet {
 
 		requestResultPage = CommandFactory.getCommand(request).execute(request, response);
 		request.getRequestDispatcher(requestResultPage).forward(request, response);
+		//response.sendRedirect(requestResultPage);
 	}
 
 }

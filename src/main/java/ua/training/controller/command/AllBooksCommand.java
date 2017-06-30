@@ -21,6 +21,7 @@ public class AllBooksCommand implements Command {
 		List<Book> books = bookService.getAllBooks();
 		request.setAttribute("books", books);
 		return Page.ALL_BOOKS;
+		
 	}
 
 }
