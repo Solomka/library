@@ -13,11 +13,18 @@ import ua.training.controller.command.Command;
 import ua.training.controller.command.GetLoginPageCommand;
 import ua.training.controller.command.LoginCommand;
 import ua.training.controller.command.LogoutCommand;
+import ua.training.model.dao.DaoFactory;
+
 
 class CommandFactory {
-
+	
 	private static final Logger LOGGER = Logger.getLogger(CommandFactory.class);
-
+	
+	private CommandFactory(){
+		
+	}
+	
+	/*
 	private static Map<String, Command> commands = new HashMap<>();
 
 	static {
@@ -27,7 +34,7 @@ class CommandFactory {
 		commands.put("POST:login", new LoginCommand());
 		commands.put("GET:logout", new LogoutCommand());
 		commands.put("GET:books", new AllBooksCommand());		
-	}
+	}*/
 
 	static Command getCommand(HttpServletRequest request) {
 
@@ -38,7 +45,10 @@ class CommandFactory {
 		String key = method + ":" + path;
 		System.out.println("String: " + key);
 
-		Command command = commands.getOrDefault(key, new HomeCommand());
+		//Command command = commands.getOrDefault(key, new HomeCommand());
+		
+		Command command = CommandEnum.getCommand(key);
+		
 		return command;
 	}
 
