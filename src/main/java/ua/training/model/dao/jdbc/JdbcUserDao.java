@@ -10,6 +10,9 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.exception.ServerException;
+import ua.training.exception.locale.MessageLocale;
+import ua.training.exception.locale.Message;
 import ua.training.model.dao.UserDao;
 import ua.training.model.entity.Librarian;
 import ua.training.model.entity.Reader;
@@ -90,8 +93,9 @@ public class JdbcUserDao implements UserDao {
 			if (resultSet.next()) {
 				user = Optional.of(extractUserFromResultSet(resultSet));
 			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			LOGGER.error("JdbcUserDao getUserByLogin SQL error: " + login, e);
+			throw new ServerException(MessageLocale.BUNDLE.getString(Message.GET_USER_BY_LOGIN_ERROR), e);
 		}
 		return user;
 	}

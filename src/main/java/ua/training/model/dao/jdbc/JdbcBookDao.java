@@ -13,6 +13,9 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.exception.ServerException;
+import ua.training.exception.locale.MessageLocale;
+import ua.training.exception.locale.Message;
 import ua.training.model.dao.BookDao;
 import ua.training.model.entity.Availability;
 import ua.training.model.entity.Book;
@@ -22,23 +25,23 @@ public class JdbcBookDao implements BookDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookDao.class);
 
 	// SQL queries
-	private static  String SELECT_ALL_FROM_BOOK = "SELECT * FROM book ORDER BY title";
-	private static  String SELECT_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
-	private static  String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, imprint_date, availability) VALUES ( ?, ?, ?, ?, ? )";
-	private static  String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, imprint_date=?, availability=? WHERE id_book=?";
-	private static  String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
-	private static  String SEARCH_BY_TITLE = "SELECT * FROM book WHERE title LIKE '%?%'";
-	private static  String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.imprint_date, book.availability"
+	private static String SELECT_ALL_FROM_BOOK = "SELECT * FROM book ORDER BY title";
+	private static String SELECT_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
+	private static String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, imprint_date, availability) VALUES ( ?, ?, ?, ?, ? )";
+	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, imprint_date=?, availability=? WHERE id_book=?";
+	private static String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
+	private static String SEARCH_BY_TITLE = "SELECT * FROM book WHERE title LIKE '%?%'";
+	private static String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.imprint_date, book.availability"
 			+ "FROM book INNER JOIN book_author USING (id_book) INNER JOIN author USING (id_author)"
 			+ "WHERE author.surname LIKE '%?%'";
 
 	// DB table fields
-	private static  String ID_BOOK = "id_book";
-	private static  String ISBN = "isbn";
-	private static  String TITLE = "title";
-	private static  String PUBLISHER = "publisher";
-	private static  String IMPRINT_DATE = "imprint_date";
-	private static  String AVAILABILITY = "availability";
+	private static String ID_BOOK = "id_book";
+	private static String ISBN = "isbn";
+	private static String TITLE = "title";
+	private static String PUBLISHER = "publisher";
+	private static String IMPRINT_DATE = "imprint_date";
+	private static String AVAILABILITY = "availability";
 
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
@@ -83,7 +86,7 @@ public class JdbcBookDao implements BookDao {
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao getById SQL error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(MessageLocale.BUNDLE.getString(Message.SERVER_ERROR), e);
 		}
 		return book;
 	}
@@ -105,7 +108,7 @@ public class JdbcBookDao implements BookDao {
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao create SQL error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -122,7 +125,7 @@ public class JdbcBookDao implements BookDao {
 
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao update SQL error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -133,7 +136,7 @@ public class JdbcBookDao implements BookDao {
 			query.executeUpdate();
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao delete SQL error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -149,7 +152,7 @@ public class JdbcBookDao implements BookDao {
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao searchByTitle SQL error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 		return books;
 	}
@@ -166,7 +169,7 @@ public class JdbcBookDao implements BookDao {
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao searchByAuthorSurname SQL error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 		return books;
 	}
@@ -178,7 +181,7 @@ public class JdbcBookDao implements BookDao {
 				connection.close();
 			} catch (SQLException e) {
 				LOGGER.error("JdbcBookDao Connection can't be closed", e);
-				throw new RuntimeException(e);
+				throw new ServerException(e);
 			}
 		}
 	}
@@ -187,8 +190,7 @@ public class JdbcBookDao implements BookDao {
 
 		return new Book.Builder().setId(resultSet.getLong(ID_BOOK)).setIsbn(resultSet.getString(ISBN))
 				.setTitle(resultSet.getString(TITLE)).setPublisher(resultSet.getString(PUBLISHER))
-				.setImprintDate(
-						resultSet.getDate(IMPRINT_DATE).toLocalDate())
+				.setImprintDate(resultSet.getDate(IMPRINT_DATE).toLocalDate())
 				.setAvailability(Availability.forValue(resultSet.getString(AVAILABILITY))).build();
 	}
 }

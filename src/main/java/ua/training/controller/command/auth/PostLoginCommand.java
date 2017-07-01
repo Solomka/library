@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import ua.training.controller.command.Command;
 import ua.training.controller.constants.Page;
+import ua.training.controller.constants.ServletPath;
 import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
@@ -30,7 +31,7 @@ public class PostLoginCommand implements Command {
 		addUserToSession(request.getSession(), user.get());
 
 		// Util.redirectTo(request, response, Page.INDEX);
-		return Page.ALL_BOOKS_VIEW;
+		return ServletPath.ALL_BOOKS;
 	}
 
 	private void addUserToSession(HttpSession session, User user) throws IOException {

@@ -19,7 +19,7 @@
 
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
-		<location>/WEB-INF/views/errors/internalServerError.jsp</location>
+		<location>/WEB-INF/views/errors/serverError.jsp</location>
 	</error-page>
 
 	<resource-ref>
