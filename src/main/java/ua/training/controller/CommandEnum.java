@@ -1,13 +1,15 @@
 package ua.training.controller;
 
 import ua.training.controller.command.AllBooksCommand;
-import ua.training.controller.command.ChangeLocaleCommand;
 import ua.training.controller.command.Command;
-import ua.training.controller.command.GetLoginPageCommand;
-import ua.training.controller.command.LoginCommand;
-import ua.training.controller.command.LogoutCommand;
+import ua.training.controller.command.HomeCommand;
+import ua.training.controller.command.auth.GetLoginCommand;
+import ua.training.controller.command.auth.LogoutCommand;
+import ua.training.controller.command.auth.PostLoginCommand;
+import ua.training.controller.command.i18n.ChangeLocaleCommand;
+import ua.training.model.service.BookService;
 
-public enum CommandEnum {
+enum CommandEnum {
 
 	HOME {
 		{
@@ -15,22 +17,23 @@ public enum CommandEnum {
 			this.command = new HomeCommand();
 		}
 	},
-	GET_LOGINPAGE {
-		{
-			this.key = "GET:login";
-			this.command = new GetLoginPageCommand();
-		}
-	},
+	
 	CHANGE_LOCALE {
 		{
 			this.key = "GET:locale";
 			this.command = new ChangeLocaleCommand();
 		}
 	},
-	LOGIN {
+	GET_LOGIN {
+		{
+			this.key = "GET:login";
+			this.command = new GetLoginCommand();
+		}
+	},
+	POST_LOGIN {
 		{
 			this.key = "POST:login";
-			this.command = new LoginCommand();
+			this.command = new PostLoginCommand();
 		}
 	},
 	LOGOUT {
@@ -42,7 +45,7 @@ public enum CommandEnum {
 	ALL_BOOKS {
 		{
 			this.key = "GET:books";
-			this.command = new AllBooksCommand();
+			this.command = new AllBooksCommand(BookService.getInstance());
 
 		}
 
@@ -72,5 +75,4 @@ public enum CommandEnum {
 		}
 		return getDefault();
 	}
-
 }

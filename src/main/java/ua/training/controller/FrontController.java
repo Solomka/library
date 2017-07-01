@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ua.training.controller.command.i18n.AppLocale;
+import ua.training.controller.constants.Attribute;
+
 /**
  * Application HTTP Front Servlet
  */
 
-@WebServlet(urlPatterns={"/controller/*"}) 
+@WebServlet(urlPatterns = { "/controller/*" })
 public class FrontController extends HttpServlet {
 
 	private static final Logger LOGGER = Logger.getLogger(FrontController.class);
@@ -24,12 +27,20 @@ public class FrontController extends HttpServlet {
 		super();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		getServletContext().setAttribute(Attribute.LOCALES, AppLocale.getAppLocales());
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		processRequest(request, response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		processRequest(request, response);
 	}
@@ -38,11 +49,11 @@ public class FrontController extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("REQUEST: " + request.getRequestURL().toString());
 		
-		String requestResultPage = null;
-
-		requestResultPage = CommandFactory.getCommand(request).execute(request, response);
+		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
+		String requestResultPage = CommandFactory.getCommand(commandKey)
+				.execute(request, response);
 		request.getRequestDispatcher(requestResultPage).forward(request, response);
-		//response.sendRedirect(requestResultPage);
+
 	}
 
 }

@@ -1,5 +1,7 @@
-package ua.training.controller.filter;
+package ua.training.controller.command.i18n;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public enum AppLocale {
@@ -35,6 +37,14 @@ public enum AppLocale {
 			}
 		}
 		return getDefault();
+	}
+
+	public static List<Locale> getAppLocales() {
+		List<Locale> appLocales = new ArrayList<>();
+		for (AppLocale appLocale : AppLocale.values()) {
+			appLocales.add(appLocale.getLocale());
+		}
+		return appLocales;
 	}
 
 }

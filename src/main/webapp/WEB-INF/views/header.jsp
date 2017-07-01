@@ -82,11 +82,13 @@
 
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"><i class="fa fa-language"
-						aria-hidden="true"></i><span class="caret"></span></a>
+						aria-hidden="true"></i> ${sessionScope.locale.getLanguage()} <span
+						class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="./locale?lang=EN">EN</a></li>
-						<li><a href="./locale?lang=UK">UK</a></li>
-
+						<c:forEach items="${applicationScope.locales}" var="locale">
+							<c:set var="lang" value="${locale.getLanguage()}" />
+							<li><a href="./locale?lang=${lang}">${lang.toUpperCase()}</a></li>
+						</c:forEach>
 					</ul></li>
 
 				<c:choose>
@@ -99,7 +101,7 @@
 								class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 					</c:otherwise>
 				</c:choose>
-				
+
 			</ul>
 		</div>
 		</nav>
