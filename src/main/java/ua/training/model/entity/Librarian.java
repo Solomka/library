@@ -10,8 +10,7 @@ public class Librarian extends User {
 	private String name;
 	private String surname;
 	private String patronymic;
-	private String email;
-
+	
 	public Librarian() {
 	}
 
@@ -35,11 +34,6 @@ public class Librarian extends User {
 
 		public Builder setPatronymic(String patronymic) {
 			librarian.patronymic = patronymic;
-			return this;
-		}
-
-		public Builder setEmail(String email) {
-			librarian.email = email;
 			return this;
 		}
 
@@ -79,19 +73,14 @@ public class Librarian extends User {
 		this.patronymic = patronymic;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		int result = 1;
+		
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((patronymic == null) ? 0 : patronymic.hashCode());
+		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
 	}
 
@@ -100,21 +89,27 @@ public class Librarian extends User {
 		if (this == obj) {
 			return true;
 		}
-		if ((!super.equals(obj)) || (getClass() != obj.getClass())) {
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
 		}
 
 		Librarian librarian = (Librarian) obj;
 
-		return ((email != null) ? email.equals(librarian.email) : librarian.email == null);
+		
+		if ((name != null) ? !name.equals(librarian.name) : librarian.name != null) {
+			return false;
+		}
+		if ((patronymic != null) ? !patronymic.equals(librarian.patronymic) : librarian.patronymic != null) {
+			return false;
+		}
+		return ((surname != null) ? surname.equals(librarian.surname) : librarian.surname == null);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
 		builder2.append("Librarian [ [super: ").append(super.toString()).append("], name=").append(name)
-				.append(", surname=").append(surname).append(", patronymic=").append(patronymic).append(", email=")
-				.append(email).append("] ");
+				.append(", surname=").append(surname).append(", patronymic=").append(patronymic).append("] ");
 		return builder2.toString();
 	}
 

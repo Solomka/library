@@ -10,9 +10,10 @@ public abstract class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private String login;
+	private String email;
 	private String password;
 	private Role role;
+	private byte [] salt;
 
 	public User() {
 
@@ -32,8 +33,8 @@ public abstract class User implements Serializable {
 			return getThis();
 		}
 
-		public T setLogin(String login) {
-			user.login = login;
+		public T setEmail(String email) {
+			user.email = email;
 			return getThis();
 		}
 
@@ -44,6 +45,11 @@ public abstract class User implements Serializable {
 
 		public T setRole(Role role) {
 			user.role = role;
+			return getThis();
+		}
+		
+		public T setSalt(byte[] salt) {
+			user.salt = salt;
 			return getThis();
 		}
 
@@ -60,12 +66,12 @@ public abstract class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -83,12 +89,20 @@ public abstract class User implements Serializable {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+	
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		return result;
 	}
@@ -104,7 +118,7 @@ public abstract class User implements Serializable {
 
 		User user = (User) obj;
 
-		if ((login != null) ? !login.equals(user.login) : user.login != null) {
+		if ((email != null) ? !email.equals(user.email) : user.email != null) {
 			return false;
 		}
 		return ((password != null) ? password.equals(user.password) : user.password == null);
@@ -113,7 +127,7 @@ public abstract class User implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("User [id=").append(id).append(", login=").append(login).append(", password=").append(password)
+		builder.append("User [id=").append(id).append(", email=").append(email).append(", password=").append(password)
 				.append(", role=").append(role).append("]");
 		return builder.toString();
 	}

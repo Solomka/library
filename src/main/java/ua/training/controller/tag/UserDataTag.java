@@ -26,7 +26,7 @@ public class UserDataTag extends TagSupport {
 	}
 
 	private String showUserData() {
-		return new StringBuffer().append("Logged in as ").append(user.getLogin()).append("( ")
+		return new StringBuffer().append("Logged in as ").append(user.getEmail()).append("( ")
 				.append(user.getRole().getValue()).append(" )").toString();
 	}
 }

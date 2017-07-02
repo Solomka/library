@@ -91,9 +91,9 @@ public class JdbcUserDao implements UserDao {
 	@Override
 	public<T extends User>  Optional<T> getUserByLoginTest(String email) {
 	
-		return Optional.of((T) new Librarian.Builder().setId(new Long("1")).setLogin("librarian@gmail.com").setPassword("8c935809a1effb885c8f453cda23bf171aba22f3b2cc4405e44b122700943fcb")
-				.setRole(Role.LIBRARIAN).setEmail("librarian@gmail.com").setName("A").setSurname("B")
-				.setPatronymic("C").build());
+		return Optional.of((T) new Librarian.Builder().setId(new Long("1")).setEmail("anna@gmail.com").setPassword("8c935809a1effb885c8f453cda23bf171aba22f3b2cc4405e44b122700943fcb")
+				.setRole(Role.LIBRARIAN).setEmail("anna@gmail.com").setName("Анна").setSurname("Єршак")
+				.setPatronymic("Миколаївна").build());
 		/*try {
 			throw  new Exception();
 		} catch (Exception e) {
@@ -134,7 +134,7 @@ public class JdbcUserDao implements UserDao {
 
 	private Librarian extractLibrarianFromResultSet(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub
-		return new Librarian.Builder().setId(resultSet.getLong(ID)).setLogin(resultSet.getString(LOGIN))
+		return new Librarian.Builder().setId(resultSet.getLong(ID)).setEmail(resultSet.getString(LOGIN))
 				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE))).build();
 	}
 

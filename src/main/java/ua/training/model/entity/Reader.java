@@ -10,7 +10,6 @@ public class Reader extends User {
 	private String name;
 	private String surname;
 	private String patronymic;
-	private String email;
 	private String phone;
 	private String address;
 	private String readerCardNumber;
@@ -38,11 +37,6 @@ public class Reader extends User {
 
 		public Builder setPatronymic(String patronymic) {
 			reader.patronymic = patronymic;
-			return this;
-		}
-
-		public Builder setEmail(String email) {
-			reader.email = email;
 			return this;
 		}
 
@@ -96,14 +90,6 @@ public class Reader extends User {
 		this.patronymic = patronymic;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getPhone() {
 		return phone;
 	}
@@ -132,7 +118,6 @@ public class Reader extends User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((readerCardNumber == null) ? 0 : readerCardNumber.hashCode());
 		return result;
@@ -149,9 +134,6 @@ public class Reader extends User {
 
 		Reader reader = (Reader) obj;
 
-		if ((email != null) ? !email.equals(reader.email) : reader.email != null) {
-			return false;
-		}
 		if ((phone != null) ? !phone.equals(reader.phone) : reader.phone != null) {
 			return false;
 		}
@@ -163,8 +145,7 @@ public class Reader extends User {
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
 		builder2.append("Reader [ [super: ").append(super.toString()).append("], name=").append(name)
-				.append(", surname=").append(surname).append(", patronymic=").append(patronymic).append(", email=")
-				.append(email).append(", phone=").append(phone).append(", address=").append(address)
+				.append(", surname=").append(surname).append(", patronymic=").append(patronymic).append(", phone=").append(phone).append(", address=").append(address)
 				.append(", readerCardNumber=").append(readerCardNumber).append("] ");
 		return builder2.toString();
 	}

@@ -29,7 +29,7 @@ public class BookServiceTest {
 
 	@Test
 	public void testCreateLibrarian() {
-		Librarian librarian = new Librarian.Builder().setId(new Long("1")).setLogin("bla").setPassword("bla")
+		Librarian librarian = new Librarian.Builder().setId(new Long("1")).setEmail("bla").setPassword("bla")
 				.setRole(Role.LIBRARIAN).setEmail("sol.yaremko@gmail.com").setName("A").setSurname("B")
 				.setPatronymic("C").build();
 		System.out.println("Libraraian: " + librarian);
