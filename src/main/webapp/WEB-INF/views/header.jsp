@@ -65,15 +65,15 @@
 		<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="./">Main</a>
+				<a class="navbar-brand" href="./"><fmt:message key="library.main" bundle="${rb}" /></a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li><a href="./books">Books</a></li>
+				<li><a href="./books"><fmt:message key="library.allBooks" bundle="${rb}" /></a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
 
-				<c:if test="${not empty user }">
+				<c:if test="${not empty user}">
 					<!-- Custom tag  -->
 					<li><p class="navbar-text">
 							<udt:user-data user="${user}" />
@@ -94,11 +94,11 @@
 				<c:choose>
 					<c:when test="${empty user}">
 						<li><a href="./login"><span
-								class="glyphicon glyphicon-log-out"></span> Login</a></li>
+								class="glyphicon glyphicon-log-out"></span> <fmt:message key="library.login" bundle="${rb}"/></a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="./logout"><span
-								class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+								class="glyphicon glyphicon-log-in"></span> <fmt:message key="library.logout" bundle="${rb}"/></a></li>
 					</c:otherwise>
 				</c:choose>
 

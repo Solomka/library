@@ -8,6 +8,7 @@ import ua.training.controller.command.auth.LogoutCommand;
 import ua.training.controller.command.auth.PostLoginCommand;
 import ua.training.controller.command.i18n.ChangeLocaleCommand;
 import ua.training.model.service.BookService;
+import ua.training.model.service.UserService;
 
 enum CommandEnum {
 
@@ -33,7 +34,7 @@ enum CommandEnum {
 	POST_LOGIN {
 		{
 			this.key = "POST:login";
-			this.command = new PostLoginCommand();
+			this.command = new PostLoginCommand(UserService.getInstance());
 		}
 	},
 	LOGOUT {

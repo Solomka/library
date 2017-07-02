@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.controller.command.Command;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
-import ua.training.exception.locale.MessageLocale;
+import ua.training.locale.MessageLocale;
 
 public class ChangeLocaleCommand implements Command {
 

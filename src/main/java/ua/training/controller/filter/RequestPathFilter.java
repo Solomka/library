@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @WebFilter("/*")
 public class RequestPathFilter implements Filter {
+	
+	private static String CONTROLLER_PARH = "controller";
+	private static String RESOURCES_PARH = "/resources/";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -22,17 +25,16 @@ public class RequestPathFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.println("Path filter");
-
+		
 		HttpServletRequest req = (HttpServletRequest) request;
 		String path = req.getRequestURI().substring(req.getContextPath().length());
 
-		if (path.startsWith("/resources/")) {
+		if (path.startsWith(RESOURCES_PARH)) {
 			// Goes to default servlet
 			chain.doFilter(request, response);
 		} else {
 			// Goes to front controller
-			request.getRequestDispatcher("controller" + path).forward(request, response);
+			request.getRequestDispatcher(CONTROLLER_PARH + path).forward(request, response);
 		}
 
 	}

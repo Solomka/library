@@ -14,8 +14,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.exception.ServerException;
-import ua.training.exception.locale.MessageLocale;
-import ua.training.exception.locale.Message;
+import ua.training.locale.Message;
+import ua.training.locale.MessageLocale;
 import ua.training.model.dao.BookDao;
 import ua.training.model.entity.Availability;
 import ua.training.model.entity.Book;
@@ -62,6 +62,7 @@ public class JdbcBookDao implements BookDao {
 
 	@Override
 	public List<Book> getAll() {
+		/*
 		List<Book> books = new ArrayList<>();
 		try (Statement query = connection.createStatement();
 				ResultSet resultSet = query.executeQuery(SELECT_ALL_FROM_BOOK)) {
@@ -73,6 +74,12 @@ public class JdbcBookDao implements BookDao {
 			throw new RuntimeException(e);
 		}
 		return books;
+		*/
+		try {
+			throw  new Exception();
+		} catch (Exception e) {
+			throw new ServerException(e);
+		}
 	}
 
 	@Override

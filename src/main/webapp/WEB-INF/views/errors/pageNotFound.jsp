@@ -4,25 +4,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+
 <c:set var="lang" scope="session"
 	value="${empty sessionScope.locale ? 'en_US' : sessionScope.locale}" />
 <fmt:setLocale value="${lang}" scope="session" />
-<fmt:setBundle basename="/i18n/exceptions" var="rb" />
+<fmt:setBundle basename="/i18n/messages" var="rb" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="${lang}">
+<head>
 <title>Error Page</title>
+
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/resources/css/styles.css" />" />
+
+<!--  Bootstrap -->
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
 <body>
-	<div class="container-fluid" align="center">
-		<div class="row-fluid">
-			<div class="span12" align="center">
-				<div class="alert alert-danger">
-					<strong> ${pageContext.errorData.statusCode}</strong> <strong><fmt:message
-							key="error.serverError" bundle="${rb}" /></strong>
-					<fmt:message key="${pageContext.exception.message}" bundle="${rb}" />
+	<div class="container-fluid " align="center">
+		<div class="row-fluid ">
+			
+				<div class=" error alert alert-danger ">
+					<strong> ${pageContext.errorData.statusCode}</strong><br /> <strong>
+						<fmt:message key="library.error.pageNotFoundError" bundle="${rb}" />
+					</strong>
 				</div>
-			</div>
+			
 		</div>
+		<div class="row-fluid ">			
+				<a href="./">Back to home page</a>			
+		</div>
+
 	</div>
 </body>
 </html>

@@ -8,5 +8,7 @@ public interface UserDao extends GenericDao<User, Long>, AutoCloseable{
 	
 	public<T extends User> Optional<T> getUserByLogin(String login); 
 
+	public<T extends User> Optional<T> getUserByLoginTest(String email);
+	
 	void close();
 }

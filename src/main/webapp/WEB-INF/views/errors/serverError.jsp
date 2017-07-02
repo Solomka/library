@@ -14,18 +14,33 @@
 <html lang="${lang}">
 <head>
 <title>Error Page</title>
+
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/resources/css/styles.css" />" />
+
+<!--  Bootstrap -->
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div class="container-fluid" align="center">
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="alert alert-danger">
-					<strong> ${pageContext.errorData.statusCode}</strong><br /> <strong><fmt:message
-							key="library.error.serverError" bundle="${rb}" /></strong><br />
-					${pageContext.exception.message}
+	<div class="container-fluid " align="center">
+		<div class="row-fluid ">
+			
+				<div class=" error alert alert-danger ">
+					<strong> ${pageContext.errorData.statusCode}</strong><br /> <strong>
+						<fmt:message key="library.error.serverError" bundle="${rb}" />
+					</strong>
 				</div>
-			</div>
+			
 		</div>
+		<div class="row-fluid ">			
+				<a href="./">Back to home page</a>			
+		</div>
+
 	</div>
 </body>
 </html>

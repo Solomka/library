@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public interface Command {
+	
+	String REDIRECTION ="REDIRECTION";
 
 	/**
 	 * method that performs execution of the client request

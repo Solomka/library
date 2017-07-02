@@ -11,8 +11,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.exception.ServerException;
-import ua.training.exception.locale.MessageLocale;
-import ua.training.exception.locale.Message;
+import ua.training.locale.Message;
+import ua.training.locale.MessageLocale;
 import ua.training.model.dao.UserDao;
 import ua.training.model.entity.Librarian;
 import ua.training.model.entity.Reader;
@@ -84,6 +84,23 @@ public class JdbcUserDao implements UserDao {
 
 	}
 
+	/**
+	 * TODO: do normally!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public<T extends User>  Optional<T> getUserByLoginTest(String email) {
+	
+		return Optional.of((T) new Librarian.Builder().setId(new Long("1")).setLogin("librarian@gmail.com").setPassword("8c935809a1effb885c8f453cda23bf171aba22f3b2cc4405e44b122700943fcb")
+				.setRole(Role.LIBRARIAN).setEmail("librarian@gmail.com").setName("A").setSurname("B")
+				.setPatronymic("C").build());
+		/*try {
+			throw  new Exception();
+		} catch (Exception e) {
+			throw new ServerException(e);
+		}*/
+		
+	}
 	@Override
 	public <T extends User> Optional<T> getUserByLogin(String login) {
 		Optional<T> user = Optional.empty();
@@ -95,7 +112,7 @@ public class JdbcUserDao implements UserDao {
 			}
 		} catch (Exception e) {
 			LOGGER.error("JdbcUserDao getUserByLogin SQL error: " + login, e);
-			throw new ServerException(MessageLocale.BUNDLE.getString(Message.GET_USER_BY_LOGIN_ERROR), e);
+			throw new ServerException(e);
 		}
 		return user;
 	}

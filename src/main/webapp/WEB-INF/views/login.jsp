@@ -4,7 +4,7 @@
 
 	<div class="row-fluid pg-title">
 		<h3>
-			<fmt:message key="library.auth" bundle="${rb }" />
+			<fmt:message key="library.auth" bundle="${rb}" />
 		</h3>
 	</div>
 
@@ -12,15 +12,31 @@
 		<div class="col-sm-6 col-sm-offset-3 ">
 			<form action="./login" method="POST" role="form">
 
+				<c:if test="${not empty requestScope.errors}">
+					<div class="alert alert-danger">
+						<c:forEach items="${requestScope.errors}" var="error">
+							<fmt:message key="${error}" bundle="${rb}" />
+							<br>
+						</c:forEach>
+					</div>
+				</c:if>
+
 				<div class="form-group">
-					<label for="login"><fmt:message key="library.login" bundle="${rb }" /></label> <input type="text"
-						class="form-control" id="login" name="login" required />
+					<label for="email"><fmt:message key="library.email"
+							bundle="${rb}" /></label> <input type="text" class="form-control"
+						id="email" name="email"
+						placeholder="<fmt:message key="library.email" bundle="${rb}"/>"
+						value="<c:out value="${requestScope.login_user.getEmail()}" />" />
 				</div>
 				<div class="form-group">
-					<label for="pwd"><fmt:message key="library.pass" bundle="${rb }" /></label> <input type="password"
-						class="form-control" id="pwd" name="password" required />
+					<label for="password"><fmt:message key="library.pass"
+							bundle="${rb}" /></label> <input type="password" class="form-control"
+						id="password" name="password"
+						placeholder="<fmt:message key="library.pass" bundle="${rb}"/>" />
 				</div>
-				<button type="submit" class="btn btn-default" id="submitButton">Submit</button>
+				<button type="submit" class="btn btn-default" id="submitButton">
+					<fmt:message key="library.login" bundle="${rb}" />
+				</button>
 			</form>
 		</div>
 	</div>

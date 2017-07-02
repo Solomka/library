@@ -1,4 +1,4 @@
-package ua.training.exception.locale;
+package ua.training.locale;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
