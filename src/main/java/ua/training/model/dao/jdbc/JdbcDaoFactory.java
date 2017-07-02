@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import ua.training.exception.ServerException;
 import ua.training.model.dao.BookDao;
 import ua.training.model.dao.DaoConnection;
 import ua.training.model.dao.DaoFactory;
@@ -13,13 +17,14 @@ import ua.training.model.dao.UserDao;
 
 /**
  * Class represents dao factory that produces many DAOs for a Jdbc database
- * implementation and use database connection pool for getting connections to
- * db
+ * implementation and use database connection pool for getting connections to db
  * 
  * @author Solomka
  *
  */
 public class JdbcDaoFactory extends DaoFactory {
+
+	private static final Logger LOGGER = LogManager.getLogger(JdbcDaoFactory.class);
 
 	private DataSource dataSource;
 
@@ -32,7 +37,8 @@ public class JdbcDaoFactory extends DaoFactory {
 			dataSource = (DataSource) ic.lookup("java:comp/env/jdbc/library");
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			LOGGER.error("Can't load pool connection from Initial Context", e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -40,7 +46,7 @@ public class JdbcDaoFactory extends DaoFactory {
 	 * Get custom Connection wrapper for correct transaction execution
 	 * 
 	 * @return a connection to the data source
-	 * @exception SQLException
+	 * @exception ServerException
 	 *                if a database access error occurs
 	 */
 	@Override
@@ -48,7 +54,8 @@ public class JdbcDaoFactory extends DaoFactory {
 		try {
 			return new JdbcDaoConnection(dataSource.getConnection());
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			LOGGER.error("Can't get DB connection to the data source", e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -57,7 +64,8 @@ public class JdbcDaoFactory extends DaoFactory {
 		try {
 			return new JdbcUserDao(dataSource.getConnection(), true);
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			LOGGER.error("Can't get DB Connection for JdbcUserDao creation", e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -73,7 +81,8 @@ public class JdbcDaoFactory extends DaoFactory {
 		try {
 			return new JdbcBookDao(dataSource.getConnection(), true);
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			LOGGER.error("Can't get DB Connection for JdbcBookDao creation", e);
+			throw new ServerException(e);
 		}
 	}
 

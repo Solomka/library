@@ -3,7 +3,7 @@
 <div class="container-fluid" align="center">
 	<div class="row-fluid pg-title">
 		<h2>
-			<fmt:message key="library.allBooks" bundle="${rb}" />
+			<fmt:message key="library.books" bundle="${rb}" />
 		</h2>
 	</div>
 	<div class="row-fluid">

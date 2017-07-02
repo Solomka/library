@@ -7,7 +7,7 @@ package ua.training.model.entity;
  *
  */
 public enum Role {
-	LIBRARIAN("librarian"), STUDENT("student");
+	LIBRARIAN("librarian"), READER("reader");
 
 	private String value;
 

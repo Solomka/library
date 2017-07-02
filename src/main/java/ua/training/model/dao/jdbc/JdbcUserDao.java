@@ -29,7 +29,7 @@ public class JdbcUserDao implements UserDao {
 			+ "WHERE users.login=?";
 
 	private static String ID = "id_user";
-	private static String LOGIN = "login";
+	private static String EMAIL = "emil";
 	private static String PASSWORD = "password";
 	private static String ROLE = "role";
 	private static String LIBRARIAN_NAME = "librarian.name";
@@ -91,8 +91,8 @@ public class JdbcUserDao implements UserDao {
 	@Override
 	public<T extends User>  Optional<T> getUserByLoginTest(String email) {
 	
-		return Optional.of((T) new Librarian.Builder().setId(new Long("1")).setEmail("anna@gmail.com").setPassword("8c935809a1effb885c8f453cda23bf171aba22f3b2cc4405e44b122700943fcb")
-				.setRole(Role.LIBRARIAN).setEmail("anna@gmail.com").setName("Анна").setSurname("Єршак")
+		return Optional.of((T) new Librarian.Builder().setId(new Long("1")).setEmail("anna@gmail.com").setPassword("101de87818bfebfdcb92f18d2e5e43b69e4f70783e0cd66c481bc75d0d688582")
+				/*.setRole(Role.LIBRARIAN)*/.setRole(Role.READER).setName("Анна").setSurname("Єршак")
 				.setPatronymic("Миколаївна").build());
 		/*try {
 			throw  new Exception();
@@ -102,16 +102,16 @@ public class JdbcUserDao implements UserDao {
 		
 	}
 	@Override
-	public <T extends User> Optional<T> getUserByLogin(String login) {
+	public <T extends User> Optional<T> getUserByLogin(String email) {
 		Optional<T> user = Optional.empty();
 		try (PreparedStatement query = connection.prepareStatement(SELECT_USER_BY_LOGIN)) {
-			query.setString(1, login);
+			query.setString(1, email);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
 				user = Optional.of(extractUserFromResultSet(resultSet));
 			}
 		} catch (Exception e) {
-			LOGGER.error("JdbcUserDao getUserByLogin SQL error: " + login, e);
+			LOGGER.error("JdbcUserDao getUserByLogin SQL error: " + email, e);
 			throw new ServerException(e);
 		}
 		return user;
@@ -134,7 +134,7 @@ public class JdbcUserDao implements UserDao {
 
 	private Librarian extractLibrarianFromResultSet(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub
-		return new Librarian.Builder().setId(resultSet.getLong(ID)).setEmail(resultSet.getString(LOGIN))
+		return new Librarian.Builder().setId(resultSet.getLong(ID)).setEmail(resultSet.getString(EMAIL))
 				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE))).build();
 	}
 
@@ -144,7 +144,8 @@ public class JdbcUserDao implements UserDao {
 			try {
 				connection.close();
 			} catch (SQLException e) {
-				throw new RuntimeException(e);
+				LOGGER.error("JdbcUserDao Connection can't be closed", e);
+				throw new ServerException(e);
 			}
 		}
 	}

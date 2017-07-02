@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import ua.training.exception.ServerException;
+import ua.training.model.dao.jdbc.JdbcUserDao;
+
 /**
  * Abstract class that represents dao factory that produces many DAOs for a
  * single database implementation
@@ -14,6 +20,8 @@ import java.util.Properties;
  *
  */
 public abstract class DaoFactory {
+	
+	private static final Logger LOGGER = LogManager.getLogger(DaoFactory.class);
 
 	public static final String DB_FILE = "/db.properties";
 	private static final String DB_FACTORY_CLASS = "factory.class";
@@ -42,7 +50,8 @@ public abstract class DaoFactory {
 				daoFactory = (DaoFactory) Class.forName(factoryClass).newInstance();
 
 			} catch (IOException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-				throw new RuntimeException(e);
+				LOGGER.error("Can't load inputStream db config file to properties object", e);
+				throw new ServerException(e);
 			}
 		}
 

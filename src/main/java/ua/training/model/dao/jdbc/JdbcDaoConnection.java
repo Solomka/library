@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.exception.ServerException;
 import ua.training.model.dao.DaoConnection;
 
 /**
@@ -39,7 +40,7 @@ public class JdbcDaoConnection implements DaoConnection {
 			inTransaction = true;
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection begin error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -50,7 +51,7 @@ public class JdbcDaoConnection implements DaoConnection {
 			inTransaction = false;
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection commit error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -61,7 +62,7 @@ public class JdbcDaoConnection implements DaoConnection {
 			inTransaction = false;
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection rollback error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 
@@ -74,7 +75,7 @@ public class JdbcDaoConnection implements DaoConnection {
 			connection.close();
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection close error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 

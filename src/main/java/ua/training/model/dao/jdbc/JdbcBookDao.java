@@ -62,8 +62,8 @@ public class JdbcBookDao implements BookDao {
 
 	@Override
 	public List<Book> getAll() {
-		/*
-		List<Book> books = new ArrayList<>();
+		
+		/*List<Book> books = new ArrayList<>();
 		try (Statement query = connection.createStatement();
 				ResultSet resultSet = query.executeQuery(SELECT_ALL_FROM_BOOK)) {
 			while (resultSet.next()) {
@@ -71,10 +71,10 @@ public class JdbcBookDao implements BookDao {
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao getAll SQL error", e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
-		return books;
-		*/
+		return books;*/
+		
 		try {
 			throw  new Exception();
 		} catch (Exception e) {
@@ -92,8 +92,8 @@ public class JdbcBookDao implements BookDao {
 				book = Optional.of(extractBookFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao getById SQL error", e);
-			throw new ServerException(MessageLocale.BUNDLE.getString(Message.SERVER_ERROR), e);
+			LOGGER.error("JdbcBookDao getById SQL error: " + id, e);
+			throw new ServerException( e);
 		}
 		return book;
 	}
@@ -114,7 +114,7 @@ public class JdbcBookDao implements BookDao {
 				book.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao create SQL error", e);
+			LOGGER.error("JdbcBookDao create SQL error: " + book.toString(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -131,7 +131,7 @@ public class JdbcBookDao implements BookDao {
 			query.executeUpdate();
 
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao update SQL error", e);
+			LOGGER.error("JdbcBookDao update SQL error: " + book.toString(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -142,7 +142,7 @@ public class JdbcBookDao implements BookDao {
 			query.setLong(1, id);
 			query.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao delete SQL error", e);
+			LOGGER.error("JdbcBookDao delete SQL error: " + id, e);
 			throw new ServerException(e);
 		}
 	}
@@ -158,7 +158,7 @@ public class JdbcBookDao implements BookDao {
 				books.add(extractBookFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchByTitle SQL error", e);
+			LOGGER.error("JdbcBookDao searchByTitle SQL error: " + title, e);
 			throw new ServerException(e);
 		}
 		return books;
@@ -175,7 +175,7 @@ public class JdbcBookDao implements BookDao {
 				books.add(extractBookFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchByAuthorSurname SQL error", e);
+			LOGGER.error("JdbcBookDao searchByAuthorSurname SQL error: " + authorSurname, e);
 			throw new ServerException(e);
 		}
 		return books;

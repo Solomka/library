@@ -65,10 +65,24 @@
 		<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="./"><fmt:message key="library.main" bundle="${rb}" /></a>
+				<a class="navbar-brand" href="./"><fmt:message
+						key="library.main" bundle="${rb}" /></a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li><a href="./books"><fmt:message key="library.allBooks" bundle="${rb}" /></a></li>
+				<li><a href="./books"><fmt:message key="library.books"
+							bundle="${rb}" /></a></li>
+				<c:if test="${not empty user}">
+					<c:if test="${user.getRole().getValue() eq 'librarian' }">
+						<li><a href="./"><fmt:message key="library.authors"
+									bundle="${rb}" /></a></li>
+					</c:if>
+					<li><a href="./"><fmt:message key="library.orders"
+								bundle="${rb}" /></a></li>
+					<c:if test="${user.getRole().getValue() eq 'librarian' }">
+						<li><a href="./"><fmt:message key="library.readers"
+									bundle="${rb}" /></a></li>
+					</c:if>
+				</c:if>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
@@ -94,11 +108,13 @@
 				<c:choose>
 					<c:when test="${empty user}">
 						<li><a href="./login"><span
-								class="glyphicon glyphicon-log-out"></span> <fmt:message key="library.login" bundle="${rb}"/></a></li>
+								class="glyphicon glyphicon-log-out"></span> <fmt:message
+									key="library.login" bundle="${rb}" /></a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="./logout"><span
-								class="glyphicon glyphicon-log-in"></span> <fmt:message key="library.logout" bundle="${rb}"/></a></li>
+								class="glyphicon glyphicon-log-in"></span> <fmt:message
+									key="library.logout" bundle="${rb}" /></a></li>
 					</c:otherwise>
 				</c:choose>
 

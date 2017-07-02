@@ -37,7 +37,7 @@ public class UserService {
 			if (user.isPresent()) {
 				System.out.println("User present: " + credentials.getEmail());
 				return PasswordHashing.checkPassword(credentials.getPassword(),
-						new byte[] { 112, 40, 104, 6, -38, 34, -127, 50, -46, 76, -89, 22, -123, -107, 8, -70 },
+						new byte[] { 47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33 },
 						user.get().getPassword());
 			}
 			return false;
