@@ -2,6 +2,7 @@ package ua.training.controller;
 
 import ua.training.controller.command.AllBooksCommand;
 import ua.training.controller.command.Command;
+import ua.training.controller.command.DefaultCommand;
 import ua.training.controller.command.HomeCommand;
 import ua.training.controller.command.auth.GetLoginCommand;
 import ua.training.controller.command.auth.LogoutCommand;
@@ -11,14 +12,20 @@ import ua.training.model.service.BookService;
 import ua.training.model.service.UserService;
 
 enum CommandEnum {
+	DEFAULT {
+		{
+			this.key = "GET:home";
+			this.command = new DefaultCommand();
+		}
 
+	},
 	HOME {
 		{
 			this.key = "GET:";
 			this.command = new HomeCommand();
 		}
 	},
-	
+
 	CHANGE_LOCALE {
 		{
 			this.key = "GET:locale";
@@ -52,7 +59,7 @@ enum CommandEnum {
 
 	};
 
-	private final static Command DEFAULT_COMMAND = HOME.getCommand();
+	
 	String key;
 	Command command;
 
@@ -64,16 +71,13 @@ enum CommandEnum {
 		return key;
 	}
 
-	public static Command getDefault() {
-		return DEFAULT_COMMAND;
-	}
-
+	
 	public static Command getCommand(String key) {
 		for (final CommandEnum command : CommandEnum.values()) {
 			if (command.getKey().equals(key)) {
 				return command.getCommand();
 			}
 		}
-		return getDefault();
+		return DEFAULT.getCommand();
 	}
 }

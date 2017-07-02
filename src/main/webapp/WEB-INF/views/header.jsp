@@ -65,7 +65,7 @@
 		<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="./"><fmt:message
+				<a class="navbar-brand" href="./home"><fmt:message
 						key="library.main" bundle="${rb}" /></a>
 			</div>
 			<ul class="nav navbar-nav">

@@ -50,11 +50,14 @@ public class FrontController extends HttpServlet {
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("REQUEST: " + request.getRequestURL().toString());
+		System.out.println("REQUEST path: " + request.getServletPath());
+		System.out.println("Context path: " + request.getContextPath());
 
 		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
 		String resultRedirectResource = CommandFactory.getCommand(commandKey).execute(request, response);
 		if (resultRedirectResource.contains(Page.SUFFIX)) {
-			request.getRequestDispatcher(resultRedirectResource).forward(request, response);
+			System.out.println("getRequestDispatcher");
+			getServletContext().getRequestDispatcher(resultRedirectResource).forward(request, response);
 		}else{
 			response.sendRedirect(resultRedirectResource);
 		}
