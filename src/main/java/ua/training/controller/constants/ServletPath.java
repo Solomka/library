@@ -6,6 +6,8 @@ public final class ServletPath {
 		
 	}
 
-	public static String ALL_BOOKS = "books";
+	public static String LOGIN = "login";
 	public static String HOME = "";
+	public static String ALL_BOOKS = "books";
+	
 }
