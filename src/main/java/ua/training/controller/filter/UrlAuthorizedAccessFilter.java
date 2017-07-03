@@ -1,6 +1,8 @@
 package ua.training.controller.filter;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,14 +19,15 @@ import org.apache.log4j.Logger;
 
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
+import ua.training.locale.Message;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
-@WebFilter(urlPatterns = { "/*/librarian/*, /*/user/*" })
+@WebFilter(urlPatterns = { "/reader/*" })
 public class UrlAuthorizedAccessFilter implements Filter {
 
 	private final static Logger LOGGER = Logger.getLogger(UrlAuthorizedAccessFilter.class);
-	private final static String ACCESS_DENIED = "Access denied for page: ";
+	private final static String ACCESS_DENIED = "Unauthorized access to the resource: ";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -37,6 +40,8 @@ public class UrlAuthorizedAccessFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 		HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
+		System.out.println("IN URL AUTHORIZED ACCESS FILTER");
+		
 		if (!isUserLoggedIn(httpRequest)) {
 			httpResponse.sendRedirect(httpRequest.getContextPath() + ServletPath.LOGIN);
 			logInfoAboutAccessDenied(httpRequest.getRequestURI());
@@ -45,8 +50,8 @@ public class UrlAuthorizedAccessFilter implements Filter {
 
 		User user = getUserFromSession(httpRequest.getSession());
 
-		if (isUserRoleInvalidForRequestedPage(httpRequest, user)) {
-			httpResponse.sendRedirect(httpRequest.getContextPath() + ServletPath.HOME);
+		if (isUserUnauthorizedForResource(httpRequest, user)) {
+			httpResponse.sendRedirect(httpRequest.getContextPath() + ServletPath.HOME + getErrorMessageURLParam());
 			logInfoAboutAccessDenied(httpRequest.getRequestURI());
 			return;
 		}
@@ -68,7 +73,7 @@ public class UrlAuthorizedAccessFilter implements Filter {
 		return (User) session.getAttribute(Attribute.USER);
 	}
 
-	private boolean isUserRoleInvalidForRequestedPage(HttpServletRequest request, User user) {
+	private boolean isUserUnauthorizedForResource(HttpServletRequest request, User user) {
 		return (isReaderPage(request) && !user.getRole().equals(Role.READER)
 				|| (isLibrarianPage(request) && !user.getRole().equals(Role.LIBRARIAN)));
 	}
@@ -83,6 +88,10 @@ public class UrlAuthorizedAccessFilter implements Filter {
 
 	private void logInfoAboutAccessDenied(String uri) {
 		LOGGER.info(ACCESS_DENIED + uri);
+	}
+	
+	private String getErrorMessageURLParam() throws UnsupportedEncodingException{
+		return "?"+ Attribute.GENERAL_ERROR + "=" + URLEncoder.encode(Message.UNAUTHORIZED_ACCESS_ERROR, "UTF-8");
 	}
 
 }

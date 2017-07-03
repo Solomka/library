@@ -28,9 +28,7 @@ public class RequestPathFilter implements Filter {
 		
 		HttpServletRequest req = (HttpServletRequest) request;
 		String path = req.getRequestURI().substring(req.getContextPath().length());
-		System.out.println("Request uri: " + req.getRequestURI());
-		System.out.println("Path before: " + path);
-
+	
 		if (path.startsWith(RESOURCES_PARH)) {
 			// Goes to default servlet
 			chain.doFilter(request, response);
