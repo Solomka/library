@@ -63,7 +63,7 @@ public class JdbcBookDao implements BookDao {
 	@Override
 	public List<Book> getAll() {
 		
-		/*List<Book> books = new ArrayList<>();
+		List<Book> books = new ArrayList<>();
 		try (Statement query = connection.createStatement();
 				ResultSet resultSet = query.executeQuery(SELECT_ALL_FROM_BOOK)) {
 			while (resultSet.next()) {
@@ -73,13 +73,13 @@ public class JdbcBookDao implements BookDao {
 			LOGGER.error("JdbcBookDao getAll SQL error", e);
 			throw new ServerException(e);
 		}
-		return books;*/
+		return books;
 		
-		try {
+		/*try {
 			throw  new Exception();
 		} catch (Exception e) {
 			throw new ServerException(e);
-		}
+		}*/
 	}
 
 	@Override
@@ -128,6 +128,7 @@ public class JdbcBookDao implements BookDao {
 			query.setString(3, book.getPublisher());
 			query.setDate(4, Date.valueOf(book.getImprintDate()));
 			query.setString(5, book.getAvailability().getValue());
+			query.setLong(6, book.getId());
 			query.executeUpdate();
 
 		} catch (SQLException e) {

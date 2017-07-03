@@ -15,10 +15,36 @@ public class MysqlTest {
 
 	public static void main(String[] args) {
 		
+		 byte[] salt = new byte[]{124, 57, 68, 4, 83, -45, 127, 17, -52, -39, -73, -29, -40, 76, 123, 46};
+		
 		Librarian librarian = new Librarian.Builder().setEmail("anna@gmail.com").setPassword("101de87818bfebfdcb92f18d2e5e43b69e4f70783e0cd66c481bc75d0d688582")
 				.setRole(Role.LIBRARIAN).setEmail("anna@gmail.com").setName("Анна").setSurname("Єршак")
 				.setPatronymic("Миколаївна").build();
 		//User user = new User();
+		
+		try {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+    Connection conn = null;
+    try {
+        conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/training_library?characterEncoding=UTF-8", "Solomka", "solomka77");
+       
+        String query = "UPDATE users SET salt=? WHERE id_user=?";
+        PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement(query);
+        pstmt.setBytes(1, salt);
+        pstmt.setLong(2, new Long("2"));
+        pstmt.executeUpdate();
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    } finally {
+        if (conn != null) {
+            try { conn.close(); } catch (SQLException e) {}
+        }
+    }
+    System.out.println("done :)");
+  //  System.out.println("Salt: " + Arrays.toString(user.getSalt()));
 		
 		/*try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();

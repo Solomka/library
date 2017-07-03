@@ -64,7 +64,8 @@ public class PostLoginCommand implements Command {
 	}
 
 	private void getUserFromDB(HttpSession session) {
-		User user = userService.getUserByLogin(credentialsDto.getEmail()).get();
+		User user = userService.getUserByEmail(credentialsDto.getEmail()).get();
+		//User user = userService.getUserByLogin(credentialsDto.getEmail()).get();
 		SessionManager.addUserToSession(session, user);
 	}
 

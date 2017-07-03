@@ -23,19 +23,39 @@ public class JdbcUserDao implements UserDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcUserDao.class);
 
-	private static final String SELECT_USER_BY_LOGIN = "select * from users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian "
-			+ "union "
-			+ "select * from users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader "
-			+ "WHERE users.login=?";
+	private static final String SELECT_USER_BY_EMAIL = "SELECT *"
+			+ " FROM (SELECT id_user, email, password, role, salt, reader.name,"
+			+ " reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
+			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
+			+ " FROM users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian"
+			+ " UNION"
+			+ " SELECT id_user, email, password, role, salt,"
+			+ " reader.name, reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number, "
+			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
+			+ " FROM users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader)"
+			+ " AS tb"
+			+ " WHERE email=?";
 
+	//user fields
 	private static String ID = "id_user";
-	private static String EMAIL = "emil";
+	private static String EMAIL = "email";
 	private static String PASSWORD = "password";
 	private static String ROLE = "role";
-	private static String LIBRARIAN_NAME = "librarian.name";
-	private static String LIBRARIAN_SURNAME = "librarian.surname";
-	private static String LIBRARIAN_PATRONYMIC = "librarian.patronymic";
-	private static String LIBRARIAN_EMAIL = "librarian.email";
+	private static String SALT = "salt";
+	
+	//reader fields
+	private static String READER_NAME = "name";
+	private static String READER_SURNAME = "surname";
+	private static String READER_PATRONYMIC = "patronymic";
+	private static String READER_PHONE = "phone";
+	private static String READER_ADDRESS = "address";
+	private static String READER_READER_CARD_NUMBER = "reader_card_number";
+	
+	//librarian fields
+	private static String LIBRARIAN_NAME = "l_name";
+	private static String LIBRARIAN_SURNAME = "l_surname";
+	private static String LIBRARIAN_PATRONYMIC = "l_patronymic";
+
 
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
@@ -84,34 +104,33 @@ public class JdbcUserDao implements UserDao {
 
 	}
 
-	/**
-	 * TODO: do normally!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 */
+	/*
 	@SuppressWarnings("unchecked")
 	@Override
 	public<T extends User>  Optional<T> getUserByLoginTest(String email) {
 	
 		return Optional.of((T) new Librarian.Builder().setId(new Long("1")).setEmail("anna@gmail.com").setPassword("101de87818bfebfdcb92f18d2e5e43b69e4f70783e0cd66c481bc75d0d688582")
-				/*.setRole(Role.LIBRARIAN)*/.setRole(Role.READER).setName("Анна").setSurname("Єршак")
+				.setRole(Role.LIBRARIAN).setRole(Role.READER).setName("Анна").setSurname("Єршак")
 				.setPatronymic("Миколаївна").build());
-		/*try {
+		try {
 			throw  new Exception();
 		} catch (Exception e) {
 			throw new ServerException(e);
-		}*/
+		}
 		
-	}
+	}*/
+	
 	@Override
-	public <T extends User> Optional<T> getUserByLogin(String email) {
+	public <T extends User> Optional<T> getUserByEmail(String email) {
 		Optional<T> user = Optional.empty();
-		try (PreparedStatement query = connection.prepareStatement(SELECT_USER_BY_LOGIN)) {
+		try (PreparedStatement query = connection.prepareStatement(SELECT_USER_BY_EMAIL)) {
 			query.setString(1, email);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
 				user = Optional.of(extractUserFromResultSet(resultSet));
 			}
 		} catch (Exception e) {
-			LOGGER.error("JdbcUserDao getUserByLogin SQL error: " + email, e);
+			LOGGER.error("JdbcUserDao getUserByEmail SQL error: " + email, e);
 			throw new ServerException(e);
 		}
 		return user;
@@ -119,23 +138,30 @@ public class JdbcUserDao implements UserDao {
 
 	@SuppressWarnings("unchecked")
 	private <T extends User> T extractUserFromResultSet(ResultSet resultSet) throws SQLException {
-
-		if (resultSet.getString(ROLE).equals(Role.LIBRARIAN.getValue())) {
+		if (isLibrarian(resultSet)) {
 			return (T) extractLibrarianFromResultSet(resultSet);
 		} else {
 			return (T) extractReaderFromResultSet(resultSet);
 		}
 	}
 
-	private Reader extractReaderFromResultSet(ResultSet resultSet) {
-		// TODO Auto-generated method stub
-		return null;
+	private Reader extractReaderFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Reader.Builder().setId(resultSet.getLong(ID)).setEmail(resultSet.getString(EMAIL))
+				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE))).setSalt(resultSet.getBytes(SALT))
+				.setName(resultSet.getString(READER_NAME)).setSurname(resultSet.getString(READER_SURNAME))
+				.setPatronymic(resultSet.getString(READER_PATRONYMIC)).setPhone(resultSet.getString(READER_PHONE))
+				.setAddress(resultSet.getString(READER_ADDRESS)).setReaderCardNumber(resultSet.getString(READER_READER_CARD_NUMBER)).build();
 	}
 
 	private Librarian extractLibrarianFromResultSet(ResultSet resultSet) throws SQLException {
-		// TODO Auto-generated method stub
 		return new Librarian.Builder().setId(resultSet.getLong(ID)).setEmail(resultSet.getString(EMAIL))
-				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE))).build();
+				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE))).setSalt(resultSet.getBytes(SALT))
+				.setName(resultSet.getString(LIBRARIAN_NAME)).setSurname(resultSet.getString(LIBRARIAN_SURNAME))
+				.setPatronymic(resultSet.getString(LIBRARIAN_PATRONYMIC)).build();
+	}
+	
+	private boolean isLibrarian(ResultSet resultSet) throws SQLException{
+		return resultSet.getString(ROLE).equals(Role.LIBRARIAN.getValue());		
 	}
 
 	@Override

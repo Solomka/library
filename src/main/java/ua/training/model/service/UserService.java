@@ -33,20 +33,21 @@ public class UserService {
 		LOGGER.info(
 				"Check if user with credantials exists: " + credentials.getEmail() + ", " + credentials.getPassword());
 		try (UserDao userDao = daoFactory.createUserDao()) {
-			Optional<User> user = userDao.getUserByLoginTest(credentials.getEmail());
+			Optional<User> user = userDao.getUserByEmail(credentials.getEmail());
 			if (user.isPresent()) {
 				System.out.println("User present: " + credentials.getEmail());
 				return PasswordHashing.checkPassword(credentials.getPassword(),
-						new byte[] { 47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33 },
+						user.get().getSalt(),
 						user.get().getPassword());
 			}
 			return false;
 		}
 	}
 	
-	public Optional<User> getUserByLogin(String login) {
+	public Optional<User> getUserByEmail(String email) {
 		try (UserDao userDao = daoFactory.createUserDao()) {
-			return userDao.getUserByLoginTest(login);
+			//return userDao.getUserByLoginTest(login);
+			return userDao.getUserByEmail(email);
 		}
 
 	}
