@@ -17,5 +17,8 @@ public final class Attribute {
 	public static String PASSWORD = "password";
 	public static String ERRORS = "errors";
 	
+	public static String ID_BOOK = "id_book";
+	public static String BOOK_AUTHORS = "bookAuthors";
+	
 
 }

@@ -22,7 +22,7 @@ public class BookServiceTest {
 		Book book = new Book.Builder().setIsbn("4567123454678").setTitle("Atlas Shrugged").setPublisher("American news")
 				.setImprintDate(LocalDate.parse("04/04/1971", DateTimeFormatter.ofPattern("dd/MM/yyyy")))
 				.setAvailability(Availability.SUBSCRIPTION).build();
-		service.createBook(book);
+		//service.createBook(book);
 		System.out.println("Book id: " + book.getId());
 
 	}

@@ -8,7 +8,10 @@ public final class Page {
 	private Page() {
 	}
 
-	public static String HOME_VIEW = "/index" + SUFFIX;
-	public static String ALL_BOOKS_VIEW = PREFIX + "allBooks" + SUFFIX;
+	public static String HOME_VIEW = "/index" + SUFFIX;	
 	public static String LOGIN_VIEW = PREFIX + "login" + SUFFIX;
+	
+	public static String ALL_BOOKS_VIEW = PREFIX + "allBooks" + SUFFIX;
+	public static String BOOK_AUTHORS_VIEW = PREFIX + "bookAuthors" + SUFFIX;
+	public static String ADD_BOOK_VIEW = PREFIX + "addBook" + SUFFIX;
 }

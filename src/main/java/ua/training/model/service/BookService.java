@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.controller.dto.BookDto;
+import ua.training.converter.BookDTOBookConverter;
 import ua.training.model.dao.BookDao;
 import ua.training.model.dao.DaoFactory;
 import ua.training.model.entity.Book;
@@ -42,10 +44,10 @@ public class BookService {
 		}
 	}
 
-	public void createBook(Book book) {
+	public void createBook(BookDto bookDto) {
 		LOGGER.info("Create book");
 		try (BookDao bookDao = daoFactory.createBookDao()) {
-			bookDao.create(book);
+			bookDao.create(BookDTOBookConverter.fromDtoToEntity(bookDto));
 		}
 
 	}

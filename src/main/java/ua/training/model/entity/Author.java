@@ -12,7 +12,6 @@ public class Author implements Serializable {
 	private Long id;
 	private String name;
 	private String surname;
-	private String patronymic;
 	private String country;
 
 	public Author() {
@@ -34,11 +33,6 @@ public class Author implements Serializable {
 
 		public Builder setSurname(String surname) {
 			author.surname = surname;
-			return this;
-		}
-
-		public Builder setPatronymic(String patronymic) {
-			author.patronymic = patronymic;
 			return this;
 		}
 
@@ -78,14 +72,6 @@ public class Author implements Serializable {
 		this.surname = surname;
 	}
 
-	public String getPatronymic() {
-		return patronymic;
-	}
-
-	public void setPatronymic(String patronymic) {
-		this.patronymic = patronymic;
-	}
-
 	public String getCountry() {
 		return country;
 	}
@@ -100,7 +86,6 @@ public class Author implements Serializable {
 		int result = 1;
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((patronymic == null) ? 0 : patronymic.hashCode());
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
 	}
@@ -122,9 +107,7 @@ public class Author implements Serializable {
 		if ((name != null) ? !name.equals(author.name) : author.name != null) {
 			return false;
 		}
-		if ((patronymic != null) ? !patronymic.equals(author.patronymic) : author.patronymic != null) {
-			return false;
-		}
+		
 		return ((surname != null) ? surname.equals(author.surname) : author.surname == null);
 	}
 
@@ -132,7 +115,7 @@ public class Author implements Serializable {
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
 		builder2.append("Author [id=").append(id).append(", name=").append(name).append(", surname=").append(surname)
-				.append(", patronymic=").append(patronymic).append(", country=").append(country).append("]");
+				.append(", country=").append(country).append("]");
 		return builder2.toString();
 	}
 

@@ -22,9 +22,9 @@ import ua.training.validator.dto.CredentialsValidator;
 
 public class PostLoginCommand implements Command {
 
-	private UserService userService = UserService.getInstance();
+	private UserService userService;
 
-	private CredentialsDto credentialsDto = new CredentialsDto();
+	private CredentialsDto credentialsDto;
 	private List<String> errors = new ArrayList<>();
 
 	public PostLoginCommand(UserService userService) {

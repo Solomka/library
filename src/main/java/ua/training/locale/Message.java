@@ -15,5 +15,7 @@ public class Message {
 	public static String WRONG_PASS = "library.error.wrongPass";
 	public static String WRONG_CREDENTIALS = "library.error.wrongCredentials";
 	
+	public static String WRONG_TITLE = "library.error.wrongTitle";
+	
 
 }

@@ -46,6 +46,18 @@ public class FrontController extends HttpServlet {
 
 		processRequest(request, response);
 	}
+	
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				super.doPut(req, resp);
+				processRequest(req, resp);
+	}
+
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			super.doDelete(req, resp);
+			processRequest(req, resp);
+	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

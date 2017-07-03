@@ -10,6 +10,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.exception.ServerException;
+import ua.training.model.dao.AuthorDao;
 import ua.training.model.dao.BookDao;
 import ua.training.model.dao.DaoConnection;
 import ua.training.model.dao.DaoFactory;
@@ -91,6 +92,23 @@ public class JdbcDaoFactory extends DaoFactory {
 		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
 		Connection sqlConnection = jdbcConnection.getConnection();
 		return new JdbcBookDao(sqlConnection);
+	}
+
+	@Override
+	public AuthorDao createAuthorDao() {
+		try {
+			return new JdbcAuthorDao(dataSource.getConnection(), true);
+		} catch (SQLException e) {
+			LOGGER.error("Can't get DB Connection for JdbcAuthorDao creation", e);
+			throw new ServerException(e);
+		}
+	}
+
+	@Override
+	public AuthorDao createAuthorDao(DaoConnection connection) {
+		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+		Connection sqlConnection = jdbcConnection.getConnection();
+		return new JdbcAuthorDao(sqlConnection);
 	}
 
 }

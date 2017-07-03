@@ -7,7 +7,7 @@ package ua.training.model.entity;
  *
  */
 public enum Availability {
-	READING_ROOM("Reading room"), SUBSCRIPTION("Subscription");
+	READING_ROOM("reading room"), SUBSCRIPTION("subscription");
 
 	private String value;
 
