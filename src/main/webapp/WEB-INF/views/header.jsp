@@ -66,7 +66,7 @@
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand"
-					href="${pageContext.request.contextPath}/controller/home"><fmt:message
+					href="${pageContext.request.contextPath}/controller/"><fmt:message
 						key="library.main" bundle="${rb}" /></a>
 			</div>
 			<ul class="nav navbar-nav">

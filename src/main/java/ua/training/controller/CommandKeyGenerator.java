@@ -22,6 +22,7 @@ class CommandKeyGenerator {
 		//System.out.println("PATH AFTER CORRS: " + path);
 		String key = method + DELIMITER + path;
 		//System.out.println("String: " + key);
+		System.out.println("Key: " + key);
 		return key;
 	}
 

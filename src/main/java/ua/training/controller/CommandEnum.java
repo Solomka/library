@@ -17,13 +17,13 @@ import ua.training.model.service.BookService;
 import ua.training.model.service.UserService;
 
 enum CommandEnum {
-	DEFAULT {
+	/*DEFAULT {
 		{
 			this.key = "GET:home";
 			this.command = new DefaultCommand();
 		}
 
-	},
+	},*/
 	HOME {
 		{
 			this.key = "GET:";
@@ -108,6 +108,6 @@ enum CommandEnum {
 				return command.getCommand();
 			}
 		}
-		return DEFAULT.getCommand();
+		return HOME.getCommand();
 	}
 }
