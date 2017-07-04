@@ -36,7 +36,7 @@ public class UserService {
 			Optional<User> user = userDao.getUserByEmail(credentials.getEmail());
 			if (user.isPresent()) {
 				System.out.println("User present: " + credentials.getEmail());
-				return PasswordHashing.checkPassword(credentials.getPassword(),
+				return PasswordHashing.getInstance().checkPassword(credentials.getPassword(),
 						user.get().getSalt(),
 						user.get().getPassword());
 			}
