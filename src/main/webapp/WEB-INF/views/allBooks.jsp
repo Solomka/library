@@ -4,7 +4,7 @@
 	<div class="row-fluid" align="left">
 		<div class="btn-group" role="group" aria-label="buttons">
 			<button type="button" class="btn btn-default"
-				onclick="location.href='addBook';">
+				onclick="location.href='librarian/addBook';">
 				<fmt:message key="library.addBook" bundle="${rb}" />
 			</button>
 		</div>

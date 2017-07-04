@@ -78,7 +78,7 @@ enum CommandEnum {
 	},
 	GET_ADD_BOOK{
 		{
-			this.key = "GET:addBook";
+			this.key = "GET:librarian/addBook";
 			this.command = new GetAddBookCommand();
 		}
 	},
