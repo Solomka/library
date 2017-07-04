@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import ua.training.locale.MessageLocale;
 import ua.training.model.entity.User;
 
 @SuppressWarnings("serial")
@@ -27,6 +28,6 @@ public class UserDataTag extends TagSupport {
 
 	private String showUserData() {
 		return new StringBuffer().append("Logged in as ").append(user.getEmail()).append("( ")
-				.append(user.getRole().getValue()).append(" )").toString();
+				.append(MessageLocale.BUNDLE.getString(user.getRole().getLocalizedValue())).append(" )").toString();
 	}
 }

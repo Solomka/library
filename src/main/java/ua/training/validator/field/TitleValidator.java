@@ -4,16 +4,17 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class TitleValidator implements FieldValidator<String> {
+public class TitleValidator extends FieldValidator {
 
-	private static final String TITLE_REGEX = "^[a-zA-Z’'-]{3,35}$";
-
-	private TitleValidator() {
+	private TitleValidator(FieldValidatorKey fieldValidatorKey) {
+		super(fieldValidatorKey);
 
 	}
 
+	private static final String TITLE_REGEX = "[\\wА-ЯІЇЄа-яіїє\\d\\s’'-]{3,100}";
+
 	private static class Holder {
-		static final TitleValidator INSTANCE = new TitleValidator();
+		static final TitleValidator INSTANCE = new TitleValidator(FieldValidatorKey.TITLE);
 	}
 
 	public static TitleValidator getInstance() {
@@ -22,8 +23,10 @@ public class TitleValidator implements FieldValidator<String> {
 
 	@Override
 	public void validateField(String fieldValue, List<String> errors) {
-		//if(!fieldValue.matches(TITLE_REGEX)){
-		//errors.add(Message.WRONG_TITLE);
-		//}
+		if (!fieldValue.matches(TITLE_REGEX)) {
+			errors.add(Message.INVALID_TITLE);
+		}
+
 	}
+
 }

@@ -1,4 +1,4 @@
-package ua.training.validator.dto;
+package ua.training.validator.entity;
 
 import java.util.List;
 

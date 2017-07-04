@@ -1,13 +1,16 @@
-package ua.training.validator.dto;
+package ua.training.validator.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ua.training.controller.dto.CredentialsDto;
-import ua.training.validator.field.EmailValidator;
-import ua.training.validator.field.PasswordValidator;
+import ua.training.validator.field.FieldValidator;
+import ua.training.validator.field.FieldValidatorKey;
+import ua.training.validator.field.FieldValidatorsChainGenerator;
 
 public final class CredentialsValidator implements Validator<CredentialsDto> {
+	
+	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
 	private CredentialsValidator() {
 
@@ -25,8 +28,8 @@ public final class CredentialsValidator implements Validator<CredentialsDto> {
 	public List<String> validate(CredentialsDto dto) {
 		List<String> errors = new ArrayList<>();
 
-		EmailValidator.getInstance().validateField(dto.getEmail(), errors);
-		PasswordValidator.getInstance().validateField(dto.getPassword(), errors);
+		fieldValidator.validateField(FieldValidatorKey.EMAIL, dto.getEmail(), errors);
+		fieldValidator.validateField(FieldValidatorKey.PASSWORD, dto.getPassword(), errors);
 
 		return errors;
 	}

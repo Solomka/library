@@ -1,5 +1,7 @@
 package ua.training.model.entity;
 
+import ua.training.locale.Message;
+
 /**
  * Class that represents availability of the library book
  * 
@@ -7,18 +9,28 @@ package ua.training.model.entity;
  *
  */
 public enum Availability {
-	READING_ROOM("reading room"), SUBSCRIPTION("subscription");
+	READING_ROOM("reading room", Message.AVAILABILITY_READING_ROOM), SUBSCRIPTION("subscription", Message.AVAILABILITY_SUBSCRIPTION);
 
 	private String value;
+	private String localizedValue;
 
 	Availability(String value) {
 		this.value = value;
+	}
+	
+	Availability(String value, String localizedValue) {		
+		this.value = value;
+		this.localizedValue = localizedValue;
 	}
 
 	public String getValue() {
 		return value;
 	}
-
+	
+	public String getLocalizedValue() {
+		return localizedValue;
+	}
+	
 	/**
 	 * Provides Availability for a given String value
 	 * 

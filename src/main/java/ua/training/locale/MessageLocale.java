@@ -3,7 +3,11 @@ package ua.training.locale;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class MessageLocale {
+public final class MessageLocale {
+	
+	private MessageLocale(){
+		
+	}
 	
 	public static final String MESSAGES_BUNDLE_NAME = "/i18n/messages";
 

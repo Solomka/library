@@ -104,21 +104,6 @@ public class JdbcUserDao implements UserDao {
 
 	}
 
-	/*
-	@SuppressWarnings("unchecked")
-	@Override
-	public<T extends User>  Optional<T> getUserByLoginTest(String email) {
-	
-		return Optional.of((T) new Librarian.Builder().setId(new Long("1")).setEmail("anna@gmail.com").setPassword("101de87818bfebfdcb92f18d2e5e43b69e4f70783e0cd66c481bc75d0d688582")
-				.setRole(Role.LIBRARIAN).setRole(Role.READER).setName("Анна").setSurname("Єршак")
-				.setPatronymic("Миколаївна").build());
-		try {
-			throw  new Exception();
-		} catch (Exception e) {
-			throw new ServerException(e);
-		}
-		
-	}*/
 	
 	@Override
 	public <T extends User> Optional<T> getUserByEmail(String email) {

@@ -1,5 +1,7 @@
 package ua.training.model.entity;
 
+import ua.training.locale.Message;
+
 /**
  * Class that represents availability status of the books' instances
  * 
@@ -7,16 +9,26 @@ package ua.training.model.entity;
  *
  */
 public enum Status {
-	AVAILABLE("Available"), UNAVAILABLE("Unavailable");
+	AVAILABLE("available", Message.STATUS_AVAILABLE), UNAVAILABLE("unavailable", Message.STATUS_UNAVAILABLE);
 
 	private String value;
+	private String localizedValue;
 
 	Status(String value) {
 		this.value = value;
 	}
 
+	Status(String value, String localizedValue) {
+		this.value = value;
+		this.localizedValue = localizedValue;
+	}
+
 	public String getValue() {
 		return value;
+	}
+
+	public String getLocalizedValue() {
+		return localizedValue;
 	}
 
 	/**

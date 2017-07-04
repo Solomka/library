@@ -16,8 +16,8 @@ import ua.training.controller.dto.CredentialsDto;
 import ua.training.locale.Message;
 import ua.training.model.entity.Book;
 import ua.training.model.service.BookService;
-import ua.training.validator.dto.BookValidator;
-import ua.training.validator.dto.CredentialsValidator;
+import ua.training.validator.entity.BookValidator;
+import ua.training.validator.entity.CredentialsValidator;
 
 public class PostAddBookCommand implements Command {
 	

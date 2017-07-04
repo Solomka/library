@@ -18,7 +18,7 @@ import ua.training.controller.session.SessionManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
-import ua.training.validator.dto.CredentialsValidator;
+import ua.training.validator.entity.CredentialsValidator;
 
 public class PostLoginCommand implements Command {
 
@@ -36,7 +36,7 @@ public class PostLoginCommand implements Command {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-
+	
 		if (SessionManager.isUserLoggedIn(session)) {
 			return ServletPath.HOME;
 		}
@@ -48,7 +48,7 @@ public class PostLoginCommand implements Command {
 				getUserFromDB(session);
 				return ServletPath.ALL_BOOKS;
 			} else {
-				errors.add(Message.WRONG_CREDENTIALS);
+				errors.add(Message.INVALID_CREDENTIALS);
 			}
 		}
 
@@ -65,7 +65,6 @@ public class PostLoginCommand implements Command {
 
 	private void getUserFromDB(HttpSession session) {
 		User user = userService.getUserByEmail(credentialsDto.getEmail()).get();
-		//User user = userService.getUserByLogin(credentialsDto.getEmail()).get();
 		SessionManager.addUserToSession(session, user);
 	}
 

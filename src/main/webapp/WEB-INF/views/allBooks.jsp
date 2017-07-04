@@ -43,7 +43,7 @@
 						<td>${book.isbn}</td>
 						<td>${book.title}</td>
 						<td>${book.publisher}</td>
-						<td>${book.availability}</td>
+						<td><fmt:message key="${book.availability.getLocalizedValue()}" bundle="${rb}" /></td>
 						<td><a href="./instances?id_book=${book.getId()}"><fmt:message
 									key="library.instances" bundle="${rb}" /></a> <br /> <a
 							href="./bookAuthors?id_book=${book.getId()}"><fmt:message

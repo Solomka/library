@@ -1,5 +1,7 @@
 package ua.training.model.entity;
 
+import ua.training.locale.Message;
+
 /**
  * Class that represents users' roles
  * 
@@ -7,16 +9,26 @@ package ua.training.model.entity;
  *
  */
 public enum Role {
-	LIBRARIAN("librarian"), READER("reader");
+	LIBRARIAN("librarian", Message.ROLE_LIBRARIAN), READER("reader", Message.ROLE_READER);
 
 	private String value;
+	private String localizedValue;
 
 	Role(String value) {
 		this.value = value;
 	}
 
+	Role(String value, String localizedValue) {
+		this.value = value;
+		this.localizedValue = localizedValue;
+	}
+
 	public String getValue() {
 		return value;
+	}
+
+	public String getLocalizedValue() {
+		return localizedValue;
 	}
 
 	/**
