@@ -35,24 +35,21 @@ public class UserService {
 		try (UserDao userDao = daoFactory.createUserDao()) {
 			Optional<User> user = userDao.getUserByEmail(credentials.getEmail());
 			if (user.isPresent()) {
-				System.out.println("User present: " + credentials.getEmail());
-				return PasswordHashing.getInstance().checkPassword(credentials.getPassword(),
-						user.get().getSalt(),
+				return PasswordHashing.getInstance().checkPassword(credentials.getPassword(), user.get().getSalt(),
 						user.get().getPassword());
 			}
 			return false;
 		}
 	}
-	
+
 	public Optional<User> getUserByEmail(String email) {
 		try (UserDao userDao = daoFactory.createUserDao()) {
-			//return userDao.getUserByLoginTest(login);
+			// return userDao.getUserByLoginTest(login);
 			return userDao.getUserByEmail(email);
 		}
 
 	}
 
-	
 	/*
 	 * public void userReturnBook(String login, Long bookId) { Optional<Reader>
 	 * reader = userDao.getUserByLogin(login); // business logic }

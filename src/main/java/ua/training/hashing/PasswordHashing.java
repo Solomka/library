@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
 
@@ -27,7 +26,7 @@ public final class PasswordHashing {
 			InputStream inputStream = PasswordHashing.class.getResourceAsStream(HASHING_SALT_FILE);
 			Properties dbProps = new Properties();
 			dbProps.load(inputStream);
-			WEBSITE_SALT = dbProps.getProperty(WEBSITE_SALT_KEY);			
+			WEBSITE_SALT = dbProps.getProperty(WEBSITE_SALT_KEY);
 		} catch (IOException e) {
 			LOGGER.error("Can't load local salt form properties file", e);
 			throw new ServerException(e);
@@ -45,7 +44,8 @@ public final class PasswordHashing {
 
 	public String generatePassHash256(String passwardToHash, byte[] salt) {
 		System.out.println("WEBSITE SALT DATA: " + WEBSITE_SALT);
-		return DigestUtils.sha256Hex(DigestUtils.sha256Hex(salt) + passwardToHash + WEBSITE_SALT);
+		return DigestUtils.sha256Hex(DigestUtils.sha256Hex(salt) + DigestUtils.sha256Hex(passwardToHash)
+				+ DigestUtils.sha256Hex(WEBSITE_SALT));
 	}
 
 	public byte[] generateRandomSalt() {
@@ -62,8 +62,6 @@ public final class PasswordHashing {
 	}
 
 	public boolean checkPassword(String passToCheck, byte[] salt, String hashedPassword) {
-		System.out.println("Salt: " + Arrays.toString(salt));
-		System.out.println("Generated: " + generatePassHash256(passToCheck, salt));
 		return hashedPassword.equals(generatePassHash256(passToCheck, salt));
 	}
 }

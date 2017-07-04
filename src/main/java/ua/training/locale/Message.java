@@ -6,6 +6,7 @@ public final class Message {
 
 	}
 
+	public static String LOGGED_IN_AS = "library.loggedIn";
 	public static String PAGE_NOT_FOUND_ERROR = "library.error.pageNotFoundError";
 	public static String SERVER_ERROR = "library.error.serverError";
 	public static String DIRECT_VIEW_ACCESS_ERROR = "library.error.directViewAccessError";
