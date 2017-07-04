@@ -38,7 +38,7 @@
 			
 		</div>
 		<div class="row-fluid ">			
-				<a href="${pageContext.request.contextPath}/">Back to home page</a>		
+				<a href="${pageContext.request.contextPath}/controller/">Back to home page</a>		
 		</div>
 
 	</div>

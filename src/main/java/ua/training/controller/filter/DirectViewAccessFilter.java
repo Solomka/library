@@ -29,18 +29,14 @@ public class DirectViewAccessFilter implements Filter {
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-	
+
 		httpResponse.sendRedirect(httpRequest.getContextPath() + ServletPath.HOME + getErrorMessageURLParam());
-		//httpRequest.getSession().setAttribute(Attribute.GENERAL_ERROR, Message.DIRECT_VIEW_ACCESS_ERROR);
-		// chain.doFilter(request, response);
-		// request.getRequestDispatcher(indexPath).forward(httpRequest,
-		// httpResponse);
 	}
 
 	public void destroy() {
 	}
-	
-	private String getErrorMessageURLParam() throws UnsupportedEncodingException{
-		return "?"+ Attribute.GENERAL_ERROR + "=" + URLEncoder.encode(Message.DIRECT_VIEW_ACCESS_ERROR, "UTF-8");
+
+	private String getErrorMessageURLParam() throws UnsupportedEncodingException {
+		return "?" + Attribute.GENERAL_ERROR + "=" + URLEncoder.encode(Message.DIRECT_VIEW_ACCESS_ERROR, "UTF-8");
 	}
 }

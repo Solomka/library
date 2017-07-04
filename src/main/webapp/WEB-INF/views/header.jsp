@@ -65,22 +65,22 @@
 		<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="./home"><fmt:message
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/controller/home"><fmt:message
 						key="library.main" bundle="${rb}" /></a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li><a href="./books"><fmt:message key="library.books"
+				<li><a href="${pageContext.request.contextPath}/controller/books"><fmt:message key="library.books"
 							bundle="${rb}" /></a></li>
 				<c:if test="${not empty user}">
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">
-						<li><a href="./"><fmt:message key="library.authors"
+						<li><a href="${pageContext.request.contextPath}/controller/"><fmt:message key="library.authors"
 									bundle="${rb}" /></a></li>
 					</c:if>
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">
-						<li><a href="./"><fmt:message key="library.readers"
+						<li><a href="${pageContext.request.contextPath}/controller/"><fmt:message key="library.readers"
 									bundle="${rb}" /></a></li>
 					</c:if>
-					<li><a href="./"><fmt:message key="library.orders"
+					<li><a href="${pageContext.request.contextPath}/controller/"><fmt:message key="library.orders"
 								bundle="${rb}" /></a></li>
 					
 				</c:if>
@@ -102,18 +102,18 @@
 					<ul class="dropdown-menu">
 						<c:forEach items="${applicationScope.locales}" var="locale">
 							<c:set var="lang" value="${locale.getLanguage()}" />
-							<li><a href="./locale?lang=${lang}">${lang.toUpperCase()}</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/locale?lang=${lang}">${lang.toUpperCase()}</a></li>
 						</c:forEach>
 					</ul></li>
 
 				<c:choose>
 					<c:when test="${empty user}">
-						<li><a href="./login"><span
+						<li><a href="${pageContext.request.contextPath}/controller/login"><span
 								class="glyphicon glyphicon-log-out"></span> <fmt:message
 									key="library.login" bundle="${rb}" /></a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="./logout"><span
+						<li><a href="${pageContext.request.contextPath}/controller/logout"><span
 								class="glyphicon glyphicon-log-in"></span> <fmt:message
 									key="library.logout" bundle="${rb}" /></a></li>
 					</c:otherwise>
