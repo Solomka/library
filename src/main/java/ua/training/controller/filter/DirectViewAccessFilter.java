@@ -14,12 +14,18 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
 import ua.training.locale.Message;
 
 @WebFilter(urlPatterns = { "/views/*" })
 public class DirectViewAccessFilter implements Filter {
+
+	private final static Logger LOGGER = Logger.getLogger(DirectViewAccessFilter.class);
+	private static String UNAUTHORIZED_ACCESS = "Unauthorized access to the resource: ";
+	private static String ERROR_MESSAGE_ENCODING = "UTF-8";
 
 	public void init(FilterConfig fConfig) throws ServletException {
 	}
@@ -30,13 +36,23 @@ public class DirectViewAccessFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		httpResponse.sendRedirect(httpRequest.getContextPath() + ServletPath.HOME + getErrorMessageURLParam());
+		logInfoAboutUnauthorizedAccess(httpRequest.getRequestURI());
+		httpResponse.sendRedirect(toHomePageWithErrorMessage(httpRequest.getContextPath()));
 	}
 
 	public void destroy() {
 	}
 
+	private String toHomePageWithErrorMessage(String contextPath) throws UnsupportedEncodingException {
+		return new StringBuffer(contextPath).append(ServletPath.HOME).append(getErrorMessageURLParam()).toString();
+	}
+
 	private String getErrorMessageURLParam() throws UnsupportedEncodingException {
-		return "?" + Attribute.GENERAL_ERROR + "=" + URLEncoder.encode(Message.DIRECT_VIEW_ACCESS_ERROR, "UTF-8");
+		return new StringBuffer("?").append(Attribute.GENERAL_ERROR).append("=")
+				.append(URLEncoder.encode(Message.DIRECT_VIEW_ACCESS_ERROR, ERROR_MESSAGE_ENCODING)).toString();
+	}
+
+	private void logInfoAboutUnauthorizedAccess(String uri) {
+		LOGGER.info(UNAUTHORIZED_ACCESS + uri);
 	}
 }

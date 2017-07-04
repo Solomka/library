@@ -46,7 +46,7 @@ public class PostLoginCommand implements Command {
 		if (errors.isEmpty()) {
 			if (userService.isUserWithCredentials(credentialsDto)) {
 				getUserFromDB(session);
-				return ServletPath.ALL_BOOKS;
+				return ServletPath.HOME;
 			} else {
 				errors.add(Message.INVALID_CREDENTIALS);
 			}

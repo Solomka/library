@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ua.training.controller.command.Command;
 import ua.training.controller.command.i18n.AppLocale;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
@@ -46,28 +45,28 @@ public class FrontController extends HttpServlet {
 
 		processRequest(request, response);
 	}
-	
+
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				super.doPut(req, resp);
-				processRequest(req, resp);
+		super.doPut(req, resp);
+		processRequest(req, resp);
 	}
 
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			super.doDelete(req, resp);
-			processRequest(req, resp);
+		super.doDelete(req, resp);
+		processRequest(req, resp);
 	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
 		String resultRedirectResource = CommandFactory.getCommand(commandKey).execute(request, response);
-		
+
 		if (resultRedirectResource.contains(Page.SUFFIX)) {
 			getServletContext().getRequestDispatcher(resultRedirectResource).forward(request, response);
-		}else{
+		} else {
 			response.sendRedirect(resultRedirectResource);
 		}
 

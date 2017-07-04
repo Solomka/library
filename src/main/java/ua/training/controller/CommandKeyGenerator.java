@@ -19,9 +19,9 @@ class CommandKeyGenerator {
 		String path = request.getRequestURI().replaceAll(CONTROLLER_PATH, REPLACEMENT)
 				/*.replaceAll(CONTROLLER_ROLE_PATH, REPLACEMENT)*/.replaceAll(ENTITY_ID, REPLACEMENT);
 
-		System.out.println("PATH AFTER CORRS: " + path);
+		//System.out.println("PATH AFTER CORRS: " + path);
 		String key = method + DELIMITER + path;
-		System.out.println("String: " + key);
+		//System.out.println("String: " + key);
 		return key;
 	}
 
