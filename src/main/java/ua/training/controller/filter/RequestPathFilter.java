@@ -11,7 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class RequestPathFilter implements Filter {
 	
 	private static String CONTROLLER_PARH = "controller";

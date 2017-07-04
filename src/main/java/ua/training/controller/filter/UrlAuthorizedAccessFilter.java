@@ -23,7 +23,7 @@ import ua.training.locale.Message;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
-@WebFilter(urlPatterns = { "/reader/*" })
+@WebFilter(urlPatterns = { "/librarion/*" })
 public class UrlAuthorizedAccessFilter implements Filter {
 
 	private final static Logger LOGGER = Logger.getLogger(UrlAuthorizedAccessFilter.class);
