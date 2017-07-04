@@ -1,7 +1,6 @@
 package ua.training.model.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class Book implements Serializable {
 	private String isbn;
 	private String title;
 	private String publisher;
-	private LocalDate imprintDate;
 	private Availability availability;
 
 	private List<Author> authors = new ArrayList<>();
@@ -58,11 +56,6 @@ public class Book implements Serializable {
 
 		public Builder setPublisher(String publisher) {
 			book.publisher = publisher;
-			return this;
-		}
-
-		public Builder setImprintDate(LocalDate imprintDate) {
-			book.imprintDate = imprintDate;
 			return this;
 		}
 
@@ -127,14 +120,6 @@ public class Book implements Serializable {
 		this.publisher = publisher;
 	}
 
-	public LocalDate getImprintDate() {
-		return imprintDate;
-	}
-
-	public void setImprintDate(LocalDate imprintDate) {
-		this.imprintDate = imprintDate;
-	}
-
 	public Availability getAvailability() {
 		return availability;
 	}
@@ -191,9 +176,8 @@ public class Book implements Serializable {
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
 		builder2.append("Book [id=").append(id).append(", isbn=").append(isbn).append(", title=").append(title)
-				.append(", publisher=").append(publisher).append(", imprintDate=").append(imprintDate)
-				.append(", availability=").append(availability).append(", authors=").append(authors)
-				.append(", bookInstances=").append(bookInstances).append("]");
+				.append(", publisher=").append(publisher).append(", availability=").append(availability)
+				.append(", authors=").append(authors).append(", bookInstances=").append(bookInstances).append("]");
 		return builder2.toString();
 	}
 

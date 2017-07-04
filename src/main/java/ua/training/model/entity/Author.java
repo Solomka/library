@@ -107,7 +107,7 @@ public class Author implements Serializable {
 		if ((name != null) ? !name.equals(author.name) : author.name != null) {
 			return false;
 		}
-		
+
 		return ((surname != null) ? surname.equals(author.surname) : author.surname == null);
 	}
 

@@ -17,7 +17,7 @@ public class BookAuthorsCommand implements Command {
 	private AuthorService authorService;
 
 	public BookAuthorsCommand(AuthorService authorService) {
-		this.authorService = AuthorService.getInstance();
+		this.authorService = authorService;
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class BookAuthorsCommand implements Command {
 			throws ServletException, IOException {
 
 		Long bookId = Long.parseLong(request.getParameter(Attribute.ID_BOOK));
-		System.out.println("In book authors service");
+		//System.out.println("In book authors service");
 		List<Author> authors = authorService.getBookAuthors(bookId);
 		request.setAttribute(Attribute.BOOK_AUTHORS, authors);
 

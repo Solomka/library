@@ -29,7 +29,6 @@
 					<th>ISBN</th>
 					<th><fmt:message key="library.title" bundle="${rb}" /></th>
 					<th><fmt:message key="library.publisher" bundle="${rb}" /></th>
-					<th><fmt:message key="library.imprintDate" bundle="${rb}" /></th>
 					<th><fmt:message key="library.availability" bundle="${rb}" /></th>
 					<th>***</th>
 
@@ -44,7 +43,6 @@
 						<td>${book.isbn}</td>
 						<td>${book.title}</td>
 						<td>${book.publisher}</td>
-						<td>${book.imprintDate}</td>
 						<td>${book.availability}</td>
 						<td><a href="./instances?id_book=${book.getId()}"><fmt:message
 									key="library.instances" bundle="${rb}" /></a> <br /> <a

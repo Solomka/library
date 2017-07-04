@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class TitleValidator implements FieldValidator<String> {
 
-	private static final String NAME_REGEX = "^([A-Z][a-z]+)$";
+	private static final String TITLE_REGEX = "^[a-zA-Z’'-]{3,35}$";
 
 	private TitleValidator() {
 
@@ -22,8 +22,8 @@ public class TitleValidator implements FieldValidator<String> {
 
 	@Override
 	public void validateField(String fieldValue, List<String> errors) {
-		errors.add(Message.WRONG_TITLE);
-
+		//if(!fieldValue.matches(TITLE_REGEX)){
+		//errors.add(Message.WRONG_TITLE);
+		//}
 	}
-
 }

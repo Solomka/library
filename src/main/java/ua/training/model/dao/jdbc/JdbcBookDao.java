@@ -27,11 +27,11 @@ public class JdbcBookDao implements BookDao {
 	// SQL queries
 	private static String SELECT_ALL_FROM_BOOK = "SELECT * FROM book ORDER BY title";
 	private static String SELECT_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
-	private static String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, imprint_date, availability) VALUES ( ?, ?, ?, ?, ? )";
-	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, imprint_date=?, availability=? WHERE id_book=?";
+	private static String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
+	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, availability=? WHERE id_book=?";
 	private static String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
 	private static String SEARCH_BY_TITLE = "SELECT * FROM book WHERE title LIKE '%?%'";
-	private static String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.imprint_date, book.availability"
+	private static String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.availability"
 			+ "FROM book INNER JOIN book_author USING (id_book) INNER JOIN author USING (id_author)"
 			+ "WHERE author.surname LIKE '%?%'";
 
@@ -40,7 +40,6 @@ public class JdbcBookDao implements BookDao {
 	private static String ISBN = "isbn";
 	private static String TITLE = "title";
 	private static String PUBLISHER = "publisher";
-	private static String IMPRINT_DATE = "imprint_date";
 	private static String AVAILABILITY = "availability";
 
 	private Connection connection;
@@ -102,10 +101,9 @@ public class JdbcBookDao implements BookDao {
 	public void create(Book book) {
 
 		try (PreparedStatement query = connection.prepareStatement(CREATE_NEW_BOOK, Statement.RETURN_GENERATED_KEYS)) {
-			query.setString(1, book.getTitle());
-			query.setString(2, book.getIsbn());
+			query.setString(1, book.getIsbn());
+			query.setString(2, book.getTitle());
 			query.setString(3, book.getPublisher());
-			query.setDate(4, Date.valueOf(book.getImprintDate()));
 			query.setString(5, book.getAvailability().getValue());
 			query.executeUpdate();
 
@@ -126,7 +124,6 @@ public class JdbcBookDao implements BookDao {
 			query.setString(1, book.getTitle());
 			query.setString(2, book.getIsbn());
 			query.setString(3, book.getPublisher());
-			query.setDate(4, Date.valueOf(book.getImprintDate()));
 			query.setString(5, book.getAvailability().getValue());
 			query.setLong(6, book.getId());
 			query.executeUpdate();
@@ -198,7 +195,6 @@ public class JdbcBookDao implements BookDao {
 
 		return new Book.Builder().setId(resultSet.getLong(ID_BOOK)).setIsbn(resultSet.getString(ISBN))
 				.setTitle(resultSet.getString(TITLE)).setPublisher(resultSet.getString(PUBLISHER))
-				.setImprintDate(resultSet.getDate(IMPRINT_DATE).toLocalDate())
 				.setAvailability(Availability.forValue(resultSet.getString(AVAILABILITY))).build();
 	}
 }

@@ -20,13 +20,13 @@
 	href="<c:url value="/resources/css/styles.css" />" />
 
 <!--  Bootstrap -->
-<!-- 
+
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/resources/bootstrap-3.3.7/css/bootstrap.min.css" />" />
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery-3.2.1.min.js" />"></script>
 <script type="text/javascript"
-	src="<c:url value="/resources/bootstrap-3.3.7/js/bootstrap.min.js"/>"></script> -->
+	src="<c:url value="/resources/bootstrap-3.3.7/js/bootstrap.min.js"/>"></script>
 
 <!--  DataTables -->
 <!-- <link rel="stylesheet" type="text/css"
@@ -34,19 +34,19 @@
 <script type="text/javascript"
 	src="<c:url value="/resources/DataTables/datatables.min.js"/>"></script> -->
 
-<!-- <link rel="stylesheet"
-	href="<c:url value="/resources/font-awesome-4.7.0/css/font-awesome.min.css" />"> -->
+<link rel="stylesheet"
+	href="<c:url value="/resources/font-awesome-4.7.0/css/font-awesome.min.css" />">
 
 <!--  Bootstrap -->
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
 
 <!--  DataTables -->
-<script
+<!-- <script
 	src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 <script
 	src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
@@ -55,7 +55,7 @@
 
 <link
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	rel="stylesheet">
+	rel="stylesheet"> -->
 
 </head>
 
@@ -76,12 +76,13 @@
 						<li><a href="./"><fmt:message key="library.authors"
 									bundle="${rb}" /></a></li>
 					</c:if>
-					<li><a href="./"><fmt:message key="library.orders"
-								bundle="${rb}" /></a></li>
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">
 						<li><a href="./"><fmt:message key="library.readers"
 									bundle="${rb}" /></a></li>
 					</c:if>
+					<li><a href="./"><fmt:message key="library.orders"
+								bundle="${rb}" /></a></li>
+					
 				</c:if>
 			</ul>
 

@@ -23,7 +23,7 @@
 				
 				<div class="form-group">
 					<label for="isbn">ISBN</label> <input type="text" class="form-control"
-						id="ISBN" name="ISBN"
+						id="ISBN" name="isbn"
 						placeholder="ISBN"
 						 />
 				</div>

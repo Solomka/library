@@ -3,10 +3,10 @@ package ua.training.validator.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import ua.training.controller.dto.BookDto;
+import ua.training.model.entity.Book;
 import ua.training.validator.field.TitleValidator;
 
-public class BookValidator implements Validator<BookDto> {
+public class BookValidator implements Validator<Book> {
 
 	private BookValidator() {
 
@@ -21,10 +21,10 @@ public class BookValidator implements Validator<BookDto> {
 	}
 
 	@Override
-	public List<String> validate(BookDto dto) {
+	public List<String> validate(Book dto) {
 		List<String> errors = new ArrayList<>();
 
-		TitleValidator.getInstance().validateField(dto.getTitle(), errors);
+		//TitleValidator.getInstance().validateField(dto.getTitle(), errors);
 
 		return errors;
 	}

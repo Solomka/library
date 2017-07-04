@@ -12,8 +12,6 @@ public class BookInstance implements Serializable {
 	private Long id;
 	private String inventoryNumber;
 	private Status status;
-	private int shelfNumber;
-	private int rowNumber;
 
 	private Book book;
 
@@ -36,16 +34,6 @@ public class BookInstance implements Serializable {
 
 		public Builder setStatus(Status status) {
 			bookInstance.status = status;
-			return this;
-		}
-
-		public Builder setShelfNumber(int shelfNumber) {
-			bookInstance.shelfNumber = shelfNumber;
-			return this;
-		}
-
-		public Builder setRowNumber(int rowNumber) {
-			bookInstance.rowNumber = rowNumber;
 			return this;
 		}
 
@@ -85,22 +73,6 @@ public class BookInstance implements Serializable {
 		this.status = status;
 	}
 
-	public int getShelfNumber() {
-		return shelfNumber;
-	}
-
-	public void setShelfNumber(int shelfNumber) {
-		this.shelfNumber = shelfNumber;
-	}
-
-	public int getRowNumber() {
-		return rowNumber;
-	}
-
-	public void setRowNumber(int rowNumber) {
-		this.rowNumber = rowNumber;
-	}
-
 	public Book getBook() {
 		return book;
 	}
@@ -136,8 +108,7 @@ public class BookInstance implements Serializable {
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
 		builder2.append("BookInstance [id=").append(id).append(", inventoryNumber=").append(inventoryNumber)
-				.append(", status=").append(status).append(", shelfNumber=").append(shelfNumber).append(", rowNumber=")
-				.append(rowNumber).append(", book=").append(book).append("]");
+				.append(", status=").append(status).append(", book=").append(book).append("]");
 		return builder2.toString();
 	}
 

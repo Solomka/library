@@ -10,7 +10,7 @@ public class Librarian extends User {
 	private String name;
 	private String surname;
 	private String patronymic;
-	
+
 	public Librarian() {
 	}
 
@@ -77,7 +77,7 @@ public class Librarian extends User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		
+
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((patronymic == null) ? 0 : patronymic.hashCode());
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
@@ -95,7 +95,6 @@ public class Librarian extends User {
 
 		Librarian librarian = (Librarian) obj;
 
-		
 		if ((name != null) ? !name.equals(librarian.name) : librarian.name != null) {
 			return false;
 		}
