@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
 import ua.training.locale.Message;
+import ua.training.locale.MessageUtils;
 
 @WebFilter(urlPatterns = { "/views/*" })
 public class DirectViewAccessFilter implements Filter {
@@ -48,7 +49,7 @@ public class DirectViewAccessFilter implements Filter {
 	}
 
 	private String getErrorMessageURLParam() throws UnsupportedEncodingException {
-		return new StringBuffer("?").append(Attribute.GENERAL_ERROR).append("=")
+		return new StringBuffer(MessageUtils.INTERROGATION_MARK).append(Attribute.GENERAL_ERROR).append(MessageUtils.EQUALITY_SIGN)
 				.append(URLEncoder.encode(Message.DIRECT_VIEW_ACCESS_ERROR, ERROR_MESSAGE_ENCODING)).toString();
 	}
 

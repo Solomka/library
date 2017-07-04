@@ -20,6 +20,7 @@ import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.session.SessionManager;
 import ua.training.locale.Message;
+import ua.training.locale.MessageUtils;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
@@ -84,7 +85,7 @@ public class UrlUnAuthorizedAccessFilter implements Filter {
 	}
 
 	private String getErrorMessageURLParam() throws UnsupportedEncodingException {
-		return new StringBuffer("?").append(Attribute.GENERAL_ERROR).append("=")
+		return new StringBuffer(MessageUtils.INTERROGATION_MARK).append(Attribute.GENERAL_ERROR).append(MessageUtils.EQUALITY_SIGN)
 				.append(URLEncoder.encode(Message.UNAUTHORIZED_ACCESS_ERROR, ERROR_MESSAGE_ENCODING)).toString();
 	}
 

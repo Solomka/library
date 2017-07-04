@@ -7,6 +7,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import ua.training.locale.Message;
 import ua.training.locale.MessageLocale;
+import ua.training.locale.MessageUtils;
 import ua.training.model.entity.User;
 
 @SuppressWarnings("serial")
@@ -28,7 +29,9 @@ public class UserDataTag extends TagSupport {
 	}
 
 	private String showUserData() {
-		return new StringBuffer().append(MessageLocale.BUNDLE.getString(Message.LOGGED_IN_AS)).append(user.getEmail()).append("( ")
-				.append(MessageLocale.BUNDLE.getString(user.getRole().getLocalizedValue())).append(" )").toString();
+		return new StringBuffer().append(MessageLocale.BUNDLE.getString(Message.LOGGED_IN_AS)).append(user.getEmail())
+				.append(MessageUtils.LEFT_PARENTHESIS)
+				.append(MessageLocale.BUNDLE.getString(user.getRole().getLocalizedValue()))
+				.append(MessageUtils.RIGHT_PARANTHESIS).toString();
 	}
 }

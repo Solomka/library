@@ -43,7 +43,6 @@ public final class PasswordHashing {
 	}
 
 	public String generatePassHash256(String passwardToHash, byte[] salt) {
-		System.out.println("WEBSITE SALT DATA: " + WEBSITE_SALT);
 		return DigestUtils.sha256Hex(DigestUtils.sha256Hex(salt) + DigestUtils.sha256Hex(passwardToHash)
 				+ DigestUtils.sha256Hex(WEBSITE_SALT));
 	}
@@ -57,7 +56,8 @@ public final class PasswordHashing {
 			return salt;
 
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(e);
+			LOGGER.error("SecureRandom random salt generation error", e);
+			throw new ServerException(e);
 		}
 	}
 
