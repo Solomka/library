@@ -67,7 +67,6 @@ public class FrontController extends HttpServlet {
 		if (resultRedirectResource.contains(Page.SUFFIX)) {
 			getServletContext().getRequestDispatcher(resultRedirectResource).forward(request, response);
 		} else {
-			System.out.println("Redirect: ");
 			response.sendRedirect(resultRedirectResource);
 		}
 

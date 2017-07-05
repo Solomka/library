@@ -19,14 +19,23 @@
 		</h2>
 	</div>
 
-	<div class="row-fluid">
-		<h4>
+	<div class="row-fluid overflow-hidden">
+		<div class="book-descr">
 			<strong><fmt:message key="library.book.book" bundle="${rb}" /></strong>
-			${book.getTitle()}/
+		</div>
+		<div class="book-descr">
+			<fmt:message key="library.title" bundle="${rb}" />
+			: <br />
+			<fmt:message key="library.authors" bundle="${rb}" />
+			:
+		</div>
+		<div class="float-left">
+			${book.getTitle()}<br />
 			<c:forEach items="${book.getAuthors()}" var="author">
-						${author.getName()} ${author.getSurname()} &nbsp;
-							</c:forEach>
-		</h4>
+						${author.getName()} ${author.getSurname()} <br />
+			</c:forEach>
+			<br />
+		</div>
 	</div>
 
 	<div class="row-fluid" align="center">

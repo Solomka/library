@@ -14,6 +14,19 @@
 	margin-top: 5%;
 }
 
+.book-descr{
+	float: left; 
+	margin-right: 10px;
+}
+
+.float-left{
+	float: left;
+}
+
+.overflow-hidden{
+	overflow: hidden;	
+}
+
 tr.selected {
 	background-color: #B0BED9 !important;
 }

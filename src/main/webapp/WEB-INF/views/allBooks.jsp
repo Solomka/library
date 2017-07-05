@@ -61,13 +61,7 @@
 						<td><fmt:message
 								key="${book.availability.getLocalizedValue()}" bundle="${rb}" /></td>
 						<td><a href="./bookInstances?id_book=${book.getId()}"><fmt:message
-									key="library.instances" bundle="${rb}" /></a> <br/> <c:if
-								test="${user.getRole().getValue() eq 'librarian' }">
-								<a href="./deleteBook?id_book=${book.getId()}"><fmt:message
-										key="library.delete" bundle="${rb}" /></a>
-							</c:if></td>
-
-
+									key="library.instances" bundle="${rb}" /></a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

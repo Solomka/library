@@ -3,8 +3,7 @@ package ua.training.controller;
 import ua.training.controller.command.AllBooksCommand;
 import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
-import ua.training.controller.command.DefaultCommand;
-import ua.training.controller.command.DeleteBookCommand;
+import ua.training.controller.command.PageNotFoundCommand;
 import ua.training.controller.command.GetAddBookCommand;
 import ua.training.controller.command.HomeCommand;
 import ua.training.controller.command.PostAddBookCommand;
@@ -17,13 +16,12 @@ import ua.training.model.service.BookService;
 import ua.training.model.service.UserService;
 
 enum CommandEnum {
-	/*DEFAULT {
+	PAGE_NOT_FOUND {
 		{
-			this.key = "GET:home";
-			this.command = new DefaultCommand();
+			this.key = "GET:pageNotFound";
+			this.command = new PageNotFoundCommand();
 		}
-
-	},*/
+	},
 	HOME {
 		{
 			this.key = "GET:";
@@ -89,13 +87,7 @@ enum CommandEnum {
 			this.key = "POST:librarian/addBook";
 			this.command = new PostAddBookCommand(BookService.getInstance());
 		}
-	},DELETE_BOOK{
-		{
-			this.key = "GET:deleteBook";
-			this.command = new DeleteBookCommand(BookService.getInstance());
-		}
 	};
-
 	
 	String key;
 	Command command;
@@ -115,6 +107,6 @@ enum CommandEnum {
 				return command.getCommand();
 			}
 		}
-		return HOME.getCommand();
+		return PAGE_NOT_FOUND.getCommand();
 	}
 }

@@ -16,7 +16,7 @@ public final class MessageUtils {
 	public static String BACKSLASH = "/";
 	public static String SEMICOLON = ";";
 	public static String VERT_LINA = " |";
-	public static String EQUALITY_SIGN = " = ";
-	public static String INTERROGATION_MARK = " = ";
+	public static String EQUALITY_SIGN = "=";
+	public static String INTERROGATION_MARK = "?";
 
 }

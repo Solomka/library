@@ -1,4 +1,4 @@
-package ua.training.validator.field;
+ package ua.training.validator.field;
 
 public final class FieldValidatorsChainGenerator {
 

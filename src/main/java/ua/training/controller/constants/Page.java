@@ -4,6 +4,7 @@ public final class Page {
 
 	
 	public static String PREFIX = "/WEB-INF/views/";
+	public static String ERROR_PREFIX = "errors";
 	public static String SUFFIX = ".jsp";
 
 	private Page() {
@@ -15,4 +16,6 @@ public final class Page {
 	public static String ALL_BOOKS_VIEW = PREFIX + "allBooks" + SUFFIX;
 	public static final String BOOK_INSTANCES_VIEW = PREFIX + "bookInstances" + SUFFIX;
 	public static String ADD_BOOK_VIEW = PREFIX + "addBook" + SUFFIX;
+	
+	public static String PAGE_NOT_FOUND = PREFIX + ERROR_PREFIX + "pageNotFound" + SUFFIX;
 }
