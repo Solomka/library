@@ -36,9 +36,9 @@ public class JdbcDaoConnection implements DaoConnection {
 	@Override
 	public void begin() {
 		try {
-			System.out.println("Transaction has began(autoCommit false)");
 			connection.setAutoCommit(false);
 			inTransaction = true;
+			LOGGER.info("Transaction has began");
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection begin error", e);
 			throw new ServerException(e);
@@ -48,9 +48,9 @@ public class JdbcDaoConnection implements DaoConnection {
 	@Override
 	public void commit() {
 		try {
-			System.out.println("Transaction is commited");
 			connection.commit();
 			inTransaction = false;
+			LOGGER.info("Transaction is commited");
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection commit error", e);
 			throw new ServerException(e);
@@ -62,6 +62,7 @@ public class JdbcDaoConnection implements DaoConnection {
 		try {
 			connection.rollback();
 			inTransaction = false;
+			LOGGER.info("Transaction is rollbacked");
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection rollback error", e);
 			throw new ServerException(e);
@@ -75,6 +76,7 @@ public class JdbcDaoConnection implements DaoConnection {
 		}
 		try {
 			connection.close();
+			LOGGER.info("Transaction is closed");
 		} catch (SQLException e) {
 			LOGGER.error("JdbcDaoConnection close error", e);
 			throw new ServerException(e);

@@ -96,18 +96,21 @@
 							<udt:user-data user="${user}" />
 						</p></li>
 				</c:if>
-				 <li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"><i class="fa fa-globe"
-						aria-hidden="true"></i> ${sessionScope.locale.getLanguage()} <span
-						class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<c:forEach items="${applicationScope.locales}" var="locale">
+				
+				   <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-globe"
+						aria-hidden="true"></i>
+                   ${sessionScope.locale.getLanguage()}
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                   <c:forEach items="${applicationScope.locales}" var="locale">
 							<c:set var="lang" value="${locale.getLanguage()}" />
 							<li><a
 								href="${pageContext.request.contextPath}/controller/locale?lang=${lang}">${lang.toUpperCase()}</a></li>
 						</c:forEach>
-					</ul></li>
-
+                </ul>
+            </li>
 				<c:choose>
 					<c:when test="${empty user}">
 						<li><a

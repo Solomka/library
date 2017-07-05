@@ -18,7 +18,7 @@ import ua.training.controller.constants.Page;
  * Application HTTP Front Servlet
  */
 
-@WebServlet(urlPatterns = { "/controller/*" })
+@WebServlet(urlPatterns = { "/controller/*" }, loadOnStartup=1)
 public class FrontController extends HttpServlet {
 
 	private static final Logger LOGGER = Logger.getLogger(FrontController.class);
