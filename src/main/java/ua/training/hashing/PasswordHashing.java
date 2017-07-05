@@ -43,7 +43,7 @@ public final class PasswordHashing {
 	}
 
 	public String generatePassHash256(String passwardToHash, byte[] salt) {
-		return DigestUtils.sha256Hex(DigestUtils.sha256Hex(salt) + DigestUtils.sha256Hex(passwardToHash)
+		return DigestUtils.sha256Hex(DigestUtils.sha256Hex(passwardToHash) + DigestUtils.sha256Hex(salt)
 				+ DigestUtils.sha256Hex(WEBSITE_SALT));
 	}
 
