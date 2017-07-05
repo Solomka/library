@@ -22,8 +22,21 @@ import ua.training.model.entity.User;
 public class JdbcUserDao implements UserDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcUserDao.class);
+	
+	private static String SELECT_USER_BY_ID = "SELECT *"
+			+ " FROM (SELECT id_user, email, password, role, salt, reader.name,"
+			+ " reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
+			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
+			+ " FROM users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian"
+			+ " UNION"
+			+ " SELECT id_user, email, password, role, salt,"
+			+ " reader.name, reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number, "
+			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
+			+ " FROM users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader)"
+			+ " AS tb"
+			+ " WHERE id_user=?";
 
-	private static final String SELECT_USER_BY_EMAIL = "SELECT *"
+	private static String SELECT_USER_BY_EMAIL = "SELECT *"
 			+ " FROM (SELECT id_user, email, password, role, salt, reader.name,"
 			+ " reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
 			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
@@ -35,6 +48,15 @@ public class JdbcUserDao implements UserDao {
 			+ " FROM users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader)"
 			+ " AS tb"
 			+ " WHERE email=?";
+	
+	private static String UPDATE_READER ="UPDATE users JOIN reader ON users.id_user = reader.id_reader"
+			+ " SET users.email=?, users.password=?, reader.name=?, reader.surname=?, reader.patronymic=?, reader.phone=?, reader.address=?, reader.reader_card_number?"
+			+ " WHERE id_user=? ";
+	private static  String UPDATE_LIBRARIAN = "UPDATE users JOIN librarian ON users.is_user = librarian.id_librarian"
+			+ " SET users.email=?, users.password=?, librarian.name=?, librarian.surname=?, librarian.patronymic=?"
+			+ " WHERE id_user=?";
+	
+	private static String DELETE_USER = "DELETE FROM users WHERE id_user=?";
 
 	//user fields
 	private static String ID = "id_user";
@@ -75,17 +97,17 @@ public class JdbcUserDao implements UserDao {
 	}
 
 	@Override
-	public List<User> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Optional<User> getById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public List<User> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public void create(User e) {
 		// TODO Auto-generated method stub
@@ -93,14 +115,71 @@ public class JdbcUserDao implements UserDao {
 	}
 
 	@Override
-	public void update(User e) {
-		// TODO Auto-generated method stub
+	public <T extends User> Optional<T> getUserById(Long id) {
+		Optional<T> user = Optional.empty();
+		try (PreparedStatement query = connection.prepareStatement(SELECT_USER_BY_ID)) {
+			query.setLong(1, id);
+			ResultSet resultSet = query.executeQuery();
+			if (resultSet.next()) {
+				user = Optional.of(extractUserFromResultSet(resultSet));
+			}
+		} catch (Exception e) {
+			LOGGER.error("JdbcUserDao getById SQL error: " + id, e);
+			throw new ServerException(e);
+		}
+		return user;
+	}	
+
+	@Override
+	public void update(User user) {
+		if(user.getRole().equals(Role.LIBRARIAN)){
+			Librarian librarian = (Librarian) user;
+			try (PreparedStatement query = connection.prepareStatement(UPDATE_READER)) {
+				query.setString(1, librarian.getEmail());
+				query.setString(2, librarian.getPassword());
+				query.setString(3, librarian.getName());
+				query.setString(5, librarian.getSurname());
+				query.setString(6, librarian.getPatronymic());
+				query.setLong(7, librarian.getId());
+				query.executeUpdate();
+
+			} catch (SQLException e) {
+				LOGGER.error("JdbcUserDao update SQL error: " + librarian.toString(), e);
+				throw new ServerException(e);
+			}
+			
+		}else{
+			Reader reader = (Reader) user;
+			try (PreparedStatement query = connection.prepareStatement(UPDATE_LIBRARIAN)) {
+				query.setString(1, reader.getEmail());
+				query.setString(2, reader.getPassword());
+				query.setString(3, reader.getName());
+				query.setString(4, reader.getSurname());
+				query.setString(5, reader.getPatronymic());
+				query.setString(6, reader.getPhone());
+				query.setString(7, reader.getAddress());
+				query.setString(8, reader.getReaderCardNumber());
+				query.setLong(9, reader.getId());
+				query.executeUpdate();
+
+			} catch (SQLException e) {
+				LOGGER.error("JdbcUserDao update SQL error: " + reader.toString(), e);
+				throw new ServerException(e);
+			}
+			
+		}
 
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
+		try (PreparedStatement query = connection.prepareStatement(DELETE_USER)) {
+			query.setLong(1, id);
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao delete SQL error: " + id, e);
+			throw new ServerException(e);
+		}
 
 	}
 
@@ -159,6 +238,6 @@ public class JdbcUserDao implements UserDao {
 				throw new ServerException(e);
 			}
 		}
-	}
+	}	
 
 }
