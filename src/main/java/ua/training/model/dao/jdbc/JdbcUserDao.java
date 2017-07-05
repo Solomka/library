@@ -134,7 +134,7 @@ public class JdbcUserDao implements UserDao {
 	public void update(User user) {
 		if(user.getRole().equals(Role.LIBRARIAN)){
 			Librarian librarian = (Librarian) user;
-			try (PreparedStatement query = connection.prepareStatement(UPDATE_READER)) {
+			try (PreparedStatement query = connection.prepareStatement(UPDATE_LIBRARIAN)) {
 				query.setString(1, librarian.getEmail());
 				query.setString(2, librarian.getPassword());
 				query.setString(3, librarian.getName());
@@ -150,7 +150,7 @@ public class JdbcUserDao implements UserDao {
 			
 		}else{
 			Reader reader = (Reader) user;
-			try (PreparedStatement query = connection.prepareStatement(UPDATE_LIBRARIAN)) {
+			try (PreparedStatement query = connection.prepareStatement(UPDATE_READER)) {
 				query.setString(1, reader.getEmail());
 				query.setString(2, reader.getPassword());
 				query.setString(3, reader.getName());
