@@ -28,7 +28,7 @@ public class AuthorService {
 	}
 
 	public List<Author> getBookAuthors(Long bookId) {
-		LOGGER.info("Get book authors");
+		LOGGER.info("Get book authors: " + bookId);
 		try (AuthorDao authorDao = daoFactory.createAuthorDao()) {
 			return authorDao.getBookAuthors(bookId);
 		}

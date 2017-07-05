@@ -4,7 +4,7 @@
 
 	<div class="row-fluid pg-title">
 		<h3>
-			<fmt:message key="library.addBook" bundle="${rb}" />
+			<fmt:message key="library.add" bundle="${rb}" />
 		</h3>
 	</div>
 
@@ -20,12 +20,11 @@
 						</c:forEach>
 					</div>
 				</c:if>
-				
+
 				<div class="form-group">
-					<label for="isbn">ISBN</label> <input type="text" class="form-control"
-						id="ISBN" name="isbn"
-						placeholder="ISBN"
-						 />
+					<label for="isbn">ISBN</label> <input type="text"
+						class="form-control" id="ISBN" name="isbn" placeholder="ISBN"
+						value="<c:out value="${requestScope.book.getIsbn()}" />" />
 				</div>
 
 				<div class="form-group">
@@ -33,23 +32,29 @@
 							bundle="${rb}" /></label> <input type="text" class="form-control"
 						id="title" name="title"
 						placeholder="<fmt:message key="library.title" bundle="${rb}"/>"
-						 />
+						value="<c:out value="${requestScope.book.getTitle()}" />" />
 				</div>
 				<div class="form-group">
 					<label for="publisher"><fmt:message key="library.publisher"
 							bundle="${rb}" /></label> <input type="text" class="form-control"
 						id="publisher" name="publisher"
 						placeholder="<fmt:message key="library.publisher" bundle="${rb}"/>"
-						 />
+						value="<c:out value="${requestScope.book.getPublisher()}" />" />
 				</div>
+
 				<div class="form-group">
-					<label for="imprintDate"><fmt:message key="library.imprintDate"
-							bundle="${rb}" /></label> <input type="date" class="form-control"
-						id="imprintDate" name="imprintDate"
-						placeholder="yy-mm-dd" />
+					<label for="availability"><fmt:message
+							key="library.availability" bundle="${rb}" /></label><br /> <select
+						name="availability" class="form-control">
+						<c:forEach items="${requestScope.availabilities}"
+							var="availability">
+							<option value="${availability.getValue()}"><fmt:message
+									key="${availability.getLocalizedValue()}" bundle="${rb}" /></option>
+						</c:forEach>
+					</select>
+
 				</div>
-				
-				
+
 				<button type="submit" class="btn btn-default" id="submitButton">
 					<fmt:message key="library.add" bundle="${rb}" />
 				</button>

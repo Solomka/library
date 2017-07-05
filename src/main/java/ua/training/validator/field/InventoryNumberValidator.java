@@ -14,7 +14,7 @@ public class InventoryNumberValidator extends FieldValidator {
 	private static final String INVENTORY_NUMBER_REGEX = "^\\d{7,13}$";
 
 	private static class Holder {
-		static final InventoryNumberValidator INSTANCE = new InventoryNumberValidator(FieldValidatorKey.EMAIL);
+		static final InventoryNumberValidator INSTANCE = new InventoryNumberValidator(FieldValidatorKey.INVENTORY_NUMBER);
 	}
 
 	public static InventoryNumberValidator getInstance() {

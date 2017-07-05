@@ -1,5 +1,8 @@
 package ua.training.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ua.training.locale.Message;
 
 /**
@@ -46,5 +49,14 @@ public enum Availability {
 			}
 		}
 		throw new RuntimeException("Avilability with such string value doesn't exist");
+	}
+	
+	public static List<Availability> getValues() {
+		List<Availability> availabilities = new ArrayList<>();
+		
+		for (final Availability availability : Availability.values()) {
+			availabilities.add(availability);
+		}
+		return availabilities;
 	}
 }

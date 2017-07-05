@@ -15,7 +15,7 @@ public class DeleteBookCommand implements Command {
 	private BookService bookService;
 
 	public DeleteBookCommand(BookService bookService) {
-		this.bookService = BookService.getInstance();
+		this.bookService = bookService;
 	}
 
 	@Override

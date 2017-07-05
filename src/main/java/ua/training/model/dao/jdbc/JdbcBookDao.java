@@ -104,7 +104,7 @@ public class JdbcBookDao implements BookDao {
 			query.setString(1, book.getIsbn());
 			query.setString(2, book.getTitle());
 			query.setString(3, book.getPublisher());
-			query.setString(5, book.getAvailability().getValue());
+			query.setString(4, book.getAvailability().getValue());
 			query.executeUpdate();
 
 			ResultSet keys = query.getGeneratedKeys();

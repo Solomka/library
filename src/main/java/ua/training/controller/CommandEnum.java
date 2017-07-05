@@ -1,7 +1,7 @@
 package ua.training.controller;
 
 import ua.training.controller.command.AllBooksCommand;
-import ua.training.controller.command.BookAuthorsCommand;
+import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
 import ua.training.controller.command.DefaultCommand;
 import ua.training.controller.command.DeleteBookCommand;
@@ -63,19 +63,21 @@ enum CommandEnum {
 		}
 
 	},
-	DELETE_BOOK{
+	BOOK_INSTANCES{
 		{
-			this.key = "GET:deleteBook";
-			this.command = new DeleteBookCommand(BookService.getInstance());
+			this.key = "GET:bookInstances";
+			this.command = new BookInstancesCommand(BookService.getInstance());
 		}
 	},
-	BOOK_AUTHORS{
+	
+	/*BOOK_AUTHORS{
 		{
 			this.key = "GET:bookAuthors";
 			this.command = new BookAuthorsCommand(AuthorService.getInstance());
 			
 		}
-	},
+	},*/
+	
 	GET_ADD_BOOK{
 		{
 			this.key = "GET:librarian/addBook";
@@ -84,8 +86,13 @@ enum CommandEnum {
 	},
 	POST_ADD_BOOK{
 		{
-			this.key = "POST:addBook";
+			this.key = "POST:librarian/addBook";
 			this.command = new PostAddBookCommand(BookService.getInstance());
+		}
+	},DELETE_BOOK{
+		{
+			this.key = "GET:deleteBook";
+			this.command = new DeleteBookCommand(BookService.getInstance());
 		}
 	};
 

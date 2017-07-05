@@ -96,8 +96,7 @@
 							<udt:user-data user="${user}" />
 						</p></li>
 				</c:if>
-
-				<li class="dropdown"><a class="dropdown-toggle"
+				 <li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"><i class="fa fa-globe"
 						aria-hidden="true"></i> ${sessionScope.locale.getLanguage()} <span
 						class="caret"></span></a>

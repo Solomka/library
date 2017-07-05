@@ -6,7 +6,10 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.model.dao.AuthorDao;
 import ua.training.model.dao.BookDao;
+import ua.training.model.dao.BookInstancesDao;
+import ua.training.model.dao.DaoConnection;
 import ua.training.model.dao.DaoFactory;
 import ua.training.model.entity.Book;
 
@@ -28,12 +31,48 @@ public class BookService {
 		return Holder.INSTANCE;
 	}
 
+	public Optional<Book> getBook(Long bookId) {
+		LOGGER.info("Get book with authors and instances: " + bookId);
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();
+			BookDao bookDao = daoFactory.createBookDao(connection);
+			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
+			BookInstancesDao bookInstancesDao = daoFactory.createBookInstancesDao(connection);
+
+			Optional<Book> book = bookDao.getById(bookId);
+			if (book.isPresent()) {
+				book.get().setAuthors(authorDao.getBookAuthors(bookId));
+				book.get().setBookInstances(bookInstancesDao.getBookInstances(bookId));
+			}
+			connection.commit();
+			return book;
+		}
+	}
+
+	/*
 	public List<Book> getAllBooks() {
 		LOGGER.info("Get all books");
 		try (BookDao bookDao = daoFactory.createBookDao()) {
 			return bookDao.getAll();
 		}
+	}*/
+	
+	public List<Book> getAllBooks() {
+		LOGGER.info("Get all books with authors");
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();			
+			BookDao bookDao = daoFactory.createBookDao(connection);
+			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
+			List<Book> books= bookDao.getAll();
+			for(Book book: books){
+				book.setAuthors(authorDao.getBookAuthors(book.getId()));
+			}
+			connection.commit();
+			return books;
+		}
 	}
+	
+	
 
 	public Optional<Book> getBookById(Long id) {
 		LOGGER.info("Get book by id");
