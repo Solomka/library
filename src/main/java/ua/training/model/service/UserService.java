@@ -28,12 +28,13 @@ public class UserService {
 	public static UserService getInstance() {
 		return Holder.INSTANCE;
 	}
-
+	
 	public boolean isUserWithCredentials(CredentialsDto credentials) {
 		LOGGER.info(
 				"Check if user with credantials exists: " + credentials.getEmail() + ", " + credentials.getPassword());
 		try (UserDao userDao = daoFactory.createUserDao()) {
 			Optional<User> user = userDao.getUserByEmail(credentials.getEmail());
+			
 			if (user.isPresent()) {
 				return PasswordHashing.getInstance().checkPassword(credentials.getPassword(), user.get().getSalt(),
 						user.get().getPassword());
@@ -42,6 +43,7 @@ public class UserService {
 		}
 	}
 
+	
 	public Optional<User> getUserByEmail(String email) {
 		try (UserDao userDao = daoFactory.createUserDao()) {
 			// return userDao.getUserByLoginTest(login);

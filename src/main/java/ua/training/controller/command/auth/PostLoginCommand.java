@@ -45,18 +45,20 @@ public class PostLoginCommand implements Command {
 
 		validateUserInput(request);
 
-		if (errors.isEmpty()) {
-			if (userService.isUserWithCredentials(credentialsDto)) {
-				getUserFromDB(session);
-				RedirectionManager.redirect(request, response, ServletPath.HOME);
-				return RedirectionManager.REDIRECTION;
-			} else {
-				errors.add(Message.INVALID_CREDENTIALS);
-			}
+		if (!errors.isEmpty()) {
+			addRequestAtrributes(request);
+			return Page.LOGIN_VIEW;
 		}
 
-		addRequestAtrributes(request);
+		if (userService.isUserWithCredentials(credentialsDto)) {
+			getUserFromDB(session);
+			RedirectionManager.redirect(request, response, ServletPath.HOME);
+			return RedirectionManager.REDIRECTION;
+		}
+
+		errors.add(Message.INVALID_CREDENTIALS);
 		return Page.LOGIN_VIEW;
+
 	}
 
 	private void validateUserInput(HttpServletRequest request) {
