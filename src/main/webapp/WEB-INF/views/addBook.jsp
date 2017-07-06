@@ -15,8 +15,9 @@
 				<c:if test="${not empty requestScope.errors}">
 					<div class="alert alert-danger">
 						<c:forEach items="${requestScope.errors}" var="error">
-							<fmt:message key="${error}" bundle="${rb}" />
-							<br>
+							<p>
+								<fmt:message key="${error}" bundle="${rb}" />
+							</p>
 						</c:forEach>
 					</div>
 				</c:if>

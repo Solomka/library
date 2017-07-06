@@ -25,13 +25,13 @@ public class JdbcBookDao implements BookDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookDao.class);
 
 	// SQL queries
-	private static String SELECT_ALL_FROM_BOOK = "SELECT * FROM book ORDER BY title";
-	private static String SELECT_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
-	private static String CREATE_NEW_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
+	private static String GET_ALL_BOOKS = "SELECT * FROM book ORDER BY title";
+	private static String GET_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
+	private static String CREATE_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
 	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, availability=? WHERE id_book=?";
 	private static String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
-	private static String SEARCH_BY_TITLE = "SELECT * FROM book WHERE title LIKE '%?%'";
-	private static String SEARCH_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.availability"
+	private static String SEARCH_BOOK_BY_TITLE = "SELECT * FROM book WHERE title LIKE '%?%'";
+	private static String SEARCH_BOOK_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.availability"
 			+ "FROM book INNER JOIN book_author USING (id_book) INNER JOIN author USING (id_author)"
 			+ "WHERE author.surname LIKE '%?%'";
 
@@ -64,7 +64,7 @@ public class JdbcBookDao implements BookDao {
 		
 		List<Book> books = new ArrayList<>();
 		try (Statement query = connection.createStatement();
-				ResultSet resultSet = query.executeQuery(SELECT_ALL_FROM_BOOK)) {
+				ResultSet resultSet = query.executeQuery(GET_ALL_BOOKS)) {
 			while (resultSet.next()) {
 				books.add(extractBookFromResultSet(resultSet));
 			}
@@ -84,7 +84,7 @@ public class JdbcBookDao implements BookDao {
 	@Override
 	public Optional<Book> getById(Long id) {
 		Optional<Book> book = Optional.empty();
-		try (PreparedStatement query = connection.prepareStatement(SELECT_BOOK_BY_ID)) {
+		try (PreparedStatement query = connection.prepareStatement(GET_BOOK_BY_ID)) {
 			query.setLong(1, id);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
@@ -100,7 +100,7 @@ public class JdbcBookDao implements BookDao {
 	@Override
 	public void create(Book book) {
 
-		try (PreparedStatement query = connection.prepareStatement(CREATE_NEW_BOOK, Statement.RETURN_GENERATED_KEYS)) {
+		try (PreparedStatement query = connection.prepareStatement(CREATE_BOOK, Statement.RETURN_GENERATED_KEYS)) {
 			query.setString(1, book.getIsbn());
 			query.setString(2, book.getTitle());
 			query.setString(3, book.getPublisher());
@@ -149,7 +149,7 @@ public class JdbcBookDao implements BookDao {
 	public List<Book> searchByTitle(String title) {
 		List<Book> books = new ArrayList<>();
 
-		try (PreparedStatement query = connection.prepareStatement(SEARCH_BY_TITLE)) {
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_TITLE)) {
 			query.setString(1, title);
 			ResultSet resultSet = query.executeQuery();
 			while (resultSet.next()) {
@@ -166,7 +166,7 @@ public class JdbcBookDao implements BookDao {
 	public List<Book> searchByAuthorSurname(String authorSurname) {
 		List<Book> books = new ArrayList<>();
 
-		try (PreparedStatement query = connection.prepareStatement(SEARCH_BY_AUTHOR_SURNAME)) {
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_AUTHOR_SURNAME)) {
 			query.setString(1, authorSurname);
 			ResultSet resultSet = query.executeQuery();
 			while (resultSet.next()) {

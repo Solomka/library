@@ -85,7 +85,7 @@ public class UrlUnAuthorizedAccessFilter implements Filter {
 	}
 
 	private String getErrorMessageURLParam() throws UnsupportedEncodingException {
-		return new StringBuffer(MessageUtils.INTERROGATION_MARK).append(Attribute.GENERAL_ERROR).append(MessageUtils.EQUALITY_SIGN)
+		return new StringBuffer(MessageUtils.INTERROGATION_MARK).append(Attribute.ERROR).append(MessageUtils.EQUALITY_SIGN)
 				.append(URLEncoder.encode(Message.UNAUTHORIZED_ACCESS_ERROR, ERROR_MESSAGE_ENCODING)).toString();
 	}
 

@@ -5,8 +5,9 @@ public final class Attribute {
 	private Attribute() {
 
 	}
-
-	public static String GENERAL_ERROR = "general_error";
+	
+	public static String ERROR = "error";
+	public static String SUCCESS = "success";
 	public static String ERRORS = "errors";
 
 	public static String LOCALES = "locales";
@@ -19,13 +20,16 @@ public final class Attribute {
 	public static String PASSWORD = "password";
 
 	public static String BOOKS = "books";
+	public static String AVAILABILITIES = "availabilities";
+	public static String AUTHORS = "authors";
+	
 	public static String BOOK = "book";
 	public static String BOOK_AUTHORS = "bookAuthors";
 	public static String ID_BOOK = "id_book";
 	public static String ISBN = "isbn";
 	public static String TITLE = "title";
-	public static String PUBLISHER = "publisher";
-	public static String AVAILABILITIES = "availabilities";
+	public static String PUBLISHER = "publisher";	
 	public static String AVAILABILITY = "availability";
+	
 	
 }

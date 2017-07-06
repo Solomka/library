@@ -11,33 +11,40 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
+import ua.training.controller.utils.UrlParamMessageGenerator;
+import ua.training.locale.Message;
+import ua.training.model.entity.Author;
 import ua.training.model.entity.Availability;
 import ua.training.model.entity.Book;
+import ua.training.model.service.AuthorService;
 import ua.training.model.service.BookService;
 import ua.training.validator.entity.BookValidator;
 
 public class PostAddBookCommand implements Command {
 
 	private BookService bookService;
+	private AuthorService authorService;
 
+	private List<Author> authors = new ArrayList<>();
 	private List<String> errors = new ArrayList<>();
 	private Book book;
 
-	public PostAddBookCommand(BookService bookService) {
+	public PostAddBookCommand(BookService bookService, AuthorService authorService) {
 		this.bookService = bookService;
+		this.authorService = authorService;
 	}
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		validateUserInput(request);
 
 		if (errors.isEmpty()) {
 			bookService.createBook(book);
-			return ServletPath.ALL_BOOKS;
+			return request.getContextPath() + request.getServletPath() + ServletPath.ALL_BOOKS
+					+ UrlParamMessageGenerator.getMessageURLParam(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
 		}
-
+	
 		addRequestAtrributes(request);
 		return Page.ADD_BOOK_VIEW;
 	}
@@ -53,10 +60,12 @@ public class PostAddBookCommand implements Command {
 	}
 
 	private void addRequestAtrributes(HttpServletRequest request) {
-		request.setAttribute(Attribute.BOOK, book);
+		authors = authorService.getAllAuthors();
+		
 		request.setAttribute(Attribute.AVAILABILITIES, Availability.getValues());
+		request.setAttribute(Attribute.AUTHORS, authors);
+		request.setAttribute(Attribute.BOOK, book);
 		request.setAttribute(Attribute.ERRORS, errors);
-
 	}
 
 }

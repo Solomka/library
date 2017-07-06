@@ -27,6 +27,13 @@ public class AuthorService {
 		return Holder.INSTANCE;
 	}
 
+	public List<Author> getAllAuthors() {
+		LOGGER.info("Get all authors");
+		try (AuthorDao authorDao = daoFactory.createAuthorDao()) {
+			return authorDao.getAll();
+		}
+	}
+
 	public List<Author> getBookAuthors(Long bookId) {
 		LOGGER.info("Get book authors: " + bookId);
 		try (AuthorDao authorDao = daoFactory.createAuthorDao()) {

@@ -29,9 +29,15 @@
 		</h2>
 	</div>
 
+	<div class="row-fluid" align="center">
+		<c:if test="${not empty param.success}">
+			<div class="alert alert-success">				
+					<fmt:message key="library.success.addBook" bundle="${rb}" />				
+			</div>
+		</c:if>
+	</div>
 
 	<div class="row-fluid" align="center">
-
 		<table class="table table-bordered">
 			<thead>
 				<tr>

@@ -18,7 +18,7 @@ import ua.training.controller.constants.Page;
  * Application HTTP Front Servlet
  */
 
-@WebServlet(urlPatterns = { "/controller/*" }, loadOnStartup=1)
+@WebServlet(urlPatterns = { "/controller/*" }, loadOnStartup = 1)
 public class FrontController extends HttpServlet {
 
 	private static final Logger LOGGER = Logger.getLogger(FrontController.class);
@@ -63,9 +63,9 @@ public class FrontController extends HttpServlet {
 
 		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
 		String resultRedirectResource = CommandFactory.getCommand(commandKey).execute(request, response);
-
+		
 		if (resultRedirectResource.contains(Page.SUFFIX)) {
-			getServletContext().getRequestDispatcher(resultRedirectResource).forward(request, response);
+			request.getRequestDispatcher(resultRedirectResource).forward(request, response);
 		} else {
 			response.sendRedirect(resultRedirectResource);
 		}

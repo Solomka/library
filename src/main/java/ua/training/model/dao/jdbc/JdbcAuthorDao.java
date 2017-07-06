@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class JdbcAuthorDao implements AuthorDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcAuthorDao.class);
 
 	// sql
+	private static String GET_ALL_AUTHORS = "SELECT * FROM author";
 	private static String GET_BOOK_AUTHORS = "SELECT id_author, name, surname, country"
 			+ " FROM author JOIN book_author USING (id_author)" + " WHERE id_book=?";
 
@@ -49,8 +51,19 @@ public class JdbcAuthorDao implements AuthorDao {
 
 	@Override
 	public List<Author> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Author> authors = new ArrayList<>();
+		try (Statement query = connection.createStatement();
+				ResultSet resultSet = query.executeQuery(GET_ALL_AUTHORS)) {
+			while (resultSet.next()) {
+				authors.add(extractAuthorFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcAuthorkDao getAll SQL error", e);
+			throw new ServerException(e);
+		}
+		return authors;
+		
 	}
 
 	@Override

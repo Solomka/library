@@ -79,13 +79,13 @@ enum CommandEnum {
 	GET_ADD_BOOK{
 		{
 			this.key = "GET:librarian/addBook";
-			this.command = new GetAddBookCommand();
+			this.command = new GetAddBookCommand(AuthorService.getInstance());
 		}
 	},
 	POST_ADD_BOOK{
 		{
 			this.key = "POST:librarian/addBook";
-			this.command = new PostAddBookCommand(BookService.getInstance());
+			this.command = new PostAddBookCommand(BookService.getInstance(), AuthorService.getInstance());
 		}
 	};
 	
