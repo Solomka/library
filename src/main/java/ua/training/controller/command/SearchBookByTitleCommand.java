@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
-import ua.training.controller.redirect.RedirectManager;
+import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.Book;
 import ua.training.model.service.BookService;
@@ -35,16 +35,17 @@ public class SearchBookByTitleCommand implements Command {
 		List<String> errors = validateUserInput(title);
 
 		if (!errors.isEmpty()) {
-			return request.getContextPath() + request.getServletPath() + ServletPath.ALL_BOOKS
-					+ RedirectManager.getMessageURLParam(Attribute.ERROR, errors.get(0));
+			RedirectionManager.redirectWithParamMessage(request, response, ServletPath.ALL_BOOKS, Attribute.ERROR,
+					errors.get(0));
+			return RedirectionManager.REDIRECTION;
 		}
 
 		List<Book> books = bookService.searchBookByTitle(title);
-		
-		if (books.isEmpty()) {
-			return request.getContextPath() + request.getServletPath() + ServletPath.ALL_BOOKS
-					+ RedirectManager.getMessageURLParam(Attribute.ERROR, Message.BOOK_IS_NOT_FOUND);
 
+		if (books.isEmpty()) {
+			RedirectionManager.redirectWithParamMessage(request, response, ServletPath.ALL_BOOKS, Attribute.ERROR,
+					Message.BOOK_IS_NOT_FOUND);
+			return RedirectionManager.REDIRECTION;
 		}
 
 		request.setAttribute(Attribute.BOOKS, books);

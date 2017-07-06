@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import ua.training.controller.command.i18n.AppLocale;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
+import ua.training.controller.utils.RedirectionManager;
 
 /**
  * Application HTTP Front Servlet
@@ -63,11 +64,9 @@ public class FrontController extends HttpServlet {
 
 		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
 		String resultRedirectResource = CommandFactory.getCommand(commandKey).execute(request, response);
-		
-		if (resultRedirectResource.contains(Page.SUFFIX)) {
+		if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
+			System.out.println("FORWARD");
 			request.getRequestDispatcher(resultRedirectResource).forward(request, response);
-		} else {
-			response.sendRedirect(resultRedirectResource);
 		}
 
 	}

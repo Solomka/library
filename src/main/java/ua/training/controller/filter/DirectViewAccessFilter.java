@@ -2,7 +2,6 @@ package ua.training.controller.filter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,15 +17,14 @@ import org.apache.log4j.Logger;
 
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
+import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
-import ua.training.locale.MessageUtils;
 
 @WebFilter(urlPatterns = { "/views/*" })
 public class DirectViewAccessFilter implements Filter {
 
 	private final static Logger LOGGER = Logger.getLogger(DirectViewAccessFilter.class);
 	private static String UNAUTHORIZED_ACCESS = "Unauthorized access to the resource: ";
-	private static String ERROR_MESSAGE_ENCODING = "UTF-8";
 
 	public void init(FilterConfig fConfig) throws ServletException {
 	}
@@ -45,12 +43,9 @@ public class DirectViewAccessFilter implements Filter {
 	}
 
 	private String toHomePageWithErrorMessage(String contextPath) throws UnsupportedEncodingException {
-		return new StringBuffer(contextPath).append(ServletPath.HOME).append(getErrorMessageURLParam()).toString();
-	}
-
-	private String getErrorMessageURLParam() throws UnsupportedEncodingException {
-		return new StringBuffer(MessageUtils.INTERROGATION_MARK).append(Attribute.ERROR).append(MessageUtils.EQUALITY_SIGN)
-				.append(URLEncoder.encode(Message.DIRECT_VIEW_ACCESS_ERROR, ERROR_MESSAGE_ENCODING)).toString();
+		return new StringBuffer(contextPath).append(ServletPath.HOME)
+				.append(RedirectionManager.getMessageURLParam(Attribute.ERROR, Message.DIRECT_VIEW_ACCESS_ERROR))
+				.toString();
 	}
 
 	private void logInfoAboutUnauthorizedAccess(String uri) {

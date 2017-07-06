@@ -15,6 +15,7 @@ import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.dto.CredentialsDto;
 import ua.training.controller.session.SessionManager;
+import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
@@ -36,9 +37,10 @@ public class PostLoginCommand implements Command {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-	
+
 		if (SessionManager.isUserLoggedIn(session)) {
-			return ServletPath.HOME;
+			RedirectionManager.redirect(request, response, ServletPath.HOME);
+			return RedirectionManager.REDIRECTION;
 		}
 
 		validateUserInput(request);
@@ -46,7 +48,8 @@ public class PostLoginCommand implements Command {
 		if (errors.isEmpty()) {
 			if (userService.isUserWithCredentials(credentialsDto)) {
 				getUserFromDB(session);
-				return ServletPath.HOME;
+				RedirectionManager.redirect(request, response, ServletPath.HOME);
+				return RedirectionManager.REDIRECTION;
 			} else {
 				errors.add(Message.INVALID_CREDENTIALS);
 			}

@@ -1,8 +1,6 @@
 package ua.training.controller.filter;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,8 +17,8 @@ import org.apache.log4j.Logger;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.session.SessionManager;
+import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
-import ua.training.locale.MessageUtils;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
@@ -29,7 +27,6 @@ public class UrlUnAuthorizedAccessFilter implements Filter {
 
 	private final static Logger LOGGER = Logger.getLogger(UrlUnAuthorizedAccessFilter.class);
 	private static String UNAUTHORIZED_ACCESS = "Unauthorized access to the resource: ";
-	private static String ERROR_MESSAGE_ENCODING = "UTF-8";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -46,7 +43,8 @@ public class UrlUnAuthorizedAccessFilter implements Filter {
 
 		if (!isUserRegistered(user) || !isUserAuthorizedForResource(httpRequest.getRequestURI(), user)) {
 			logInfoAboutUnauthorizedAccess(httpRequest.getRequestURI());
-			httpResponse.sendRedirect(toHomePageWithErrorMessage(httpRequest.getContextPath()));
+			RedirectionManager.redirectWithParamMessage(httpRequest, httpResponse, ServletPath.HOME, Attribute.ERROR,
+					Message.UNAUTHORIZED_ACCESS_ERROR);
 			return;
 		}
 
@@ -79,14 +77,4 @@ public class UrlUnAuthorizedAccessFilter implements Filter {
 	private void logInfoAboutUnauthorizedAccess(String uri) {
 		LOGGER.info(UNAUTHORIZED_ACCESS + uri);
 	}
-
-	private String toHomePageWithErrorMessage(String contextPath) throws UnsupportedEncodingException {
-		return new StringBuffer(contextPath).append(ServletPath.HOME).append(getErrorMessageURLParam()).toString();
-	}
-
-	private String getErrorMessageURLParam() throws UnsupportedEncodingException {
-		return new StringBuffer(MessageUtils.INTERROGATION_MARK).append(Attribute.ERROR).append(MessageUtils.EQUALITY_SIGN)
-				.append(URLEncoder.encode(Message.UNAUTHORIZED_ACCESS_ERROR, ERROR_MESSAGE_ENCODING)).toString();
-	}
-
 }
