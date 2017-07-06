@@ -28,9 +28,9 @@ public class AuthorValidator implements Validator<Author> {
 	public List<String> validate(Author author) {
 		List<String> errors = new ArrayList<>();
 
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, author.getName(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, author.getSurname(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, author.getCountry(), errors);
+		fieldValidator.validateField(FieldValidatorKey.NAME, author.getName(), errors);
+		fieldValidator.validateField(FieldValidatorKey.SURNAME, author.getSurname(), errors);
+		fieldValidator.validateField(FieldValidatorKey.COUNTRY, author.getCountry(), errors);
 
 		return errors;
 	}

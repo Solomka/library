@@ -28,9 +28,9 @@ public class LibrarianValidator implements Validator<Librarian> {
 	public List<String> validate(Librarian librarian) {
 		List<String> errors = new ArrayList<>();
 
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, librarian.getName(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, librarian.getSurname(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, librarian.getPatronymic(), errors);
+		fieldValidator.validateField(FieldValidatorKey.NAME, librarian.getName(), errors);
+		fieldValidator.validateField(FieldValidatorKey.SURNAME, librarian.getSurname(), errors);
+		fieldValidator.validateField(FieldValidatorKey.PATRONYMIC, librarian.getPatronymic(), errors);
 
 		return errors;
 	}

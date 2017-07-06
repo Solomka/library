@@ -30,9 +30,9 @@ public class ReaderValidator implements Validator<Reader> {
 
 		fieldValidator.validateField(FieldValidatorKey.EMAIL, reader.getEmail(), errors);
 		fieldValidator.validateField(FieldValidatorKey.PASSWORD, reader.getPassword(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, reader.getName(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, reader.getSurname(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, reader.getPatronymic(), errors);
+		fieldValidator.validateField(FieldValidatorKey.NAME, reader.getName(), errors);
+		fieldValidator.validateField(FieldValidatorKey.SURNAME, reader.getSurname(), errors);
+		fieldValidator.validateField(FieldValidatorKey.PATRONYMIC, reader.getPatronymic(), errors);
 		fieldValidator.validateField(FieldValidatorKey.PHONE, reader.getPhone(), errors);
 		fieldValidator.validateField(FieldValidatorKey.ADDRESS, reader.getAddress(), errors);
 		fieldValidator.validateField(FieldValidatorKey.READER_CARD_NUMBER, reader.getReaderCardNumber(), errors);

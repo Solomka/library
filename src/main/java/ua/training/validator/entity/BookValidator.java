@@ -30,7 +30,7 @@ public class BookValidator implements Validator<Book> {
 
 		fieldValidator.validateField(FieldValidatorKey.ISBN, book.getIsbn(), errors);
 		fieldValidator.validateField(FieldValidatorKey.TITLE, book.getTitle(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PLAIN_TEXT, book.getPublisher(), errors);
+		fieldValidator.validateField(FieldValidatorKey.PUBLISHER, book.getPublisher(), errors);
 
 		return errors;
 	}
