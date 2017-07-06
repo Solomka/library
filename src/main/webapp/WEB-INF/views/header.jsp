@@ -18,49 +18,14 @@
 
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/resources/css/styles.css" />" />
-
-<!--  Bootstrap -->
-
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/resources/bootstrap-3.3.7/css/bootstrap.min.css" />" />
-<script type="text/javascript"
-	src="<c:url value="/resources/js/jquery-3.2.1.min.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="/resources/bootstrap-3.3.7/js/bootstrap.min.js"/>"></script>
-
-<!--  DataTables -->
-<!-- <link rel="stylesheet" type="text/css"
-	href="<c:url value="/resources/DataTables/datatables.min.css"/>" />
-<script type="text/javascript"
-	src="<c:url value="/resources/DataTables/datatables.min.js"/>"></script> -->
-
 <link rel="stylesheet"
 	href="<c:url value="/resources/font-awesome-4.7.0/css/font-awesome.min.css" />">
-
-<!--  Bootstrap -->
-<!-- <link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
-
-<!--  DataTables -->
-<!-- <script
-	src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css">
-
-<link
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	rel="stylesheet"> -->
-
 </head>
 
 <body>
-	<div class="container">
+	<div class="container main-container">
 
 		<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -96,21 +61,18 @@
 							<udt:user-data user="${user}" />
 						</p></li>
 				</c:if>
-				
-				   <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-globe"
-						aria-hidden="true"></i>
-                   ${sessionScope.locale.getLanguage()}
-                    <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                   <c:forEach items="${applicationScope.locales}" var="locale">
+
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-globe"
+						aria-hidden="true"></i> ${sessionScope.locale.getLanguage()} <span
+						class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<c:forEach items="${applicationScope.locales}" var="locale">
 							<c:set var="lang" value="${locale.getLanguage()}" />
 							<li><a
 								href="${pageContext.request.contextPath}/controller/locale?lang=${lang}">${lang.toUpperCase()}</a></li>
 						</c:forEach>
-                </ul>
-            </li>
+					</ul></li>
 				<c:choose>
 					<c:when test="${empty user}">
 						<li><a

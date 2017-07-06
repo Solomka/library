@@ -17,30 +17,29 @@
 
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/resources/css/styles.css" />" />
-
-<!--  Bootstrap -->
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/resources/bootstrap-3.3.7/css/bootstrap.min.css" />" />
-<script type="text/javascript"
-	src="<c:url value="/resources/js/jquery-3.2.1.min.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="/resources/bootstrap-3.3.7/js/bootstrap.min.js"/>"></script>
 </head>
 <body>
 	<div class="container-fluid " align="center">
 		<div class="row-fluid ">
-			
-				<div class=" error alert alert-danger ">
-					<strong> ${pageContext.errorData.statusCode}</strong><br /> <strong>
-						<fmt:message key="library.error.pageNotFoundError" bundle="${rb}" />
-					</strong>
-				</div>
-			
+
+			<div class=" error alert alert-danger ">
+				<strong> ${pageContext.errorData.statusCode}</strong><br /> <strong>
+					<fmt:message key="library.error.pageNotFoundError" bundle="${rb}" />
+				</strong>
+			</div>
+
 		</div>
-		<div class="row-fluid ">			
-				<a href="${pageContext.request.contextPath}/controller/">Back to home page</a>		
+		<div class="row-fluid ">
+			<a href="${pageContext.request.contextPath}/controller/">Back to
+				home page</a>
 		</div>
 
 	</div>
+	<script type="text/javascript"
+		src="<c:url value="/resources/js/jquery-3.2.1.min.js" />"></script>
+	<script type="text/javascript"
+		src="<c:url value="/resources/bootstrap-3.3.7/js/bootstrap.min.js"/>"></script>
 </body>
 </html>

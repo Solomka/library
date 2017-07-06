@@ -32,7 +32,7 @@
 		<div class="float-left">
 			${book.getTitle()}<br />
 			<c:forEach items="${book.getAuthors()}" var="author">
-						${author.getName()} ${author.getSurname()} <br />
+						${author.getName()} ${author.getSurname()}&nbsp;
 			</c:forEach>
 			<br />
 		</div>
