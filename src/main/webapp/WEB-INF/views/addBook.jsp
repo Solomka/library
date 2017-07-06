@@ -53,7 +53,18 @@
 									key="${availability.getLocalizedValue()}" bundle="${rb}" /></option>
 						</c:forEach>
 					</select>
-
+				</div>
+				
+				<div class="form-group">
+					<label for="authors"><fmt:message
+							key="library.authors" bundle="${rb}" /></label><br /> <select
+						name="authors" class="form-control" multiple>
+						<c:forEach items="${requestScope.authors}"
+							var="author">
+							<option value="${author.getId()}">
+									${author.getName()} ${author.getSurname()} </option>
+						</c:forEach>
+					</select>
 				</div>
 
 				<button type="submit" class="btn btn-default" id="submitButton">

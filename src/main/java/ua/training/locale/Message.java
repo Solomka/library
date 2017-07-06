@@ -12,6 +12,7 @@ public final class Message {
 	public static String DIRECT_VIEW_ACCESS_ERROR = "library.error.directViewAccessError";
 	public static String UNAUTHORIZED_ACCESS_ERROR = "library.error.authorizedAccessError";
 	public static String SUCCESS_BOOK_ADDITION = "library.success.addBook";
+	public static String BOOK_IS_NOT_FOUND = "library.error.bookIsNotFound";
 
 	public static String INVALID_TEXT_INPUT = "library.error.invalidTextInput";
 

@@ -37,6 +37,7 @@ public class PostAddBookCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		validateUserInput(request);
 
 		if (errors.isEmpty()) {
@@ -44,24 +45,38 @@ public class PostAddBookCommand implements Command {
 			return request.getContextPath() + request.getServletPath() + ServletPath.ALL_BOOKS
 					+ UrlParamMessageGenerator.getMessageURLParam(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
 		}
-	
+
 		addRequestAtrributes(request);
 		return Page.ADD_BOOK_VIEW;
 	}
 
 	private void validateUserInput(HttpServletRequest request) {
 
+		List<Author> bookAuthors = getBookAuthors(request);
+
 		book = new Book.Builder().setIsbn(request.getParameter(Attribute.ISBN))
 				.setTitle(request.getParameter(Attribute.TITLE)).setPublisher(request.getParameter(Attribute.PUBLISHER))
-				.setAvailability(Availability.forValue(request.getParameter(Attribute.AVAILABILITY))).build();
+				.setAvailability(Availability.forValue(request.getParameter(Attribute.AVAILABILITY)))
+				.setAuthors(bookAuthors).build();
 
 		errors = BookValidator.getInstance().validate(book);
 
 	}
 
+	private List<Author> getBookAuthors(HttpServletRequest request) {
+		String[] authorsIds = request.getParameterValues(Attribute.AUTHORS);
+		List<Author> bookAuthors = new ArrayList<>();
+
+		for (String authorId : authorsIds) {
+			bookAuthors.add(new Author.Builder().setId(new Long(authorId)).build());
+		}
+
+		return bookAuthors;
+	}
+
 	private void addRequestAtrributes(HttpServletRequest request) {
 		authors = authorService.getAllAuthors();
-		
+
 		request.setAttribute(Attribute.AVAILABILITIES, Availability.getValues());
 		request.setAttribute(Attribute.AUTHORS, authors);
 		request.setAttribute(Attribute.BOOK, book);

@@ -1,6 +1,5 @@
 package ua.training.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,29 +50,25 @@ public class BookService {
 	}
 
 	/*
-	public List<Book> getAllBooks() {
-		LOGGER.info("Get all books");
-		try (BookDao bookDao = daoFactory.createBookDao()) {
-			return bookDao.getAll();
-		}
-	}*/
-	
+	 * public List<Book> getAllBooks() { LOGGER.info("Get all books"); try
+	 * (BookDao bookDao = daoFactory.createBookDao()) { return bookDao.getAll();
+	 * } }
+	 */
+
 	public List<Book> getAllBooks() {
 		LOGGER.info("Get all books with authors");
 		try (DaoConnection connection = daoFactory.getConnection()) {
-			connection.begin();			
+			connection.begin();
 			BookDao bookDao = daoFactory.createBookDao(connection);
 			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
-			List<Book> books= bookDao.getAll();
-			for(Book book: books){
+			List<Book> books = bookDao.getAll();
+			for (Book book : books) {
 				book.setAuthors(authorDao.getBookAuthors(book.getId()));
 			}
 			connection.commit();
 			return books;
 		}
 	}
-	
-	
 
 	public Optional<Book> getBookById(Long id) {
 		LOGGER.info("Get book by id");
@@ -83,9 +78,13 @@ public class BookService {
 	}
 
 	public void createBook(Book book) {
-		LOGGER.info("Create book");
-		try (BookDao bookDao = daoFactory.createBookDao()) {
+		LOGGER.info("Create book with authors");
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();
+			BookDao bookDao = daoFactory.createBookDao(connection);
 			bookDao.create(book);
+			bookDao.saveBookAuthors(book);
+			connection.commit();
 		}
 
 	}
@@ -108,15 +107,31 @@ public class BookService {
 
 	public List<Book> searchBookByTitle(String title) {
 		LOGGER.info("Search book by title");
-		try (BookDao bookDao = daoFactory.createBookDao()) {
-			return bookDao.searchByTitle(title);
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();
+			BookDao bookDao = daoFactory.createBookDao(connection);
+			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
+			List<Book> books = bookDao.searchByTitle(title);
+			for (Book book : books) {
+				book.setAuthors(authorDao.getBookAuthors(book.getId()));
+			}
+			connection.commit();
+			return books;
 		}
 	}
 
-	public List<Book> searchBookByAuthorSurname(String authorSurname) {
+	public List<Book> searchBookByAuthorSurname(String author) {
 		LOGGER.info("Search book by author surname");
-		try (BookDao bookDao = daoFactory.createBookDao()) {
-			return bookDao.searchByAuthorSurname(authorSurname);
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();
+			BookDao bookDao = daoFactory.createBookDao(connection);
+			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
+			List<Book> books = bookDao.searchByAuthor(author);
+			for (Book book : books) {
+				book.setAuthors(authorDao.getBookAuthors(book.getId()));
+			}
+			connection.commit();
+			return books;
 		}
 	}
 
