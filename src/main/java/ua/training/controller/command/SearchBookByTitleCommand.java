@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
-import ua.training.controller.utils.UrlParamMessageGenerator;
+import ua.training.controller.redirect.RedirectManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.Book;
 import ua.training.model.service.BookService;
@@ -36,14 +36,14 @@ public class SearchBookByTitleCommand implements Command {
 
 		if (!errors.isEmpty()) {
 			return request.getContextPath() + request.getServletPath() + ServletPath.ALL_BOOKS
-					+ UrlParamMessageGenerator.getMessageURLParam(Attribute.ERROR, errors.get(0));
+					+ RedirectManager.getMessageURLParam(Attribute.ERROR, errors.get(0));
 		}
 
 		List<Book> books = bookService.searchBookByTitle(title);
 		
 		if (books.isEmpty()) {
 			return request.getContextPath() + request.getServletPath() + ServletPath.ALL_BOOKS
-					+ UrlParamMessageGenerator.getMessageURLParam(Attribute.ERROR, Message.BOOK_IS_NOT_FOUND);
+					+ RedirectManager.getMessageURLParam(Attribute.ERROR, Message.BOOK_IS_NOT_FOUND);
 
 		}
 

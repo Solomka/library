@@ -14,11 +14,11 @@ public final class Message {
 	public static String SUCCESS_BOOK_ADDITION = "library.success.addBook";
 	public static String BOOK_IS_NOT_FOUND = "library.error.bookIsNotFound";
 
-	public static String INVALID_NAME_INPUT = "library.error.invalidNameInput";
-	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurnameInput";
-	public static String INVALID_PATRONYMIC_INPUT = "library.error.invalidPatronymicInput";
-	public static String INVALID_PUBLISHER_INPUT = "library.error.invalidPublisherInput";
-	public static String INVALID_COUNTRY_INPUT = "library.error.invalidCountryInput";
+	public static String INVALID_NAME_INPUT = "library.error.invalidName";
+	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurname";
+	public static String INVALID_PATRONYMIC_INPUT = "library.error.invalidPatronymic";
+	public static String INVALID_PUBLISHER_INPUT = "library.error.invalidPublisher";
+	public static String INVALID_COUNTRY_INPUT = "library.error.invalidCountry";
 
 	public static String INVALID_EMAIL = "library.error.invalidEmail";
 	public static String INVALID_PASS = "library.error.invalidPass";

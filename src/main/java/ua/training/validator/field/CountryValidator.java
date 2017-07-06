@@ -11,10 +11,10 @@ public class CountryValidator extends FieldValidator {
 
 	}
 
-	private static final String PUBLISHER_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
+	private static final String COUNTRY_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
 
 	private static class Holder {
-		static final CountryValidator INSTANCE = new CountryValidator(FieldValidatorKey.PUBLISHER);
+		static final CountryValidator INSTANCE = new CountryValidator(FieldValidatorKey.COUNTRY);
 	}
 
 	public static CountryValidator getInstance() {
@@ -23,8 +23,8 @@ public class CountryValidator extends FieldValidator {
 
 	@Override
 	public void validateField(String fieldValue, List<String> errors) {
-		if (!fieldValue.matches(PUBLISHER_REGEX)) {
-			errors.add(Message.INVALID_PUBLISHER_INPUT);
+		if (!fieldValue.matches(COUNTRY_REGEX)) {
+			errors.add(Message.INVALID_COUNTRY_INPUT);
 		}
 
 	}

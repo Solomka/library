@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
-import ua.training.controller.utils.UrlParamMessageGenerator;
+import ua.training.controller.redirect.RedirectManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.Author;
 import ua.training.model.entity.Availability;
@@ -43,7 +43,7 @@ public class PostAddBookCommand implements Command {
 		if (errors.isEmpty()) {
 			bookService.createBook(book);
 			return request.getContextPath() + request.getServletPath() + ServletPath.ALL_BOOKS
-					+ UrlParamMessageGenerator.getMessageURLParam(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
+					+ RedirectManager.getMessageURLParam(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
 		}
 
 		addRequestAtrributes(request);
