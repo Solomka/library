@@ -22,6 +22,7 @@ public class JdbcAuthorDao implements AuthorDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcAuthorDao.class);
 
 	// sql
+	private static String CRAETE_AUTHOR = "INSERT INTO author (name, surname, country) VALUES (?, ?, ?)";
 	private static String GET_ALL_AUTHORS = "SELECT * FROM author";
 	private static String GET_BOOK_AUTHORS = "SELECT id_author, name, surname, country"
 			+ " FROM author JOIN book_author USING (id_author)" + " WHERE id_book=?";
@@ -73,8 +74,21 @@ public class JdbcAuthorDao implements AuthorDao {
 	}
 
 	@Override
-	public void create(Author e) {
-		// TODO Auto-generated method stub
+	public void create(Author author) {
+		try (PreparedStatement query = connection.prepareStatement(CRAETE_AUTHOR, Statement.RETURN_GENERATED_KEYS)) {
+			query.setString(1, author.getName());
+			query.setString(2, author.getSurname());
+			query.setString(3, author.getCountry());
+			query.executeUpdate();
+
+			ResultSet keys = query.getGeneratedKeys();
+			if (keys.next()) {
+				author.setId(keys.getLong(1));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcAuthorkDao create SQL error: " + author.toString(), e);
+			throw new ServerException(e);
+		}
 
 	}
 

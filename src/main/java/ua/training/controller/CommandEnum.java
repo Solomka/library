@@ -3,9 +3,11 @@ package ua.training.controller;
 import ua.training.controller.command.AllBooksCommand;
 import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
-import ua.training.controller.command.PageNotFoundCommand;
+import ua.training.controller.command.GetAddAuthorCommand;
 import ua.training.controller.command.GetAddBookCommand;
 import ua.training.controller.command.HomeCommand;
+import ua.training.controller.command.PageNotFoundCommand;
+import ua.training.controller.command.PostAddAuthorCommand;
 import ua.training.controller.command.PostAddBookCommand;
 import ua.training.controller.command.SearchBookByAuthorCommand;
 import ua.training.controller.command.SearchBookByTitleCommand;
@@ -63,46 +65,57 @@ enum CommandEnum {
 		}
 
 	},
-	BOOK_INSTANCES{
+	BOOK_INSTANCES {
 		{
 			this.key = "GET:bookInstances";
 			this.command = new BookInstancesCommand(BookService.getInstance());
 		}
 	},
-	
-	/*BOOK_AUTHORS{
-		{
-			this.key = "GET:bookAuthors";
-			this.command = new BookAuthorsCommand(AuthorService.getInstance());
-			
-		}
-	},*/
-	
-	GET_ADD_BOOK{
+
+	/*
+	 * BOOK_AUTHORS{ { this.key = "GET:bookAuthors"; this.command = new
+	 * BookAuthorsCommand(AuthorService.getInstance());
+	 * 
+	 * } },
+	 */
+
+	GET_ADD_BOOK {
 		{
 			this.key = "GET:librarian/addBook";
 			this.command = new GetAddBookCommand(AuthorService.getInstance());
 		}
 	},
-	POST_ADD_BOOK{
+	POST_ADD_BOOK {
 		{
 			this.key = "POST:librarian/addBook";
 			this.command = new PostAddBookCommand(BookService.getInstance(), AuthorService.getInstance());
 		}
 	},
-	SEARCH_BOOK_BY_TITLE{
+	SEARCH_BOOK_BY_TITLE {
 		{
 			this.key = "POST:searchBookByTitle";
 			this.command = new SearchBookByTitleCommand(BookService.getInstance());
 		}
 	},
-	SEARCH_BOOK_BY_AUTHOR{
+	SEARCH_BOOK_BY_AUTHOR {
 		{
 			this.key = "POST:searchBookByAuthor";
 			this.command = new SearchBookByAuthorCommand(BookService.getInstance());
 		}
+	},
+	GET_ADD_AUTHOR {
+		{
+			this.key = "GET:librarian/addAuthor";
+			this.command = new GetAddAuthorCommand();
+		}
+	},
+	POST_ADD_AUTHOR {
+		{
+			this.key = "POST:librarian/addAuthor";
+			this.command = new PostAddAuthorCommand();
+		}
 	};
-	
+
 	String key;
 	Command command;
 
@@ -114,7 +127,6 @@ enum CommandEnum {
 		return key;
 	}
 
-	
 	public static Command getCommand(String key) {
 		for (final CommandEnum command : CommandEnum.values()) {
 			if (command.getKey().equals(key)) {

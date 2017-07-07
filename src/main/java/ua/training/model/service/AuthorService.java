@@ -27,6 +27,13 @@ public class AuthorService {
 		return Holder.INSTANCE;
 	}
 
+	public void createAuthor(Author author) {
+		LOGGER.info("Create author: " + author);
+		try (AuthorDao authorDao = daoFactory.createAuthorDao()) {
+			authorDao.create(author);
+		}
+	}
+
 	public List<Author> getAllAuthors() {
 		LOGGER.info("Get all authors");
 		try (AuthorDao authorDao = daoFactory.createAuthorDao()) {

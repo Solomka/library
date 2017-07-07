@@ -66,7 +66,7 @@ public class BookService {
 	}
 
 	public void createBook(Book book) {
-		LOGGER.info("Create book with authors");
+		LOGGER.info("Create book with authors: " + book);
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();
 			BookDao bookDao = daoFactory.createBookDao(connection);
@@ -78,7 +78,7 @@ public class BookService {
 	}
 
 	public void updateBook(Book book) {
-		LOGGER.info("Update book");
+		LOGGER.info("Update book: " + book);
 		try (BookDao bookDao = daoFactory.createBookDao()) {
 			bookDao.update(book);
 		}
@@ -86,7 +86,7 @@ public class BookService {
 	}
 
 	public void deleteBook(Long id) {
-		LOGGER.info("Delete book");
+		LOGGER.info("Delete book: " + id);
 		try (BookDao bookDao = daoFactory.createBookDao()) {
 			bookDao.delete(id);
 		}

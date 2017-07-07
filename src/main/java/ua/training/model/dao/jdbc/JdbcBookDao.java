@@ -23,9 +23,9 @@ public class JdbcBookDao implements BookDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookDao.class);
 
 	// SQL queries
-	private static String GET_ALL_BOOKS = "SELECT * FROM book ORDER BY title";
-	private static String GET_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";
 	private static String CREATE_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
+	private static String GET_ALL_BOOKS = "SELECT * FROM book ORDER BY title";
+	private static String GET_BOOK_BY_ID = "SELECT * FROM book WHERE id_book=?";	
 	private static String SAVE_BOOK_AUTHORS = "INSERT INTO book_author (id_book, id_author) VALUES ( ?, ?)";
 	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, availability=? WHERE id_book=?";
 	private static String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
