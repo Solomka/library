@@ -11,7 +11,7 @@ public class PublisherValidator extends FieldValidator {
 
 	}
 
-	private static final String PUBLISHER_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
+	private static final String PUBLISHER_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s\\d’'-]{3,100}$";
 
 	private static class Holder {
 		static final PublisherValidator INSTANCE = new PublisherValidator(FieldValidatorKey.PUBLISHER);

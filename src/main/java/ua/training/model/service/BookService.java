@@ -19,7 +19,8 @@ public class BookService {
 
 	private DaoFactory daoFactory;
 
-	private BookService(DaoFactory daoFactory) {
+	//TODO: visibility :(
+	public BookService(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 

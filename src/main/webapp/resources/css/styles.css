@@ -8,14 +8,15 @@
 
 .main-container {
 	padding-bottom: 10%;
-	}
+}
 
 .footer {
 	width: 100%;
 	clear: both;
-	position: fixed;
+	height: 5%; 
+	position : absolute;
 	bottom: 0;
-}
+	}
 
 .error {
 	margin-top: 5%;
