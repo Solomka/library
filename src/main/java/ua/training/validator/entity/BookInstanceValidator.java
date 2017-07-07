@@ -28,7 +28,7 @@ public class BookInstanceValidator implements Validator<BookInstance> {
 	public List<String> validate(BookInstance bookInstance) {
 		List<String> errors = new ArrayList<>();
 
-		fieldValidator.validateField(FieldValidatorKey.EMAIL, bookInstance.getInventoryNumber(), errors);
+		fieldValidator.validateField(FieldValidatorKey.INVENTORY_NUMBER, bookInstance.getInventoryNumber(), errors);
 
 		return errors;
 	}

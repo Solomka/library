@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import ua.training.model.dao.AuthorDao;
 import ua.training.model.dao.BookDao;
-import ua.training.model.dao.BookInstancesDao;
+import ua.training.model.dao.BookInstanceDao;
 import ua.training.model.dao.DaoConnection;
 import ua.training.model.dao.DaoFactory;
 import ua.training.model.entity.Author;
@@ -73,7 +73,7 @@ public class BookServiceTest {
 		DaoConnection daoConnection = mock(DaoConnection.class);
 		BookDao bookDao = mock(BookDao.class);
 		AuthorDao authorDao = mock(AuthorDao.class);
-		BookInstancesDao bookInstancesDao = mock(BookInstancesDao.class);
+		BookInstanceDao bookInstancesDao = mock(BookInstanceDao.class);
 
 		Optional<Book> book = Optional.of(new Book.Builder().setIsbn("1111111111111").setTitle("Test Title1")
 				.setPublisher("Test Publisher1").setAvailability(Availability.SUBSCRIPTION).build());

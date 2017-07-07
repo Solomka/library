@@ -10,13 +10,16 @@ import ua.training.controller.command.HomeCommand;
 import ua.training.controller.command.PageNotFoundCommand;
 import ua.training.controller.command.PostAddAuthorCommand;
 import ua.training.controller.command.PostAddBookCommand;
+import ua.training.controller.command.PostAddBookInstanceCommand;
 import ua.training.controller.command.SearchBookByAuthorCommand;
 import ua.training.controller.command.SearchBookByTitleCommand;
 import ua.training.controller.command.auth.GetLoginCommand;
 import ua.training.controller.command.auth.LogoutCommand;
 import ua.training.controller.command.auth.PostLoginCommand;
 import ua.training.controller.command.i18n.ChangeLocaleCommand;
+import ua.training.model.dao.BookInstanceDao;
 import ua.training.model.service.AuthorService;
+import ua.training.model.service.BookInstanceService;
 import ua.training.model.service.BookService;
 import ua.training.model.service.UserService;
 
@@ -70,6 +73,12 @@ enum CommandEnum {
 		{
 			this.key = "GET:bookInstances";
 			this.command = new BookInstancesCommand(BookService.getInstance());
+		}
+	},
+	ADD_BOOK_INSTANCE{
+		{
+			this.key = "POST:addBookInstance";
+			this.command = new PostAddBookInstanceCommand(BookInstanceService.getInstance());
 		}
 	},
 

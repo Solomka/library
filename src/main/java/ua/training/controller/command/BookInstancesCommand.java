@@ -6,10 +6,16 @@ import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
+import ua.training.controller.constants.ServletPath;
+import ua.training.controller.session.SessionManager;
+import ua.training.controller.utils.RedirectionManager;
+import ua.training.locale.Message;
 import ua.training.model.entity.Book;
+import ua.training.model.entity.Role;
 import ua.training.model.service.BookService;
 
 public class BookInstancesCommand implements Command {
@@ -24,10 +30,25 @@ public class BookInstancesCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long bookId = Long.parseLong(request.getParameter(Attribute.ID_BOOK));
-		Optional<Book> book = bookService.getBookById(bookId);
+
+		Optional<Book> book = getBookDependingOnUserRole(request.getSession(), bookId);
+
+		if (book.get().getBookInstances().isEmpty()) {
+			RedirectionManager.redirectWithParamMessage(request, response, ServletPath.ALL_BOOKS, Attribute.ERROR,
+					Message.NO_AVAILABLE_BOOK_INSTANCES);
+			return RedirectionManager.REDIRECTION;
+		}
+
 		request.setAttribute(Attribute.BOOK, book.get());
 		return Page.BOOK_INSTANCES_VIEW;
 
 	}
 
+	private Optional<Book> getBookDependingOnUserRole(HttpSession session, Long bookId) {
+		if (SessionManager.getUserFromSession(session).getRole().equals(Role.LIBRARIAN)) {
+			return bookService.getBookById(bookId);
+		}
+		return bookService.getBookById(bookId);
+
+	}
 }

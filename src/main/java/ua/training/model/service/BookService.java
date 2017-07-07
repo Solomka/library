@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import ua.training.model.dao.AuthorDao;
 import ua.training.model.dao.BookDao;
-import ua.training.model.dao.BookInstancesDao;
+import ua.training.model.dao.BookInstanceDao;
 import ua.training.model.dao.DaoConnection;
 import ua.training.model.dao.DaoFactory;
 import ua.training.model.entity.Book;
@@ -38,7 +38,7 @@ public class BookService {
 			connection.begin();
 			BookDao bookDao = daoFactory.createBookDao(connection);
 			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
-			BookInstancesDao bookInstancesDao = daoFactory.createBookInstancesDao(connection);
+			BookInstanceDao bookInstancesDao = daoFactory.createBookInstancesDao(connection);
 
 			Optional<Book> book = bookDao.getById(bookId);
 			if (book.isPresent()) {

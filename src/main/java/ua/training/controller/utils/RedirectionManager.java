@@ -23,6 +23,13 @@ public final class RedirectionManager {
 				+ RedirectionManager.getMessageURLParam(paramName, paramValue));
 
 	}
+	
+	public static void redirectWithParamMessageAndBookId(HttpServletRequest request, HttpServletResponse response, String path,
+			String paramName, String paramValue, String id) throws UnsupportedEncodingException, IOException {
+		response.sendRedirect(RedirectionManager.generateResourcePath(request, path)
+				+ RedirectionManager.getMessageURLParam(paramName, paramValue)+ "&id_book="+id) ;
+
+	}
 
 	public static void redirect(HttpServletRequest request, HttpServletResponse response, String path)
 			throws IOException {

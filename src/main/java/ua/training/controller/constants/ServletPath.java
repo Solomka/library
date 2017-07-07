@@ -9,4 +9,5 @@ public final class ServletPath {
 	public static String HOME = "/";
 	public static String ALL_BOOKS = "/books";
 	public static String ALL_AUTHORS = "/librarian/authors";
+	public static String BOOK_INSTANCES = "/bookInstances";
 }

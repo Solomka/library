@@ -40,9 +40,9 @@ public abstract class DaoFactory {
 	// business level dao - can call methods from many dao classes
 	public abstract BookDao createBookDao(DaoConnection connection);
 	
-	public abstract BookInstancesDao createBookInstancesDao();
+	public abstract BookInstanceDao createBookInstancesDao();
 
-	public abstract BookInstancesDao createBookInstancesDao(DaoConnection connection);
+	public abstract BookInstanceDao createBookInstancesDao(DaoConnection connection);
 	
 	public abstract AuthorDao createAuthorDao();
 

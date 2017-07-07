@@ -14,9 +14,12 @@ public final class Message {
 	public static String UNAUTHORIZED_ACCESS_ERROR = "library.error.authorizedAccessError";
 	public static String SUCCESS_BOOK_ADDITION = "library.success.addBook";
 	public static String BOOK_IS_NOT_FOUND = "library.error.bookIsNotFound";
+	public static String NO_AVAILABLE_BOOK_INSTANCES = "library.error.noAvailableBookIntstances";
 	
-	public static final String SUCCESS_AUTHOR_ADDITION = "library.success.addAuthor";
-
+	public static String SUCCESS_AUTHOR_ADDITION = "library.success.addAuthor";
+	
+	public static String SUCCESS_BOOK_INSTANCE_ADDITION = "library.success.addBookInstance";
+	
 	public static String INVALID_NAME_INPUT = "library.error.invalidName";
 	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurname";
 	public static String INVALID_PATRONYMIC_INPUT = "library.error.invalidPatronymic";

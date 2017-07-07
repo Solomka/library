@@ -36,6 +36,8 @@ public final class Attribute {
 	public static String SURNAME = "surname";
 	public static String COUNTRY = "country";
 	
+	public static String INVENTORY_NUMBER = "inventoryNumber";
+	
 	
 	
 }
