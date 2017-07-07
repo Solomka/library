@@ -26,6 +26,7 @@ public final class Message {
 
 	public static String INVALID_ISBN = "library.error.invalidISBN";
 	public static String INVALID_TITLE = "library.error.invalidTitle";
+	public static  String INVALID_BOOK_AUTHORS_SELECTION = "library.error.invalidBookAuthorsSelection";
 
 	public static String INVALID_INVENTORY_NUMBER = "library.error.invalidIInventoryNumber";
 

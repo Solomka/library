@@ -1,7 +1,6 @@
 package ua.training.controller.command;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,8 +17,6 @@ public class GetAddBookCommand implements Command {
 
 	private AuthorService authorService;
 
-	private List<Author> authors = new ArrayList<>();
-
 	public GetAddBookCommand(AuthorService authorService) {
 		this.authorService = authorService;
 	}
@@ -27,15 +24,13 @@ public class GetAddBookCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		authors = authorService.getAllAuthors();
 
-		addRequestAtrributes(request);
-		return Page.ADD_BOOK_VIEW;
-	}
+		List<Author> authors = authorService.getAllAuthors();
 
-	private void addRequestAtrributes(HttpServletRequest request) {
 		request.setAttribute(Attribute.AVAILABILITIES, Availability.getValues());
 		request.setAttribute(Attribute.AUTHORS, authors);
+
+		return Page.ADD_BOOK_VIEW;
 	}
 
 }

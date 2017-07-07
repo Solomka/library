@@ -28,33 +28,20 @@ public class UserService {
 	public static UserService getInstance() {
 		return Holder.INSTANCE;
 	}
-	
-	public boolean isUserWithCredentials(CredentialsDto credentials) {
-		LOGGER.info(
-				"Check if user with credantials exists: " + credentials.getEmail() + ", " + credentials.getPassword());
+
+	public Optional<User> getUserByEmail(CredentialsDto credentials) {
+		LOGGER.info("Get user by emil: " + credentials.getEmail() + ", " + credentials.getPassword());
 		try (UserDao userDao = daoFactory.createUserDao()) {
 			Optional<User> user = userDao.getUserByEmail(credentials.getEmail());
-			
-			if (user.isPresent()) {
-				return PasswordHashing.getInstance().checkPassword(credentials.getPassword(), user.get().getSalt(),
-						user.get().getPassword());
+			if (user.isPresent() && isPasswordValid(credentials.getPassword(), user.get())) {
+				return user;
 			}
-			return false;
+			return Optional.empty();
 		}
 	}
 
-	
-	public Optional<User> getUserByEmail(String email) {
-		try (UserDao userDao = daoFactory.createUserDao()) {
-			// return userDao.getUserByLoginTest(login);
-			return userDao.getUserByEmail(email);
-		}
-
+	private boolean isPasswordValid(String password, User user) {
+		return PasswordHashing.getInstance().checkPassword(password, user.getSalt(), user.getPassword());
 	}
-
-	/*
-	 * public void userReturnBook(String login, Long bookId) { Optional<Reader>
-	 * reader = userDao.getUserByLogin(login); // business logic }
-	 */
 
 }

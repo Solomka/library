@@ -11,11 +11,10 @@ import ua.training.locale.MessageUtils;
 
 public final class RedirectionManager {
 
-	private static String MESSAGE_ENCODING = "UTF-8";
 	public static String REDIRECTION = "REDIRECTION";
+	private static String MESSAGE_ENCODING = "UTF-8";
 
 	private RedirectionManager() {
-
 	}
 
 	public static void redirectWithParamMessage(HttpServletRequest request, HttpServletResponse response, String path,
@@ -31,9 +30,9 @@ public final class RedirectionManager {
 	}
 
 	private static String generateResourcePath(HttpServletRequest request, String path) {
-		
-		String resourcePath = new StringBuffer(request.getContextPath()).append(request.getServletPath()).append(path).toString();
-		return resourcePath;
+		// String resourcePath = new
+		// StringBuffer(request.getContextPath()).append(request.getServletPath()).append(path).toString();
+		return new StringBuffer(request.getContextPath()).append(request.getServletPath()).append(path).toString();
 
 	}
 

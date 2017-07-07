@@ -29,10 +29,11 @@ public class JdbcBookDao implements BookDao {
 	private static String SAVE_BOOK_AUTHORS = "INSERT INTO book_author (id_book, id_author) VALUES ( ?, ?)";
 	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, availability=? WHERE id_book=?";
 	private static String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
-	private static String SEARCH_BOOK_BY_TITLE = "SELECT * FROM book WHERE LOWER(title) LIKE LOWER(?)";
+	private static String SEARCH_BOOK_BY_TITLE = "SELECT * FROM book WHERE LOWER(title) LIKE CONCAT('%', LOWER(?), '%')";
 	private static String SEARCH_BOOK_BY_AUTHOR_SURNAME = "SELECT book.id_book, book.isbn, book.title, book.publisher, book.availability"
-			+ "FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
-			+ "WHERE LOWER(author.surname) LIKE LOWER(?) OR LOWER(author.name) LIKE LOWER(?)";
+			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
+			+ " WHERE LOWER(author.surname) LIKE CONCAT('%', LOWER(?), '%') OR LOWER(author.name) LIKE CONCAT('%', LOWER(?), '%')"
+			+ " OR CONCAT(LOWER(author.name), ' ', LOWER(author.surname)) LIKE CONCAT('%', LOWER(?), '%')";
 
 	// DB table fields
 	private static String ID_BOOK = "id_book";
@@ -121,8 +122,8 @@ public class JdbcBookDao implements BookDao {
 			query.setString(1, book.getTitle());
 			query.setString(2, book.getIsbn());
 			query.setString(3, book.getPublisher());
-			query.setString(5, book.getAvailability().getValue());
-			query.setLong(6, book.getId());
+			query.setString(4, book.getAvailability().getValue());
+			query.setLong(5, book.getId());
 			query.executeUpdate();
 
 		} catch (SQLException e) {
@@ -146,7 +147,7 @@ public class JdbcBookDao implements BookDao {
 	public List<Book> searchByTitle(String title) {
 		List<Book> books = new ArrayList<>();
 		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_TITLE)) {
-			query.setString(1, generateLikeQueryParam(title));
+			query.setString(1, title);
 			ResultSet resultSet = query.executeQuery();
 			while (resultSet.next()) {
 				books.add(extractBookFromResultSet(resultSet));
@@ -163,7 +164,9 @@ public class JdbcBookDao implements BookDao {
 		List<Book> books = new ArrayList<>();
 
 		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_AUTHOR_SURNAME)) {
-			query.setString(1, generateLikeQueryParam(authorSurname));
+			query.setString(1, authorSurname);
+			query.setString(2, authorSurname);
+			query.setString(3, authorSurname);
 			ResultSet resultSet = query.executeQuery();
 			while (resultSet.next()) {
 				books.add(extractBookFromResultSet(resultSet));
@@ -186,7 +189,7 @@ public class JdbcBookDao implements BookDao {
 			}
 		}
 	}
-	
+
 	@Override
 	public void saveBookAuthors(Book book) {
 		List<Author> authors = book.getAuthors();
@@ -211,10 +214,5 @@ public class JdbcBookDao implements BookDao {
 				.setTitle(resultSet.getString(TITLE)).setPublisher(resultSet.getString(PUBLISHER))
 				.setAvailability(Availability.forValue(resultSet.getString(AVAILABILITY))).build();
 	}
-	
-	private String generateLikeQueryParam(String value){
-		return "%" + value + "%";
-	}
 
-	
 }

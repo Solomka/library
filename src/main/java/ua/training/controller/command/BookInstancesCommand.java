@@ -13,10 +13,10 @@ import ua.training.model.entity.Book;
 import ua.training.model.service.BookService;
 
 public class BookInstancesCommand implements Command {
-	
+
 	private BookService bookService;
-	
-	public BookInstancesCommand(BookService bookService){
+
+	public BookInstancesCommand(BookService bookService) {
 		this.bookService = bookService;
 	}
 
@@ -24,14 +24,10 @@ public class BookInstancesCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long bookId = Long.parseLong(request.getParameter(Attribute.ID_BOOK));
-		Optional<Book> book = bookService.getBook(bookId);
-		if(book.isPresent()){
-			request.setAttribute(Attribute.BOOK, book.get());
-			return Page.BOOK_INSTANCES_VIEW;
-		}else{
-			return Page.ALL_BOOKS_VIEW;
-		}
-		
+		Optional<Book> book = bookService.getBookById(bookId);
+		request.setAttribute(Attribute.BOOK, book.get());
+		return Page.BOOK_INSTANCES_VIEW;
+
 	}
 
 }

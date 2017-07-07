@@ -31,7 +31,7 @@ public class BookService {
 		return Holder.INSTANCE;
 	}
 
-	public Optional<Book> getBook(Long bookId) {
+	public Optional<Book> getBookById(Long bookId) {
 		LOGGER.info("Get book with authors and instances: " + bookId);
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();
@@ -49,12 +49,6 @@ public class BookService {
 		}
 	}
 
-	/*
-	 * public List<Book> getAllBooks() { LOGGER.info("Get all books"); try
-	 * (BookDao bookDao = daoFactory.createBookDao()) { return bookDao.getAll();
-	 * } }
-	 */
-
 	public List<Book> getAllBooks() {
 		LOGGER.info("Get all books with authors");
 		try (DaoConnection connection = daoFactory.getConnection()) {
@@ -67,13 +61,6 @@ public class BookService {
 			}
 			connection.commit();
 			return books;
-		}
-	}
-
-	public Optional<Book> getBookById(Long id) {
-		LOGGER.info("Get book by id");
-		try (BookDao bookDao = daoFactory.createBookDao()) {
-			return bookDao.getById(id);
 		}
 	}
 
@@ -120,7 +107,7 @@ public class BookService {
 		}
 	}
 
-	public List<Book> searchBookByAuthorSurname(String author) {
+	public List<Book> searchBookByAuthor(String author) {
 		LOGGER.info("Search book by author surname");
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();

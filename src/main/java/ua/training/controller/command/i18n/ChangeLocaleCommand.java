@@ -23,7 +23,6 @@ public class ChangeLocaleCommand implements Command {
 		Locale chosenLocale = AppLocale.forValue(selectedLanguage);
 		
 		request.getSession().setAttribute(Attribute.LOCALE, chosenLocale);
-		System.out.println("CHOSEN LOCALE: " + chosenLocale);
 		MessageLocale.setResourceBundleLocale(chosenLocale);
 	}
 }

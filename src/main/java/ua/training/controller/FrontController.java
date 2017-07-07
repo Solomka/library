@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 import ua.training.controller.command.i18n.AppLocale;
 import ua.training.controller.constants.Attribute;
-import ua.training.controller.constants.Page;
+import ua.training.controller.utils.CommandKeyGenerator;
 import ua.training.controller.utils.RedirectionManager;
 
 /**
@@ -53,19 +53,12 @@ public class FrontController extends HttpServlet {
 		processRequest(req, resp);
 	}
 
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		super.doDelete(req, resp);
-		processRequest(req, resp);
-	}
-
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
 		String resultRedirectResource = CommandFactory.getCommand(commandKey).execute(request, response);
 		if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
-			System.out.println("FORWARD");
 			request.getRequestDispatcher(resultRedirectResource).forward(request, response);
 		}
 

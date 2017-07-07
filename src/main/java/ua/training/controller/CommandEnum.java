@@ -7,6 +7,7 @@ import ua.training.controller.command.PageNotFoundCommand;
 import ua.training.controller.command.GetAddBookCommand;
 import ua.training.controller.command.HomeCommand;
 import ua.training.controller.command.PostAddBookCommand;
+import ua.training.controller.command.SearchBookByAuthorCommand;
 import ua.training.controller.command.SearchBookByTitleCommand;
 import ua.training.controller.command.auth.GetLoginCommand;
 import ua.training.controller.command.auth.LogoutCommand;
@@ -93,6 +94,12 @@ enum CommandEnum {
 		{
 			this.key = "POST:searchBookByTitle";
 			this.command = new SearchBookByTitleCommand(BookService.getInstance());
+		}
+	},
+	SEARCH_BOOK_BY_AUTHOR{
+		{
+			this.key = "POST:searchBookByAuthor";
+			this.command = new SearchBookByAuthorCommand(BookService.getInstance());
 		}
 	};
 	

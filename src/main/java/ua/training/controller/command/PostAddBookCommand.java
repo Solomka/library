@@ -25,10 +25,6 @@ public class PostAddBookCommand implements Command {
 	private BookService bookService;
 	private AuthorService authorService;
 
-	private List<Author> authors = new ArrayList<>();
-	private List<String> errors = new ArrayList<>();
-	private Book book;
-
 	public PostAddBookCommand(BookService bookService, AuthorService authorService) {
 		this.bookService = bookService;
 		this.authorService = authorService;
@@ -38,7 +34,9 @@ public class PostAddBookCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		validateUserInput(request);
+		Book book = getUserInput(request);
+		List<String> errors = validateUserInput(book);
+		checkBookAuthorsSelection(request, book, errors);
 
 		if (errors.isEmpty()) {
 			bookService.createBook(book);
@@ -47,37 +45,41 @@ public class PostAddBookCommand implements Command {
 			return RedirectionManager.REDIRECTION;
 		}
 
-		addRequestAtrributes(request);
+		addRequestAtrributes(request, book, errors);
 		return Page.ADD_BOOK_VIEW;
 	}
 
-	private void validateUserInput(HttpServletRequest request) {
-
-		List<Author> bookAuthors = getBookAuthors(request);
-
-		book = new Book.Builder().setIsbn(request.getParameter(Attribute.ISBN))
+	private Book getUserInput(HttpServletRequest request) {
+		return new Book.Builder().setIsbn(request.getParameter(Attribute.ISBN))
 				.setTitle(request.getParameter(Attribute.TITLE)).setPublisher(request.getParameter(Attribute.PUBLISHER))
-				.setAvailability(Availability.forValue(request.getParameter(Attribute.AVAILABILITY)))
-				.setAuthors(bookAuthors).build();
+				.setAvailability(Availability.forValue(request.getParameter(Attribute.AVAILABILITY))).build();
+	}
 
-		errors = BookValidator.getInstance().validate(book);
+	private List<String> validateUserInput(Book book) {
+		return BookValidator.getInstance().validate(book);
+	}
+
+	private void checkBookAuthorsSelection(HttpServletRequest request, Book book, List<String> errors) {
+		String[] authorsIds = request.getParameterValues(Attribute.AUTHORS);
+		if (authorsIds == null) {
+			errors.add(Message.INVALID_BOOK_AUTHORS_SELECTION);
+		} else {
+			book.setAuthors(getBookAuthors(authorsIds));
+		}
 
 	}
 
-	private List<Author> getBookAuthors(HttpServletRequest request) {
-		String[] authorsIds = request.getParameterValues(Attribute.AUTHORS);
+	private List<Author> getBookAuthors(String[] authorsIds) {
 		List<Author> bookAuthors = new ArrayList<>();
 
 		for (String authorId : authorsIds) {
 			bookAuthors.add(new Author.Builder().setId(new Long(authorId)).build());
 		}
-
 		return bookAuthors;
 	}
 
-	private void addRequestAtrributes(HttpServletRequest request) {
-		authors = authorService.getAllAuthors();
-
+	private void addRequestAtrributes(HttpServletRequest request, Book book, List<String> errors) {
+		List<Author> authors = authorService.getAllAuthors();
 		request.setAttribute(Attribute.AVAILABILITIES, Availability.getValues());
 		request.setAttribute(Attribute.AUTHORS, authors);
 		request.setAttribute(Attribute.BOOK, book);

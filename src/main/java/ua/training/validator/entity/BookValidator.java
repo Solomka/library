@@ -11,7 +11,7 @@ import ua.training.validator.field.FieldValidatorsChainGenerator;
 public class BookValidator implements Validator<Book> {
 
 	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
-	
+
 	private BookValidator() {
 
 	}

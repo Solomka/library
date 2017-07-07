@@ -30,6 +30,7 @@ public final class Attribute {
 	public static String TITLE = "title";
 	public static String PUBLISHER = "publisher";	
 	public static String AVAILABILITY = "availability";
+	public static String AUTHOR = "author";
 	
 	
 }

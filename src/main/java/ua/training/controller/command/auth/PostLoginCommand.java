@@ -1,8 +1,8 @@
 package ua.training.controller.command.auth;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +25,6 @@ public class PostLoginCommand implements Command {
 
 	private UserService userService;
 
-	private CredentialsDto credentialsDto;
-	private List<String> errors = new ArrayList<>();
-
 	public PostLoginCommand(UserService userService) {
 		this.userService = userService;
 	}
@@ -43,37 +40,35 @@ public class PostLoginCommand implements Command {
 			return RedirectionManager.REDIRECTION;
 		}
 
-		validateUserInput(request);
+		CredentialsDto credentialsDto = getUserInput(request);
+		List<String> errors = validateUserInput(credentialsDto);
 
 		if (!errors.isEmpty()) {
-			addRequestAtrributes(request);
+			addRequestAtrributes(request, credentialsDto, errors);
 			return Page.LOGIN_VIEW;
 		}
 
-		if (userService.isUserWithCredentials(credentialsDto)) {
-			getUserFromDB(session);
+		Optional<User> user = userService.getUserByEmail(credentialsDto);
+		if (user.isPresent()) {
+			SessionManager.addUserToSession(session, user.get());
 			RedirectionManager.redirect(request, response, ServletPath.HOME);
 			return RedirectionManager.REDIRECTION;
 		}
-
 		errors.add(Message.INVALID_CREDENTIALS);
+
+		addRequestAtrributes(request, credentialsDto, errors);
 		return Page.LOGIN_VIEW;
-
 	}
 
-	private void validateUserInput(HttpServletRequest request) {
-		credentialsDto = new CredentialsDto(request.getParameter(Attribute.EMAIL),
-				request.getParameter(Attribute.PASSWORD));
-
-		errors = CredentialsValidator.getInstance().validate(credentialsDto);
+	private CredentialsDto getUserInput(HttpServletRequest request) {
+		return new CredentialsDto(request.getParameter(Attribute.EMAIL), request.getParameter(Attribute.PASSWORD));
 	}
 
-	private void getUserFromDB(HttpSession session) {
-		User user = userService.getUserByEmail(credentialsDto.getEmail()).get();
-		SessionManager.addUserToSession(session, user);
+	private List<String> validateUserInput(CredentialsDto credentialsDto) {
+		return CredentialsValidator.getInstance().validate(credentialsDto);
 	}
 
-	private void addRequestAtrributes(HttpServletRequest request) {
+	private void addRequestAtrributes(HttpServletRequest request, CredentialsDto credentialsDto, List<String> errors) {
 		request.setAttribute(Attribute.LOGIN_USER, credentialsDto);
 		request.setAttribute(Attribute.ERRORS, errors);
 	}
