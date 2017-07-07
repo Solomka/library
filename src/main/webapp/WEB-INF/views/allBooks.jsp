@@ -126,8 +126,8 @@
 				<c:forEach items="${books}" var="book" varStatus="status">
 					<tr>
 						<td>${status.index + 1}</td>
-						<td>${book.isbn}</td>
-						<td>${book.title}</td>
+						<td>${book.getIsbn()}</td>
+						<td>${book.getTitle()}</td>
 						<td><c:forEach items="${book.getAuthors()}" var="author">
 						${author.getName()} ${author.getSurname()}<br />
 							</c:forEach></td>

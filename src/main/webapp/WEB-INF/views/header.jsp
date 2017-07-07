@@ -40,7 +40,7 @@
 							key="library.books" bundle="${rb}" /></a></li>
 				<c:if test="${not empty user}">
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">
-						<li><a href="${pageContext.request.contextPath}/controller/"><fmt:message
+						<li><a href="${pageContext.request.contextPath}/controller/librarian/authors"><fmt:message
 									key="library.authors" bundle="${rb}" /></a></li>
 					</c:if>
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">

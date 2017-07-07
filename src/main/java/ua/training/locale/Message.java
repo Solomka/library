@@ -2,6 +2,7 @@ package ua.training.locale;
 
 public final class Message {
 
+	
 	private Message() {
 
 	}
@@ -13,6 +14,8 @@ public final class Message {
 	public static String UNAUTHORIZED_ACCESS_ERROR = "library.error.authorizedAccessError";
 	public static String SUCCESS_BOOK_ADDITION = "library.success.addBook";
 	public static String BOOK_IS_NOT_FOUND = "library.error.bookIsNotFound";
+	
+	public static final String SUCCESS_AUTHOR_ADDITION = "library.success.addAuthor";
 
 	public static String INVALID_NAME_INPUT = "library.error.invalidName";
 	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurname";

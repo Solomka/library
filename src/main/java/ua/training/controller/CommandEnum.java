@@ -1,5 +1,6 @@
 package ua.training.controller;
 
+import ua.training.controller.command.AllAuthorsCommand;
 import ua.training.controller.command.AllBooksCommand;
 import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
@@ -103,6 +104,12 @@ enum CommandEnum {
 			this.command = new SearchBookByAuthorCommand(BookService.getInstance());
 		}
 	},
+	ALL_AUTHORS{
+		{
+			this.key = "GET:librarian/authors";
+			this.command = new AllAuthorsCommand(AuthorService.getInstance());
+		}
+	}, 
 	GET_ADD_AUTHOR {
 		{
 			this.key = "GET:librarian/addAuthor";
@@ -112,7 +119,7 @@ enum CommandEnum {
 	POST_ADD_AUTHOR {
 		{
 			this.key = "POST:librarian/addAuthor";
-			this.command = new PostAddAuthorCommand();
+			this.command = new PostAddAuthorCommand(AuthorService.getInstance());
 		}
 	};
 

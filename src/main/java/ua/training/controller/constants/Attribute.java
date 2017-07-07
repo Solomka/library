@@ -32,5 +32,10 @@ public final class Attribute {
 	public static String AVAILABILITY = "availability";
 	public static String AUTHOR = "author";
 	
+	public static String NAME = "name";
+	public static String SURNAME = "surname";
+	public static String COUNTRY = "country";
+	
+	
 	
 }
