@@ -2,6 +2,7 @@ package ua.training.controller.constants;
 
 public final class Attribute {
 
+	
 	private Attribute() {
 
 	}
@@ -15,13 +16,14 @@ public final class Attribute {
 	public static String LANG = "lang";
 	public static String USER = "user";
 
-	public static String LOGIN_USER = "login_user";
+	public static String LOGIN_USER = "loginUser";
 	public static String EMAIL = "email";
 	public static String PASSWORD = "password";
 
 	public static String BOOKS = "books";
 	public static String AVAILABILITIES = "availabilities";
 	public static String AUTHORS = "authors";
+	public static String READERS = "readers";
 	
 	public static String BOOK = "book";
 	public static String BOOK_AUTHORS = "bookAuthors";
@@ -30,14 +32,17 @@ public final class Attribute {
 	public static String TITLE = "title";
 	public static String PUBLISHER = "publisher";	
 	public static String AVAILABILITY = "availability";
-	public static String AUTHOR = "author";
-	
-	public static String NAME = "name";
-	public static String SURNAME = "surname";
-	public static String COUNTRY = "country";
 	
 	public static String INVENTORY_NUMBER = "inventoryNumber";
 	
+	public static String AUTHOR = "author";	
+	public static String NAME = "name";
+	public static String SURNAME = "surname";
+	public static String COUNTRY = "country";	
 	
-	
+	public static String READER = "reader";
+	public static String READER_CARD_NUMBER  = "readerCardNumber";
+	public static String PATRONYMIC = "patronymic";
+	public static String PHONE = "phone";
+	public static String ADDRESS = "address";	
 }

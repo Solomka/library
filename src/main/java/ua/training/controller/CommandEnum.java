@@ -2,22 +2,26 @@ package ua.training.controller;
 
 import ua.training.controller.command.AllAuthorsCommand;
 import ua.training.controller.command.AllBooksCommand;
+import ua.training.controller.command.AllReadersCommand;
 import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
 import ua.training.controller.command.GetAddAuthorCommand;
 import ua.training.controller.command.GetAddBookCommand;
+import ua.training.controller.command.GetAddReaderCommand;
+import ua.training.controller.command.GetChangePasswordCommand;
 import ua.training.controller.command.HomeCommand;
 import ua.training.controller.command.PageNotFoundCommand;
 import ua.training.controller.command.PostAddAuthorCommand;
 import ua.training.controller.command.PostAddBookCommand;
 import ua.training.controller.command.PostAddBookInstanceCommand;
+import ua.training.controller.command.PostAddReaderCommand;
+import ua.training.controller.command.PostChangePasswordCommand;
 import ua.training.controller.command.SearchBookByAuthorCommand;
 import ua.training.controller.command.SearchBookByTitleCommand;
 import ua.training.controller.command.auth.GetLoginCommand;
 import ua.training.controller.command.auth.LogoutCommand;
 import ua.training.controller.command.auth.PostLoginCommand;
 import ua.training.controller.command.i18n.ChangeLocaleCommand;
-import ua.training.model.dao.BookInstanceDao;
 import ua.training.model.service.AuthorService;
 import ua.training.model.service.BookInstanceService;
 import ua.training.model.service.BookService;
@@ -75,20 +79,12 @@ enum CommandEnum {
 			this.command = new BookInstancesCommand(BookService.getInstance());
 		}
 	},
-	ADD_BOOK_INSTANCE{
+	ADD_BOOK_INSTANCE {
 		{
 			this.key = "POST:addBookInstance";
 			this.command = new PostAddBookInstanceCommand(BookInstanceService.getInstance());
 		}
 	},
-
-	/*
-	 * BOOK_AUTHORS{ { this.key = "GET:bookAuthors"; this.command = new
-	 * BookAuthorsCommand(AuthorService.getInstance());
-	 * 
-	 * } },
-	 */
-
 	GET_ADD_BOOK {
 		{
 			this.key = "GET:librarian/addBook";
@@ -113,12 +109,12 @@ enum CommandEnum {
 			this.command = new SearchBookByAuthorCommand(BookService.getInstance());
 		}
 	},
-	ALL_AUTHORS{
+	ALL_AUTHORS {
 		{
 			this.key = "GET:librarian/authors";
 			this.command = new AllAuthorsCommand(AuthorService.getInstance());
 		}
-	}, 
+	},
 	GET_ADD_AUTHOR {
 		{
 			this.key = "GET:librarian/addAuthor";
@@ -129,6 +125,36 @@ enum CommandEnum {
 		{
 			this.key = "POST:librarian/addAuthor";
 			this.command = new PostAddAuthorCommand(AuthorService.getInstance());
+		}
+	},
+	ALL_READERS {
+		{
+			this.key = "GET:librarian/readers";
+			this.command = new AllReadersCommand(UserService.getInstance());
+		}
+	},
+	GET_ADD_READER {
+		{
+			this.key = "GET:librarian/addReader";
+			this.command = new GetAddReaderCommand();
+		}
+	},
+	POST_ADD_READER {
+		{
+			this.key = "POST:librarian/addReader";
+			this.command = new PostAddReaderCommand(UserService.getInstance());
+		}
+	},
+	GET_CHANGE_PASSWORD {
+		{
+			this.key = "GET:reader/changePassword";
+			this.command = new GetChangePasswordCommand();
+		}
+	},
+	POST_CHANGE_PASSWORD {
+		{
+			this.key = "POST:reader/changePassword";
+			this.command = new PostChangePasswordCommand(UserService.getInstance());
 		}
 	};
 

@@ -1,7 +1,6 @@
 package ua.training.locale;
 
-public final class Message {
-
+public final class Message {	
 	
 	private Message() {
 
@@ -17,7 +16,7 @@ public final class Message {
 	public static String NO_AVAILABLE_BOOK_INSTANCES = "library.error.noAvailableBookIntstances";
 	
 	public static String SUCCESS_AUTHOR_ADDITION = "library.success.addAuthor";
-	
+	public static String SUCCESS_READER_ADDITION = "library.success.addReader";
 	public static String SUCCESS_BOOK_INSTANCE_ADDITION = "library.success.addBookInstance";
 	
 	public static String INVALID_NAME_INPUT = "library.error.invalidName";

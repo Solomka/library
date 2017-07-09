@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +16,7 @@ import ua.training.exception.ServerException;
 import ua.training.locale.Message;
 import ua.training.locale.MessageLocale;
 import ua.training.model.dao.UserDao;
+import ua.training.model.entity.Book;
 import ua.training.model.entity.Librarian;
 import ua.training.model.entity.Reader;
 import ua.training.model.entity.Role;
@@ -23,6 +26,11 @@ public class JdbcUserDao implements UserDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcUserDao.class);
 	
+	private static String GET_ALL_READERS = "SELECT id_user, email, password, role, salt, surname, name, patronymic, phone, address, reader_card_number"
+			+ " FROM users JOIN reader ON users.id_user = reader.id_reader ORDER BY surname";
+	private static String SEARCH_READER_BY_READERD_CARD_NUMBER = "SELECT id_user, email, surname, name, patronymic, phone, address, reader_card_number"
+			+ " FROM users JOIN reader ON users.id_user = reader.id_reader WHERE reader_card_number=?";
+	private static String CHANGE_READER_PASSWORD = "UPDATE users SET password=?, SET salt=? WHERE id_user=?";
 	private static String SELECT_USER_BY_ID = "SELECT *"
 			+ " FROM (SELECT id_user, email, password, role, salt, reader.name,"
 			+ " reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
@@ -49,11 +57,14 @@ public class JdbcUserDao implements UserDao {
 			+ " AS tb"
 			+ " WHERE email=?";
 	
+	private static String CREATE_USER = "INSERT INTO users (email, password, role, salt) VALUES (?, ?, ?, ?)";
+	private static String CREATE_READER = "INSERT INTO reader (id_reader, name, surname, patronymic, phone, address, reader_card_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static String CREATE_LIBRARIAN = "INSERT INTO librarian (id_librarian, name, surname, patronymic) VALUES (?, ?, ?, ?)";
 	private static String UPDATE_READER ="UPDATE users JOIN reader ON users.id_user = reader.id_reader"
-			+ " SET users.email=?, users.password=?, reader.name=?, reader.surname=?, reader.patronymic=?, reader.phone=?, reader.address=?, reader.reader_card_number?"
+			+ " SET users.email=?, users.password=?, users.salt=?, reader.name=?, reader.surname=?, reader.patronymic=?, reader.phone=?, reader.address=?, reader.reader_card_number=?"
 			+ " WHERE id_user=? ";
 	private static  String UPDATE_LIBRARIAN = "UPDATE users JOIN librarian ON users.is_user = librarian.id_librarian"
-			+ " SET users.email=?, users.password=?, librarian.name=?, librarian.surname=?, librarian.patronymic=?"
+			+ " SET users.email=?, users.password=?, users.salt=?, librarian.name=?, librarian.surname=?, librarian.patronymic=?"
 			+ " WHERE id_user=?";
 	
 	private static String DELETE_USER = "DELETE FROM users WHERE id_user=?";
@@ -97,23 +108,50 @@ public class JdbcUserDao implements UserDao {
 	}
 
 	@Override
-	public Optional<User> getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public List<User> getAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public void create(User e) {
-		// TODO Auto-generated method stub
+	public List<Reader> getAllReaders() {
+		List<Reader> readers = new ArrayList<>();
 
+		try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL_READERS)) {
+			while (resultSet.next()) {
+				readers.add(extractReaderFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcUserDao getAllReaders SQL error", e);
+			throw new ServerException(e);
+		}
+		return readers;
 	}
+	
+	@Override
+	public Optional<Reader> searchByReaderCardNumber(String readerCardNumber) {
+		Optional<Reader> reader = Optional.empty();
 
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_READER_BY_READERD_CARD_NUMBER)) {
+			query.setString(1, readerCardNumber);
+			
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				reader = Optional.of(extractReaderFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcUserDao searchByReaderCardNumber SQL error: " + readerCardNumber, e);
+			throw new ServerException(e);
+		}
+		return reader;
+	}
+	
+	@Override
+	public Optional<User> getById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}	
+	
 	@Override
 	public <T extends User> Optional<T> getUserById(Long id) {
 		Optional<T> user = Optional.empty();
@@ -129,15 +167,84 @@ public class JdbcUserDao implements UserDao {
 		}
 		return user;
 	}	
+	
+	@Override
+	public <T extends User> Optional<T> getUserByEmail(String email) {
+		Optional<T> user = Optional.empty();
+		try (PreparedStatement query = connection.prepareStatement(SELECT_USER_BY_EMAIL)) {
+			query.setString(1, email);
+			ResultSet resultSet = query.executeQuery();
+			if (resultSet.next()) {
+				user = Optional.of(extractUserFromResultSet(resultSet));
+			}
+		} catch (Exception e) {
+			LOGGER.error("JdbcUserDao getUserByEmail SQL error: " + email, e);
+			throw new ServerException(e);
+		}
+		return user;
+	}
+	
+	@Override
+	public void create(User user) {
+		try (PreparedStatement query = connection.prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS)) {
+			query.setString(1, user.getEmail());
+			query.setString(2, user.getPassword());
+			query.setString(3, user.getRole().getValue());
+			query.setBytes(4, user.getSalt());
+			query.executeUpdate();
+
+			ResultSet keys = query.getGeneratedKeys();
+			if (keys.next()) {
+				user.setId(keys.getLong(1));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcUserDao create SQL error: " + user.toString(), e);
+			throw new ServerException(e);
+		}
+	}
+	
+	@Override
+	public void createReader(Reader reader) {
+		try (PreparedStatement query = connection.prepareStatement(CREATE_READER)) {
+			query.setLong(1, reader.getId());
+			query.setString(2, reader.getName());
+			query.setString(3, reader.getSurname());
+			query.setString(4, reader.getPatronymic());
+			query.setString(5, reader.getPhone());
+			query.setString(6, reader.getAddress());
+			query.setString(7, reader.getReaderCardNumber());
+			query.executeUpdate();			
+		} catch (SQLException e) {
+			LOGGER.error("JdbcUserDao create reader SQL error: " + reader.toString(), e);
+			throw new ServerException(e);
+		}		
+	}
+
+	@Override
+	public void createLibrarian(Librarian librarian) {
+		try (PreparedStatement query = connection.prepareStatement(CREATE_LIBRARIAN)) {
+			query.setLong(1,librarian.getId());
+			query.setString(2,librarian.getName());
+			query.setString(3,librarian.getSurname());
+			query.setString(4,librarian.getPatronymic());
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcUserDao create librarian SQL error: " + librarian.toString(), e);
+			throw new ServerException(e);
+		}		
+	}	
+
+	
 
 	@Override
 	public void update(User user) {
-		if(user.getRole().equals(Role.LIBRARIAN)){
+		if(isLibrarian(user)){
 			Librarian librarian = (Librarian) user;
 			try (PreparedStatement query = connection.prepareStatement(UPDATE_LIBRARIAN)) {
 				query.setString(1, librarian.getEmail());
 				query.setString(2, librarian.getPassword());
-				query.setString(3, librarian.getName());
+				query.setBytes(3, librarian.getSalt());
+				query.setString(4, librarian.getName());
 				query.setString(5, librarian.getSurname());
 				query.setString(6, librarian.getPatronymic());
 				query.setLong(7, librarian.getId());
@@ -153,6 +260,7 @@ public class JdbcUserDao implements UserDao {
 			try (PreparedStatement query = connection.prepareStatement(UPDATE_READER)) {
 				query.setString(1, reader.getEmail());
 				query.setString(2, reader.getPassword());
+				query.setBytes(3, reader.getSalt());
 				query.setString(3, reader.getName());
 				query.setString(4, reader.getSurname());
 				query.setString(5, reader.getPatronymic());
@@ -183,23 +291,6 @@ public class JdbcUserDao implements UserDao {
 
 	}
 
-	
-	@Override
-	public <T extends User> Optional<T> getUserByEmail(String email) {
-		Optional<T> user = Optional.empty();
-		try (PreparedStatement query = connection.prepareStatement(SELECT_USER_BY_EMAIL)) {
-			query.setString(1, email);
-			ResultSet resultSet = query.executeQuery();
-			if (resultSet.next()) {
-				user = Optional.of(extractUserFromResultSet(resultSet));
-			}
-		} catch (Exception e) {
-			LOGGER.error("JdbcUserDao getUserByEmail SQL error: " + email, e);
-			throw new ServerException(e);
-		}
-		return user;
-	}
-
 	@SuppressWarnings("unchecked")
 	private <T extends User> T extractUserFromResultSet(ResultSet resultSet) throws SQLException {
 		if (isLibrarian(resultSet)) {
@@ -227,6 +318,9 @@ public class JdbcUserDao implements UserDao {
 	private boolean isLibrarian(ResultSet resultSet) throws SQLException{
 		return resultSet.getString(ROLE).equals(Role.LIBRARIAN.getValue());		
 	}
+	private boolean isLibrarian(User user){
+		return user.getRole().equals(Role.LIBRARIAN.getValue());		
+	}
 
 	@Override
 	public void close() {
@@ -238,6 +332,8 @@ public class JdbcUserDao implements UserDao {
 				throw new ServerException(e);
 			}
 		}
-	}	
+	}
+
+	
 
 }

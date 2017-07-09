@@ -40,11 +40,13 @@
 							key="library.books" bundle="${rb}" /></a></li>
 				<c:if test="${not empty user}">
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">
-						<li><a href="${pageContext.request.contextPath}/controller/librarian/authors"><fmt:message
+						<li><a
+							href="${pageContext.request.contextPath}/controller/librarian/authors"><fmt:message
 									key="library.authors" bundle="${rb}" /></a></li>
 					</c:if>
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">
-						<li><a href="${pageContext.request.contextPath}/controller/"><fmt:message
+						<li><a
+							href="${pageContext.request.contextPath}/controller/librarian/readers"><fmt:message
 									key="library.readers" bundle="${rb}" /></a></li>
 					</c:if>
 					<li><a href="${pageContext.request.contextPath}/controller/"><fmt:message
@@ -61,7 +63,12 @@
 							<udt:user-data user="${user}" />
 						</p></li>
 				</c:if>
-
+				<c:if test="${user.getRole().getValue() eq 'reader'}">
+					<li><a
+						href="${pageContext.request.contextPath}/controller/reader/changePassword">
+							<fmt:message key="library.changePassword" bundle="${rb}" />
+					</a></li>
+				</c:if>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-globe"
 						aria-hidden="true"></i> ${sessionScope.locale.getLanguage()} <span

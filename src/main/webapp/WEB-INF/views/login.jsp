@@ -27,7 +27,7 @@
 							bundle="${rb}" /></label> <input type="text" class="form-control"
 						id="email" name="email"
 						placeholder="<fmt:message key="library.email" bundle="${rb}"/>"
-						value="<c:out value="${requestScope.login_user.getEmail()}" />" />
+						value="<c:out value="${requestScope.loginUser.getEmail()}" />" />
 				</div>
 				<div class="form-group">
 					<label for="password"><fmt:message key="library.pass"
