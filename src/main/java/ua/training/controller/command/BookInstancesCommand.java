@@ -35,7 +35,7 @@ public class BookInstancesCommand implements Command {
 		Long bookId = Long.parseLong(request.getParameter(Attribute.ID_BOOK));
 		Optional<Book> book = getBookDependingOnUserRole(request.getSession(), bookId);
 
-		if (book.get().getBookInstances().isEmpty()) {
+		if (!book.isPresent()) {
 			redirectToAllBooksPageWithErrorMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
@@ -46,11 +46,10 @@ public class BookInstancesCommand implements Command {
 	}
 
 	private Optional<Book> getBookDependingOnUserRole(HttpSession session, Long bookId) {
-		if (SessionManager.getUserFromSession(session).getRole().equals(Role.LIBRARIAN)) {
-			return bookService.getBookById(bookId);
+		if (!SessionManager.isUserLoggedIn(session) || SessionManager.getUserFromSession(session).getRole().equals(Role.LIBRARIAN)) {
+			return bookService.getBookWithAuthorsAndInstances(bookId);
 		}
-		return bookService.getBookById(bookId);
-
+		return bookService.getBookWithAuthorsAndAvailableInstances(bookId);
 	}
 	
 	private void redirectToAllBooksPageWithErrorMessage(HttpServletRequest request, HttpServletResponse response)

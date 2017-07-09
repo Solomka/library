@@ -23,7 +23,7 @@ public class AllBooksCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Book> books = bookService.getAllBooks();
+		List<Book> books = bookService.getBooksWithAuthors();
 		request.setAttribute(Attribute.BOOKS, books);
 		return Page.ALL_BOOKS_VIEW;
 	}

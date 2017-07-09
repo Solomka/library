@@ -133,7 +133,7 @@ public class JdbcAuthorDao implements AuthorDao {
 		}
 	}
 
-	private Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
+	public Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
 		return new Author.Builder().setId(resultSet.getLong(ID_AUTHOR)).setName(resultSet.getString(NAME))
 				.setSurname(resultSet.getString(SURNAME)).setCountry(resultSet.getString(COUNTRY)).build();
 

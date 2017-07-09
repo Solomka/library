@@ -42,7 +42,7 @@ public class AllBooksCommandTest {
 				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title3").setPublisher("Test Publisher3")
 						.setAvailability(Availability.SUBSCRIPTION).build() });
 
-		when(bookService.getAllBooks()).thenReturn(books);
+		when(bookService.getBooksWithAuthors()).thenReturn(books);
 
 		AllBooksCommand allBooksCommand = new AllBooksCommand(bookService);
 
@@ -50,7 +50,7 @@ public class AllBooksCommandTest {
 		String actualResultedResource = allBooksCommand.execute(httpServletRequest, httpServletResponse);
 		assertEquals(expectedResultedResource, actualResultedResource);
 
-		verify(bookService).getAllBooks();
+		verify(bookService).getBooksWithAuthors();
 		verify(httpServletRequest).setAttribute(anyString(), eq(books));
 	}
 

@@ -55,7 +55,7 @@ public class BookServiceTest {
 
 		BookService bookService = new BookService(daoFactory);
 
-		List<Book> actualBooks = bookService.getAllBooks();
+		List<Book> actualBooks = bookService.getBooksWithAuthors();
 		assertEquals(books, actualBooks);
 		verify(daoFactory).getConnection();
 		verify(daoFactory).createBookDao(daoConnection);
@@ -87,7 +87,7 @@ public class BookServiceTest {
 		BookService bookService = new BookService(daoFactory);
 		//TODO:?
 		//Optional<Book> actualBook = bookService.getBookById(anyLong());
-		Optional<Book> actualBook = bookService.getBookById(new Long("2"));
+		Optional<Book> actualBook = bookService.getBookWithAuthorsAndInstances(new Long("2"));
 		assertEquals(book.get(), actualBook.get());
 		
 		verify(daoFactory).getConnection();
