@@ -22,10 +22,10 @@ import ua.training.controller.command.auth.GetLoginCommand;
 import ua.training.controller.command.auth.LogoutCommand;
 import ua.training.controller.command.auth.PostLoginCommand;
 import ua.training.controller.command.i18n.ChangeLocaleCommand;
-import ua.training.model.service.AuthorService;
-import ua.training.model.service.BookInstanceService;
-import ua.training.model.service.BookService;
-import ua.training.model.service.UserService;
+import ua.training.service.AuthorService;
+import ua.training.service.BookInstanceService;
+import ua.training.service.BookService;
+import ua.training.service.UserService;
 
 enum CommandEnum {
 	PAGE_NOT_FOUND {

@@ -16,10 +16,10 @@ import ua.training.controller.constants.ServletPath;
 import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.entity.Book;
+import ua.training.entity.Role;
 import ua.training.locale.Message;
-import ua.training.model.entity.Book;
-import ua.training.model.entity.Role;
-import ua.training.model.service.BookService;
+import ua.training.service.BookService;
 
 public class BookInstancesCommand implements Command {
 

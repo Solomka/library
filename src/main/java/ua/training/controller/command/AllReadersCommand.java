@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
-import ua.training.model.entity.Reader;
-import ua.training.model.service.UserService;
+import ua.training.entity.Reader;
+import ua.training.service.UserService;
 
 public class AllReadersCommand implements Command {
 

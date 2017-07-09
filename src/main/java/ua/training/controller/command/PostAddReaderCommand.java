@@ -14,10 +14,10 @@ import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.entity.Reader;
+import ua.training.entity.Role;
 import ua.training.locale.Message;
-import ua.training.model.entity.Reader;
-import ua.training.model.entity.Role;
-import ua.training.model.service.UserService;
+import ua.training.service.UserService;
 import ua.training.validator.entity.ReaderValidator;
 
 public class PostAddReaderCommand implements Command {

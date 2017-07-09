@@ -13,11 +13,11 @@ import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.entity.Book;
+import ua.training.entity.BookInstance;
+import ua.training.entity.Status;
 import ua.training.locale.Message;
-import ua.training.model.entity.Book;
-import ua.training.model.entity.BookInstance;
-import ua.training.model.entity.Status;
-import ua.training.model.service.BookInstanceService;
+import ua.training.service.BookInstanceService;
 import ua.training.validator.entity.BookInstanceValidator;
 
 public class PostAddBookInstanceCommand implements Command {

@@ -7,9 +7,9 @@ import java.util.Optional;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-import ua.training.model.entity.Librarian;
-import ua.training.model.entity.Role;
-import ua.training.model.entity.User;
+import ua.training.entity.Librarian;
+import ua.training.entity.Role;
+import ua.training.entity.User;
 
 public class MysqlTest {
 

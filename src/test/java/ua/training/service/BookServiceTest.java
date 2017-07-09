@@ -11,15 +11,15 @@ import java.util.Optional;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import ua.training.model.dao.AuthorDao;
-import ua.training.model.dao.BookDao;
-import ua.training.model.dao.BookInstanceDao;
-import ua.training.model.dao.DaoConnection;
-import ua.training.model.dao.DaoFactory;
-import ua.training.model.entity.Author;
-import ua.training.model.entity.Availability;
-import ua.training.model.entity.Book;
-import ua.training.model.service.BookService;
+import ua.training.dao.AuthorDao;
+import ua.training.dao.BookDao;
+import ua.training.dao.BookInstanceDao;
+import ua.training.dao.DaoConnection;
+import ua.training.dao.DaoFactory;
+import ua.training.entity.Author;
+import ua.training.entity.Availability;
+import ua.training.entity.Book;
+import ua.training.service.BookService;
 
 public class BookServiceTest {
 

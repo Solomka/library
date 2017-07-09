@@ -14,9 +14,9 @@ import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.entity.Author;
 import ua.training.locale.Message;
-import ua.training.model.entity.Author;
-import ua.training.model.service.AuthorService;
+import ua.training.service.AuthorService;
 import ua.training.validator.entity.AuthorValidator;
 
 public class PostAddAuthorCommand implements Command {

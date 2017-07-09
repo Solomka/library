@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.training.model.service.UserService;
+import ua.training.service.UserService;
 
 public class PostChangePasswordCommand implements Command {
 	

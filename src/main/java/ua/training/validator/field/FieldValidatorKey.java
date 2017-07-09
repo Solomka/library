@@ -1,6 +1,6 @@
 package ua.training.validator.field;
 
-import ua.training.model.entity.Status;
+import ua.training.entity.Status;
 
 public enum FieldValidatorKey {
 

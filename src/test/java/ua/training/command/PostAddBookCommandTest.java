@@ -23,11 +23,11 @@ import ua.training.controller.command.PostAddBookCommand;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.utils.RedirectionManager;
-import ua.training.model.entity.Author;
-import ua.training.model.entity.Availability;
-import ua.training.model.entity.Book;
-import ua.training.model.service.AuthorService;
-import ua.training.model.service.BookService;
+import ua.training.entity.Author;
+import ua.training.entity.Availability;
+import ua.training.entity.Book;
+import ua.training.service.AuthorService;
+import ua.training.service.BookService;
 
 public class PostAddBookCommandTest {
 

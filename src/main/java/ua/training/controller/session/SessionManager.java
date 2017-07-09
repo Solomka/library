@@ -3,7 +3,7 @@ package ua.training.controller.session;
 import javax.servlet.http.HttpSession;
 
 import ua.training.controller.constants.Attribute;
-import ua.training.model.entity.User;
+import ua.training.entity.User;
 
 public final class SessionManager {
 

@@ -22,9 +22,9 @@ import ua.training.controller.command.SearchBookByAuthorCommand;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.utils.RedirectionManager;
-import ua.training.model.entity.Availability;
-import ua.training.model.entity.Book;
-import ua.training.model.service.BookService;
+import ua.training.entity.Availability;
+import ua.training.entity.Book;
+import ua.training.service.BookService;
 
 public class SearchBookByAuthorCommandTest {
 	@Test

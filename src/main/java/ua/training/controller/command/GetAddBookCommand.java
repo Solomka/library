@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
-import ua.training.model.entity.Author;
-import ua.training.model.entity.Availability;
-import ua.training.model.service.AuthorService;
+import ua.training.entity.Author;
+import ua.training.entity.Availability;
+import ua.training.service.AuthorService;
 
 public class GetAddBookCommand implements Command {
 

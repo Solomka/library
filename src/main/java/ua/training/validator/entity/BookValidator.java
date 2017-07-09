@@ -3,7 +3,7 @@ package ua.training.validator.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import ua.training.model.entity.Book;
+import ua.training.entity.Book;
 import ua.training.validator.field.FieldValidator;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
