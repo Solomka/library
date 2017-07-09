@@ -36,11 +36,7 @@ public class BookInstancesCommand implements Command {
 		Optional<Book> book = getBookDependingOnUserRole(request.getSession(), bookId);
 
 		if (book.get().getBookInstances().isEmpty()) {
-			HttpWrapper httpWrapper = new HttpWrapper(request, response);
-			Map<String, String> urlParams = new HashMap<>();
-			urlParams.put(Attribute.ERROR, Message.NO_AVAILABLE_BOOK_INSTANCES);
-
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+			redirectToAllBooksPageWithErrorMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
 
@@ -56,4 +52,14 @@ public class BookInstancesCommand implements Command {
 		return bookService.getBookById(bookId);
 
 	}
+	
+	private void redirectToAllBooksPageWithErrorMessage(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		HttpWrapper httpWrapper = new HttpWrapper(request, response);
+		Map<String, String> urlParams = new HashMap<>();
+		urlParams.put(Attribute.ERROR, Message.NO_AVAILABLE_BOOK_INSTANCES);
+		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+	}
+
+	
 }

@@ -44,10 +44,8 @@ public class PostAddBookInstanceCommand implements Command {
 			return RedirectionManager.REDIRECTION;
 		}
 
-		urlParams = new HashMap<>();
 		urlParams.put(Attribute.ERROR, errors.get(0));
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.BOOK_INSTANCES, urlParams);
-
 		return RedirectionManager.REDIRECTION;
 	}
 

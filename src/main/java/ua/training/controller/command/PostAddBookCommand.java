@@ -43,17 +43,14 @@ public class PostAddBookCommand implements Command {
 
 		if (errors.isEmpty()) {
 			bookService.createBook(book);
-			HttpWrapper httpWrapper = new HttpWrapper(request, response);
-			Map<String, String> urlParams = new HashMap<>();
-			urlParams.put(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+			redirectToAllBooksPageWithSuccessMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
 
 		addRequestAtrributes(request, book, errors);
 		return Page.ADD_BOOK_VIEW;
 	}
-
+	
 	private Book getUserInput(HttpServletRequest request) {
 		return new Book.Builder().setIsbn(request.getParameter(Attribute.ISBN))
 				.setTitle(request.getParameter(Attribute.TITLE)).setPublisher(request.getParameter(Attribute.PUBLISHER))
@@ -81,6 +78,14 @@ public class PostAddBookCommand implements Command {
 			bookAuthors.add(new Author.Builder().setId(new Long(authorId)).build());
 		}
 		return bookAuthors;
+	}
+	
+	private void redirectToAllBooksPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		HttpWrapper httpWrapper = new HttpWrapper(request, response);
+		Map<String, String> urlParams = new HashMap<>();
+		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
+		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 	}
 
 	private void addRequestAtrributes(HttpServletRequest request, Book book, List<String> errors) {
