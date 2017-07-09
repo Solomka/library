@@ -30,6 +30,7 @@ public class RegexTest {
 	public void addressRegex() {
 		// String pass = "<script[^>]*>(.*?)</script[^>]*>";
 		String pass = "вул. Захарія Ониського, 12";
+		//"\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)"
 
 		boolean actual = pass.matches("^[a-zA-ZА-ЯІЇЄа-яіїє\\d\\s.’'-,]{3,100}$");
 		boolean expected = true;
