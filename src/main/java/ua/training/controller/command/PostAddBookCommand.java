@@ -2,7 +2,9 @@ package ua.training.controller.command;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
+import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.Author;
@@ -40,8 +43,10 @@ public class PostAddBookCommand implements Command {
 
 		if (errors.isEmpty()) {
 			bookService.createBook(book);
-			RedirectionManager.redirectWithParamMessage(request, response, ServletPath.ALL_BOOKS, Attribute.SUCCESS,
-					Message.SUCCESS_BOOK_ADDITION);
+			HttpWrapper httpWrapper = new HttpWrapper(request, response);
+			Map<String, String> urlParams = new HashMap<>();
+			urlParams.put(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
+			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 			return RedirectionManager.REDIRECTION;
 		}
 

@@ -1,6 +1,8 @@
 package ua.training.controller.command;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.Page;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.session.SessionManager;
+import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.Book;
@@ -30,12 +33,14 @@ public class BookInstancesCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long bookId = Long.parseLong(request.getParameter(Attribute.ID_BOOK));
-
 		Optional<Book> book = getBookDependingOnUserRole(request.getSession(), bookId);
 
 		if (book.get().getBookInstances().isEmpty()) {
-			RedirectionManager.redirectWithParamMessage(request, response, ServletPath.ALL_BOOKS, Attribute.ERROR,
-					Message.NO_AVAILABLE_BOOK_INSTANCES);
+			HttpWrapper httpWrapper = new HttpWrapper(request, response);
+			Map<String, String> urlParams = new HashMap<>();
+			urlParams.put(Attribute.ERROR, Message.NO_AVAILABLE_BOOK_INSTANCES);
+
+			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 			return RedirectionManager.REDIRECTION;
 		}
 

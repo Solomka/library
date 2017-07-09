@@ -2,7 +2,10 @@ package ua.training.controller.filter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.print.attribute.HashAttributeSet;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -43,8 +46,10 @@ public class DirectViewAccessFilter implements Filter {
 	}
 
 	private String toHomePageWithErrorMessage(String contextPath) throws UnsupportedEncodingException {
+		Map<String, String> urlParams = new HashMap<>();
+		urlParams.put(Attribute.ERROR, Message.DIRECT_VIEW_ACCESS_ERROR);
 		return new StringBuffer(contextPath).append(ServletPath.HOME)
-				.append(RedirectionManager.getMessageURLParam(Attribute.ERROR, Message.DIRECT_VIEW_ACCESS_ERROR))
+				.append(RedirectionManager.generateUrlParams(urlParams))
 				.toString();
 	}
 

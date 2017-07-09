@@ -3,6 +3,7 @@ package ua.training.controller.utils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,35 +18,37 @@ public final class RedirectionManager {
 	private RedirectionManager() {
 	}
 
-	public static void redirectWithParamMessage(HttpServletRequest request, HttpServletResponse response, String path,
-			String paramName, String paramValue) throws UnsupportedEncodingException, IOException {
-		response.sendRedirect(RedirectionManager.generateResourcePath(request, path)
-				+ RedirectionManager.getMessageURLParam(paramName, paramValue));
+	public static void redirectWithParams(HttpWrapper httpWrapper, String redirectionPath,
+			Map<String, String> urlParameters) throws IOException {
 
-	}
-	
-	public static void redirectWithParamMessageAndBookId(HttpServletRequest request, HttpServletResponse response, String path,
-			String paramName, String paramValue, String id) throws UnsupportedEncodingException, IOException {
-		response.sendRedirect(RedirectionManager.generateResourcePath(request, path)
-				+ RedirectionManager.getMessageURLParam(paramName, paramValue)+ "&id_book="+id) ;
-
+		String urlPathWithParams = RedirectionManager.generateUrlPath(httpWrapper.getRequest(), redirectionPath)
+				+ RedirectionManager.generateUrlParams(urlParameters);
+		httpWrapper.getResponse().sendRedirect(urlPathWithParams);
 	}
 
 	public static void redirect(HttpServletRequest request, HttpServletResponse response, String path)
 			throws IOException {
-		response.sendRedirect(RedirectionManager.generateResourcePath(request, path));
+		response.sendRedirect(RedirectionManager.generateUrlPath(request, path));
 	}
 
-	private static String generateResourcePath(HttpServletRequest request, String path) {
-		// String resourcePath = new
-		// StringBuffer(request.getContextPath()).append(request.getServletPath()).append(path).toString();
+	private static String generateUrlPath(HttpServletRequest request, String path) {
 		return new StringBuffer(request.getContextPath()).append(request.getServletPath()).append(path).toString();
 
 	}
 
-	public static String getMessageURLParam(String paramName, String paramValue) throws UnsupportedEncodingException {
-		return new StringBuffer(MessageUtils.INTERROGATION_MARK).append(paramName).append(MessageUtils.EQUALITY_SIGN)
-				.append(URLEncoder.encode(paramValue, MESSAGE_ENCODING)).toString();
+	public static String generateUrlParams(Map<String, String> urlParameters) throws UnsupportedEncodingException {
+		StringBuffer stringBuffer = new StringBuffer(MessageUtils.INTERROGATION_MARK);
+		for (String urlParamName : urlParameters.keySet()) {
+			stringBuffer.append(urlParamName).append(MessageUtils.EQUALITY_SIGN)
+					.append(URLEncoder.encode(urlParameters.get(urlParamName), MESSAGE_ENCODING))
+					.append(MessageUtils.AMPERSAND);
+		}
+		deleteLastAmpersand(stringBuffer);
+		return stringBuffer.toString();
+	}
+
+	private static void deleteLastAmpersand(StringBuffer stringBuffer) {
+		stringBuffer.deleteCharAt(stringBuffer.length() - 1);
 	}
 
 }

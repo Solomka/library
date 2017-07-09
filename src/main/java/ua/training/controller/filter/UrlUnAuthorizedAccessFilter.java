@@ -1,6 +1,8 @@
 package ua.training.controller.filter;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +19,7 @@ import org.apache.log4j.Logger;
 import ua.training.controller.constants.Attribute;
 import ua.training.controller.constants.ServletPath;
 import ua.training.controller.session.SessionManager;
+import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 import ua.training.model.entity.Role;
@@ -43,8 +46,10 @@ public class UrlUnAuthorizedAccessFilter implements Filter {
 
 		if (!isUserRegistered(user) || !isUserAuthorizedForResource(httpRequest.getRequestURI(), user)) {
 			logInfoAboutUnauthorizedAccess(httpRequest.getRequestURI());
-			RedirectionManager.redirectWithParamMessage(httpRequest, httpResponse, ServletPath.HOME, Attribute.ERROR,
-					Message.UNAUTHORIZED_ACCESS_ERROR);
+			HttpWrapper httpWrapper = new HttpWrapper(httpRequest, httpResponse);
+			Map<String, String> urlParams = new HashMap<>();
+			urlParams.put(Attribute.ERROR, Message.UNAUTHORIZED_ACCESS_ERROR);
+			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
 			return;
 		}
 
