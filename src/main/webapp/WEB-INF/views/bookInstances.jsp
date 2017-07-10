@@ -114,7 +114,7 @@
 								bundle="${rb}" /></td>
 						<c:if test="${user.getRole().getValue() eq 'reader' }">
 							<td><a
-								href="./createOrder?id_book_instance=${bookInstance.getId()}"><fmt:message
+								href="./reader/createOrder?id_book_instance=${bookInstance.getId()}"><fmt:message
 										key="library.createOrder" bundle="${rb}" /></a></td>
 						</c:if>
 					</tr>

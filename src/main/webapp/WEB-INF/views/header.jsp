@@ -49,7 +49,7 @@
 							href="${pageContext.request.contextPath}/controller/librarian/readers"><fmt:message
 									key="library.readers" bundle="${rb}" /></a></li>
 					</c:if>
-					<li><a href="${pageContext.request.contextPath}/controller/"><fmt:message
+					<li><a href="${pageContext.request.contextPath}/controller/reader/orders"><fmt:message
 								key="library.orders" bundle="${rb}" /></a></li>
 
 				</c:if>
