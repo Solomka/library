@@ -15,7 +15,7 @@ public class AuthorService {
 
 	private DaoFactory daoFactory;
 
-	private AuthorService(DaoFactory daoFactory) {
+	AuthorService(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 

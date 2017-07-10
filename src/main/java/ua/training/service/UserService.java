@@ -23,7 +23,7 @@ public class UserService {
 	private static final PasswordHashing passwordHashing = PasswordHashing.getInstance();
 	private DaoFactory daoFactory;
 
-	private UserService(DaoFactory daoFactory) {
+	UserService(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 

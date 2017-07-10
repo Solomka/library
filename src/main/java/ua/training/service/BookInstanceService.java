@@ -14,7 +14,7 @@ public class BookInstanceService {
 
 	private DaoFactory daoFactory;
 
-	private BookInstanceService(DaoFactory daoFactory) {
+	BookInstanceService(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 
