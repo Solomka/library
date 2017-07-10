@@ -1,26 +1,70 @@
 package ua.training.controller.command;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ua.training.controller.constants.Attribute;
+import ua.training.controller.constants.Page;
+import ua.training.controller.constants.ServletPath;
+import ua.training.controller.dto.ChangePasswordDto;
+import ua.training.controller.session.SessionManager;
+import ua.training.controller.utils.HttpWrapper;
+import ua.training.controller.utils.RedirectionManager;
+import ua.training.locale.Message;
 import ua.training.service.UserService;
+import ua.training.validator.entity.ChangePasswordDtoValidator;
 
 public class PostChangePasswordCommand implements Command {
-	
+
 	private UserService userService;
-	
-	public PostChangePasswordCommand(UserService userService){
+
+	public PostChangePasswordCommand(UserService userService) {
 		this.userService = userService;
 	}
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+		ChangePasswordDto changePasswordDto = getUserInput(request);
+		List<String> errors = validateUserInput(changePasswordDto);
+
+		if (errors.isEmpty()) {
+			userService.changePassword(changePasswordDto);
+			redirectToHomePageWithSuccessMessage(request, response);
+			return RedirectionManager.REDIRECTION;
+		}
+
+		addRequestAttributes(request, errors);
+		return Page.CHANGE_PASSWORD_VIEW;
+	}
+
+	private void redirectToHomePageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		HttpWrapper httpWrapper = new HttpWrapper(request, response);
+		Map<String, String> urlParams = new HashMap<>();
+		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_PASSWORD_CHANGE);
+		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
+	}
+
+	private ChangePasswordDto getUserInput(HttpServletRequest request) {
+		return new ChangePasswordDto.Builder().setUser(SessionManager.getUserFromSession(request.getSession()))
+				.setOldPassword(request.getParameter(Attribute.OLD_PASSWORD))
+				.setNewPassword(request.getParameter(Attribute.NEW_PASSWORD))
+				.setConfirmPassword(request.getParameter(Attribute.CONFIRM_NEW_PASSWORD)).build();
+	}
+
+	private List<String> validateUserInput(ChangePasswordDto changePasswordDto) {
+		return ChangePasswordDtoValidator.getInstance().validate(changePasswordDto);
+	}
+
+	private void addRequestAttributes(HttpServletRequest request, List<String> errors) {
+		request.setAttribute(Attribute.ERRORS, errors);
 	}
 
 }

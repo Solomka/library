@@ -19,7 +19,7 @@ import ua.training.controller.utils.RedirectionManager;
 import ua.training.entity.User;
 import ua.training.locale.Message;
 import ua.training.service.UserService;
-import ua.training.validator.entity.CredentialsValidator;
+import ua.training.validator.entity.CredentialsDtoValidator;
 
 public class PostLoginCommand implements Command {
 
@@ -65,7 +65,7 @@ public class PostLoginCommand implements Command {
 	}
 
 	private List<String> validateUserInput(CredentialsDto credentialsDto) {
-		return CredentialsValidator.getInstance().validate(credentialsDto);
+		return CredentialsDtoValidator.getInstance().validate(credentialsDto);
 	}
 
 	private void addRequestAtrributes(HttpServletRequest request, CredentialsDto credentialsDto, List<String> errors) {

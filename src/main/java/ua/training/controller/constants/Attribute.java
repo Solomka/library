@@ -1,7 +1,6 @@
 package ua.training.controller.constants;
 
-public final class Attribute {
-
+public final class Attribute {	
 	
 	private Attribute() {
 
@@ -45,4 +44,9 @@ public final class Attribute {
 	public static String PATRONYMIC = "patronymic";
 	public static String PHONE = "phone";
 	public static String ADDRESS = "address";	
+	
+	public static String OLD_PASSWORD = "oldPassword";
+	public static String NEW_PASSWORD = "newPassword";
+	public static String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
+	
 }

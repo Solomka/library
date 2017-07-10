@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.controller.dto.ChangePasswordDto;
 import ua.training.controller.dto.CredentialsDto;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
@@ -64,10 +65,11 @@ public class UserService {
 		}
 	}
 	
-	public boolean changePassword(User user, String oldPassword, String newPassword) {
+	public boolean changePassword(ChangePasswordDto changePasswordDto) {
 		LOGGER.info("Change user password");
-		if (isPasswordValid(oldPassword, user)) {
-			user.setPassword(newPassword);
+		User user = changePasswordDto.getUser();
+		if (isPasswordValid(changePasswordDto.getOldPassword(), user)) {
+			user.setPassword(changePasswordDto.getNewPassword());
 			hashUserPassword(user);
 			try (UserDao userDao = daoFactory.createUserDao()) {
 				userDao.update(user);

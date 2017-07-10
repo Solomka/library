@@ -18,6 +18,7 @@ public final class Message {
 	public static String SUCCESS_AUTHOR_ADDITION = "library.success.addAuthor";
 	public static String SUCCESS_READER_ADDITION = "library.success.addReader";
 	public static String SUCCESS_BOOK_INSTANCE_ADDITION = "library.success.addBookInstance";
+	public static String SUCCESS_PASSWORD_CHANGE = "library.success.changePassword";
 	
 	public static String INVALID_NAME_INPUT = "library.error.invalidName";
 	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurname";
@@ -31,13 +32,18 @@ public final class Message {
 
 	public static String INVALID_ISBN = "library.error.invalidISBN";
 	public static String INVALID_TITLE = "library.error.invalidTitle";
-	public static  String INVALID_BOOK_AUTHORS_SELECTION = "library.error.invalidBookAuthorsSelection";
+	public static String INVALID_BOOK_AUTHORS_SELECTION = "library.error.invalidBookAuthorsSelection";
 
 	public static String INVALID_INVENTORY_NUMBER = "library.error.invalidIInventoryNumber";
 
 	public static String INVALID_PHONE = "library.error.invalidPhone";
 	public static String INVALID_ADDRESS = "library.error.invalidAddress";
 	public static String INVALID_READER_CARD_NUMBER = "library.error.invalidReaderCardNumber";
+	
+	public static String INVALID_OLD_PASSWORD = "library.error.invalidOldPassword";
+	public static String INVALID_NEW_PASSWORD = "library.error.invalidNewPassword";
+	public static String IVALID_CONFIRM_PASSWORD = "library.error.invalidConfirmPassword";
+	public static String INVALID_NEW_CONFIRM_PASSWORD = "library.error.invalidNewConfirmPassword";
 	
 	public static String AVAILABILITY_READING_ROOM = "library.book.availability.readingRoom";
 	public static String AVAILABILITY_SUBSCRIPTION = "library.book.availability.subscription";
@@ -48,5 +54,6 @@ public final class Message {
 	
 	public static String ROLE_READER = "library.user.role.reader";
 	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
+	
 	
 }

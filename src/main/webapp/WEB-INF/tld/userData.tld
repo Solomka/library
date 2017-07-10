@@ -7,7 +7,7 @@
 	<uri>customtags</uri>
 	<tag>
 		<name>user-data</name>
-		<tag-class>ua.training.controller.tag.UserDataTag</tag-class>
+		<tag-class>ua.training.tag.UserDataTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>user</name>

@@ -35,7 +35,6 @@ public class ReaderValidator implements Validator<Reader> {
 		fieldValidator.validateField(FieldValidatorKey.EMAIL, reader.getEmail(), errors);
 		fieldValidator.validateField(FieldValidatorKey.PHONE, reader.getPhone(), errors);
 		fieldValidator.validateField(FieldValidatorKey.ADDRESS, reader.getAddress(), errors);
-		fieldValidator.validateField(FieldValidatorKey.PASSWORD, reader.getPassword(), errors);		
 
 		return errors;
 	}

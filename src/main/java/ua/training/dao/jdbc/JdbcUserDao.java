@@ -261,13 +261,13 @@ public class JdbcUserDao implements UserDao {
 				query.setString(1, reader.getEmail());
 				query.setString(2, reader.getPassword());
 				query.setBytes(3, reader.getSalt());
-				query.setString(3, reader.getName());
-				query.setString(4, reader.getSurname());
-				query.setString(5, reader.getPatronymic());
-				query.setString(6, reader.getPhone());
-				query.setString(7, reader.getAddress());
-				query.setString(8, reader.getReaderCardNumber());
-				query.setLong(9, reader.getId());
+				query.setString(4, reader.getName());
+				query.setString(5, reader.getSurname());
+				query.setString(6, reader.getPatronymic());
+				query.setString(7, reader.getPhone());
+				query.setString(8, reader.getAddress());
+				query.setString(9, reader.getReaderCardNumber());
+				query.setLong(10, reader.getId());
 				query.executeUpdate();
 
 			} catch (SQLException e) {

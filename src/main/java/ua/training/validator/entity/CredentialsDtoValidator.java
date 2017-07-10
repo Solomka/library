@@ -8,19 +8,19 @@ import ua.training.validator.field.FieldValidator;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
-public final class CredentialsValidator implements Validator<CredentialsDto> {
+public final class CredentialsDtoValidator implements Validator<CredentialsDto> {
 	
 	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
-	private CredentialsValidator() {
+	private CredentialsDtoValidator() {
 
 	}
 
 	private static class Holder {
-		static final CredentialsValidator INSTANCE = new CredentialsValidator();
+		static final CredentialsDtoValidator INSTANCE = new CredentialsDtoValidator();
 	}
 
-	public static CredentialsValidator getInstance() {
+	public static CredentialsDtoValidator getInstance() {
 		return Holder.INSTANCE;
 	}
 
