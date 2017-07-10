@@ -49,6 +49,9 @@ public class JdbcBookDao implements BookDao {
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
 			+ " WHERE LOWER(author.surname) LIKE CONCAT('%', LOWER(?), '%') OR LOWER(author.name) LIKE CONCAT('%', LOWER(?), '%')"
 			+ " OR CONCAT(LOWER(author.name), ' ', LOWER(author.surname)) LIKE CONCAT('%', LOWER(?), '%')";
+	private static String SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country,"
+			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
+			+ " WHERE inventory_number=?";
 
 	// book fields
 	private static String ID_BOOK = "id_book";
@@ -244,6 +247,22 @@ public class JdbcBookDao implements BookDao {
 		}
 		return books;
 	}
+	
+	@Override
+	public Optional<Book> getBookByInstanceInventoryNumber(String instanceInventoryNumber) {
+		Optional<Book> book = Optional.empty();
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER)) {
+			query.setString(1, instanceInventoryNumber);
+			ResultSet resultSet = query.executeQuery();
+			if (resultSet.next()) {
+				book = Optional.of(extractBookWithAuthors(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao getBookByInstanceInventoryNumber SQL error: " + instanceInventoryNumber, e);
+			throw new ServerException(e);
+		}
+		return book;
+	}
 
 	@Override
 	public void saveBookAuthors(Book book) {
@@ -264,7 +283,6 @@ public class JdbcBookDao implements BookDao {
 	}
 
 	private Book extractBookFromResultSet(ResultSet resultSet) throws SQLException {
-
 		return new Book.Builder().setId(resultSet.getLong(ID_BOOK)).setIsbn(resultSet.getString(ISBN))
 				.setTitle(resultSet.getString(TITLE)).setPublisher(resultSet.getString(PUBLISHER))
 				.setAvailability(Availability.forValue(resultSet.getString(AVAILABILITY))).build();
@@ -293,5 +311,5 @@ public class JdbcBookDao implements BookDao {
 				throw new ServerException(e);
 			}
 		}
-	}
+	}	
 }

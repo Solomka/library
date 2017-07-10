@@ -17,6 +17,7 @@ public class BookOrder implements Serializable {
 	private LocalDateTime fulfilmentDate;
 	private LocalDateTime pickUpDate;
 	private LocalDateTime returnDate;
+	private LocalDateTime actialReturnDate;
 	private Librarian librarian;
 
 	public BookOrder() {
@@ -58,6 +59,11 @@ public class BookOrder implements Serializable {
 
 		public Builder setReturnDate(LocalDateTime returnDate) {
 			bookOrder.returnDate = returnDate;
+			return this;
+		}
+
+		public Builder setActualReturnDate(LocalDateTime actualReturnDate) {
+			bookOrder.actialReturnDate = actualReturnDate;
 			return this;
 		}
 
@@ -129,6 +135,14 @@ public class BookOrder implements Serializable {
 		this.returnDate = returnDate;
 	}
 
+	public LocalDateTime getActualReturnDate() {
+		return actialReturnDate;
+	}
+
+	public void setActialReturnDate(LocalDateTime actialReturnDate) {
+		this.actialReturnDate = actialReturnDate;
+	}
+
 	public Librarian getLibrarian() {
 		return librarian;
 	}
@@ -170,12 +184,13 @@ public class BookOrder implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("BookOrder [id=").append(id).append(", bookInstance=").append(bookInstance).append(", reader=")
-				.append(reader).append(", creationDate=").append(creationDate).append(", fulfilmentDate=")
-				.append(fulfilmentDate).append(", pickUpDate=").append(pickUpDate).append(", returnDate=")
-				.append(returnDate).append(", librarian=").append(librarian).append("]");
-		return builder.toString();
+		StringBuilder builder2 = new StringBuilder();
+		builder2.append("BookOrder [ [super: ").append(super.toString()).append("], id=").append(id)
+				.append(", bookInstance=").append(bookInstance).append(", reader=").append(reader)
+				.append(", creationDate=").append(creationDate).append(", fulfilmentDate=").append(fulfilmentDate)
+				.append(", pickUpDate=").append(pickUpDate).append(", returnDate=").append(returnDate)
+				.append(", actialReturnDate=").append(actialReturnDate).append(", librarian=").append(librarian)
+				.append("] ");
+		return builder2.toString();
 	}
-
 }

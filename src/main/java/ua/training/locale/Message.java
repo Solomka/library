@@ -18,6 +18,7 @@ public final class Message {
 	public static String SUCCESS_READER_ADDITION = "library.success.addReader";
 	public static String SUCCESS_BOOK_INSTANCE_ADDITION = "library.success.addBookInstance";
 	public static String SUCCESS_PASSWORD_CHANGE = "library.success.changePassword";
+	public static String SUCCESS_ORDER_CREATION = "library.success.orderCreation";
 	
 	public static String INVALID_NAME_INPUT = "library.error.invalidName";
 	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurname";
@@ -52,5 +53,6 @@ public final class Message {
 	public static String STATUS_UNAVAILABLE = "library.bookInstance.status.unavailable";
 	
 	public static String ROLE_READER = "library.user.role.reader";
-	public static String ROLE_LIBRARIAN = "library.user.role.librarian";	
+	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
+		
 }

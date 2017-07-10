@@ -25,7 +25,7 @@ import ua.training.entity.Role;
 import ua.training.entity.User;
 import ua.training.locale.Message;
 
-@WebFilter(urlPatterns = { "/controller/librarian/*", "/controller/reader/*" })
+@WebFilter(urlPatterns = { "/controller/orders/*", "/controller/librarian/*", "/controller/reader/*" })
 public class UrlUnAuthorizedAccessFilter implements Filter {
 
 	private final static Logger LOGGER = Logger.getLogger(UrlUnAuthorizedAccessFilter.class);

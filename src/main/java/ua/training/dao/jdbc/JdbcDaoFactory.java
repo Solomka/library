@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import ua.training.dao.AuthorDao;
 import ua.training.dao.BookDao;
 import ua.training.dao.BookInstanceDao;
+import ua.training.dao.BookOrderDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
 import ua.training.dao.UserDao;
@@ -127,5 +128,22 @@ public class JdbcDaoFactory extends DaoFactory {
 		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
 		Connection sqlConnection = jdbcConnection.getConnection();
 		return new JdbcBookInstanceDao(sqlConnection);
+	}
+
+	@Override
+	public BookOrderDao createBookOrderDao() {
+		try {
+			return new JdbcBookOrderDao(dataSource.getConnection(), true);
+		} catch (SQLException e) {
+			LOGGER.error("Can't get DB Connection for JdbcBookOrderDao creation", e);
+			throw new ServerException(e);
+		}
+	}
+
+	@Override
+	public BookOrderDao createBookOrderDao(DaoConnection connection) {
+		JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+		Connection sqlConnection = jdbcConnection.getConnection();
+		return new JdbcBookOrderDao(sqlConnection);
 	}
 }

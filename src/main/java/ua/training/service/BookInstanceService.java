@@ -1,6 +1,7 @@
 package ua.training.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -26,6 +27,20 @@ public class BookInstanceService {
 		return Holder.INSTANCE;
 	}
 
+	public Optional<BookInstance> getBookInstanceById(Long bookInstanceId){
+		LOGGER.info("Get book instance by id: " + bookInstanceId);
+		try (BookInstanceDao bookInstancesDao = daoFactory.createBookInstancesDao()) {
+			return bookInstancesDao.getById(bookInstanceId);
+		}		
+	}
+	
+	public void updateBookInstance(BookInstance bookInstance){
+		LOGGER.info("Get book instance: " + bookInstance);
+		try (BookInstanceDao bookInstancesDao = daoFactory.createBookInstancesDao()) {
+			bookInstancesDao.update(bookInstance);
+		}	
+	}
+	
 	public List<BookInstance> getBookInstances(Long bookId) {
 		LOGGER.info("Get book instances: " + bookId);
 		try (BookInstanceDao bookInstancesDao = daoFactory.createBookInstancesDao()) {

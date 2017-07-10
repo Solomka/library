@@ -2,9 +2,11 @@ package ua.training.controller;
 
 import ua.training.controller.command.AllAuthorsCommand;
 import ua.training.controller.command.AllBooksCommand;
+import ua.training.controller.command.AllOrdersCommand;
 import ua.training.controller.command.AllReadersCommand;
 import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
+import ua.training.controller.command.CreateOrderCommand;
 import ua.training.controller.command.GetAddAuthorCommand;
 import ua.training.controller.command.GetAddBookCommand;
 import ua.training.controller.command.GetAddReaderCommand;
@@ -24,6 +26,7 @@ import ua.training.controller.command.auth.PostLoginCommand;
 import ua.training.controller.command.i18n.ChangeLocaleCommand;
 import ua.training.service.AuthorService;
 import ua.training.service.BookInstanceService;
+import ua.training.service.BookOrderService;
 import ua.training.service.BookService;
 import ua.training.service.UserService;
 
@@ -156,6 +159,19 @@ enum CommandEnum {
 		{
 			this.key = "POST:reader/changePassword";
 			this.command = new PostChangePasswordCommand(UserService.getInstance());
+		}
+	},
+	ALL_ORDERS{
+		{
+			this.key = "GET:orders";
+			this.command = new AllOrdersCommand(BookOrderService.getInstance());
+		}
+	},
+	CREATE_ORDER{
+		{
+			this.key = "GET:createOrder";
+			this.command = new CreateOrderCommand(BookOrderService.getInstance());
+			
 		}
 	};
 

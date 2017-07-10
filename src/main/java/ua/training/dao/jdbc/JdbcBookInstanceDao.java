@@ -24,7 +24,9 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 
 	// queries
 	private static String ADD_BOOK_INSTANCE = "INSERT INTO book_instance (inventory_number, status, id_book) VALUES (?, ?, ?)";
+	private static String GET_BOOK_INSTANCE_BY_ID = "SELECT * FROM book_instance WHERE id_book_instance=?";
 	private static String GET_BOOK_INSTANCES = "SELECT * FROM book_instance WHERE id_book=?";
+	private static String UPDATE_BOOK_INSTANCE = "UPDATE book_instance SET status=? WHERE id_book_instance=?";
 
 	// fields
 	private static String ID_BOOK_INSTANCE = "id_book_instance";
@@ -57,20 +59,36 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 
 	@Override
 	public Optional<BookInstance> getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<BookInstance> bookInstance = Optional.empty();
+		try (PreparedStatement query = connection.prepareStatement(GET_BOOK_INSTANCE_BY_ID)) {
+			query.setLong(1, id);
+			ResultSet resultSet = query.executeQuery();
+			if (resultSet.next()) {
+				bookInstance = Optional.of(extractBookInstanceFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookInstanceDao getById SQL error: " + id, e);
+			throw new ServerException(e);
+		}
+		return bookInstance;
 	}
 
 	@Override
 	public void create(BookInstance e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void update(BookInstance e) {
-		// TODO Auto-generated method stub
+	public void update(BookInstance bookInstance) {
+		try (PreparedStatement query = connection.prepareStatement(UPDATE_BOOK_INSTANCE)) {
+			query.setString(1, bookInstance.getStatus().getValue());
+			query.setLong(2, bookInstance.getId());
+			query.executeUpdate();
 
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookInstanceDao update SQL error: " + bookInstance.toString(), e);
+			throw new ServerException(e);
+		}
 	}
 
 	@Override

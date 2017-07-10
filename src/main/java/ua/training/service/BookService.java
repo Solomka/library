@@ -36,7 +36,7 @@ public class BookService {
 			return bookDao.getAll();
 		}
 	}
-
+	
 	public Optional<Book> getBookWithAuthorsAndInstances(Long bookId) {
 		LOGGER.info("Get book with authors and instances: " + bookId);
 		try (BookDao bookDao = daoFactory.createBookDao()) {
@@ -81,6 +81,13 @@ public class BookService {
 			connection.commit();
 			return books;
 		}
+	}
+	
+	public Optional<Book> searchBookByInstanceInventoryNumber(String instanceInventoryNumber){
+		LOGGER.info("Search book by instanceInventoryNumber: " + instanceInventoryNumber);
+		try (BookDao bookDao = daoFactory.createBookDao()) {
+			return bookDao.getBookByInstanceInventoryNumber(instanceInventoryNumber);
+		}		
 	}
 
 	public void createBook(Book book) {

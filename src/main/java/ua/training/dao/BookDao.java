@@ -14,6 +14,8 @@ public interface BookDao extends GenericDao<Book, Long>, AutoCloseable {
 	void saveBookAuthors(Book book);
 
 	Optional<Book> getBookWithAvailableInstances(Long id);
+	
+	Optional<Book> getBookByInstanceInventoryNumber(String instanceInventoryNumber);
 
 	void close();
 }

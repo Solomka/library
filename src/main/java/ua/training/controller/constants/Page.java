@@ -22,6 +22,8 @@ public final class Page {
 	public static String ALL_READERS_VIEW = PREFIX + "allReaders" + SUFFIX;
 	public static String ADD_READER_VIEW = PREFIX + "addReader" + SUFFIX;
 	
+	public static String ALL_ORDERS_VIEW = PREFIX + "allOrders" + SUFFIX;
+	
 	public static String CHANGE_PASSWORD_VIEW = PREFIX + "changePassword" + SUFFIX;
 	
 	public static String PAGE_NOT_FOUND = PREFIX + ERROR_PREFIX + "pageNotFound" + SUFFIX;

@@ -47,6 +47,10 @@ public abstract class DaoFactory {
 
 	public abstract AuthorDao createAuthorDao(DaoConnection connection);
 
+	public abstract BookOrderDao createBookOrderDao();
+
+	public abstract BookOrderDao createBookOrderDao(DaoConnection connection);
+
 	public static DaoFactory getDaoFactory() {
 		if (daoFactory == null) {
 			try {
