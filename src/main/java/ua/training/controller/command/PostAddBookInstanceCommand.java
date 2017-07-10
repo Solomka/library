@@ -55,7 +55,6 @@ public class PostAddBookInstanceCommand implements Command {
 				.setStatus(Status.AVAILABLE)
 				.setBook(new Book.Builder().setId(Long.parseLong(request.getParameter(Attribute.ID_BOOK))).build())
 				.build();
-
 	}
 
 	private List<String> validateUserInput(BookInstance bookInstance) {
@@ -67,5 +66,4 @@ public class PostAddBookInstanceCommand implements Command {
 		urlParams.put(Attribute.ID_BOOK, bookId);
 		return urlParams;
 	}
-
 }

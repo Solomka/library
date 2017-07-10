@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 
 import ua.training.dao.AuthorDao;
 import ua.training.entity.Author;
-import ua.training.entity.Book;
 import ua.training.exception.ServerException;
 
 public class JdbcAuthorDao implements AuthorDao {
@@ -52,7 +51,7 @@ public class JdbcAuthorDao implements AuthorDao {
 
 	@Override
 	public List<Author> getAll() {
-		
+
 		List<Author> authors = new ArrayList<>();
 		try (Statement query = connection.createStatement();
 				ResultSet resultSet = query.executeQuery(GET_ALL_AUTHORS)) {
@@ -64,7 +63,7 @@ public class JdbcAuthorDao implements AuthorDao {
 			throw new ServerException(e);
 		}
 		return authors;
-		
+
 	}
 
 	@Override
@@ -121,6 +120,12 @@ public class JdbcAuthorDao implements AuthorDao {
 		return authors;
 	}
 
+	public Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Author.Builder().setId(resultSet.getLong(ID_AUTHOR)).setName(resultSet.getString(NAME))
+				.setSurname(resultSet.getString(SURNAME)).setCountry(resultSet.getString(COUNTRY)).build();
+
+	}
+
 	@Override
 	public void close() {
 		if (connectionShouldBeClosed) {
@@ -131,11 +136,5 @@ public class JdbcAuthorDao implements AuthorDao {
 				throw new ServerException(e);
 			}
 		}
-	}
-
-	public Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Author.Builder().setId(resultSet.getLong(ID_AUTHOR)).setName(resultSet.getString(NAME))
-				.setSurname(resultSet.getString(SURNAME)).setCountry(resultSet.getString(COUNTRY)).build();
-
 	}
 }

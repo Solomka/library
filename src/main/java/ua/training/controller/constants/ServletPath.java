@@ -3,7 +3,6 @@ package ua.training.controller.constants;
 public final class ServletPath {
 
 	private ServletPath() {
-
 	}
 
 	public static String HOME = "/";

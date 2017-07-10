@@ -9,12 +9,10 @@ class CommandFactory {
 	private static final Logger LOGGER = Logger.getLogger(CommandFactory.class);
 
 	private CommandFactory() {
-
 	}
 
 	static Command getCommand(String commendKey) {
 		Command command = CommandEnum.getCommand(commendKey);
 		return command;
 	}
-
 }

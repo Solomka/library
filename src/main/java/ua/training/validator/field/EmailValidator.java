@@ -6,12 +6,11 @@ import ua.training.locale.Message;
 
 public class EmailValidator extends FieldValidator {
 
+	private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w-]+)*@[A-Za-z\\d-]+(\\.[A-Za-z\\d]+)*(\\.[A-Za-z]{2,})$";
+
 	private EmailValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
-
 	}
-
-	private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w-]+)*@[A-Za-z\\d-]+(\\.[A-Za-z\\d]+)*(\\.[A-Za-z]{2,})$";
 
 	private static class Holder {
 		static final EmailValidator INSTANCE = new EmailValidator(FieldValidatorKey.EMAIL);
@@ -26,7 +25,5 @@ public class EmailValidator extends FieldValidator {
 		if (!fieldValue.matches(EMAIL_REGEX)) {
 			errors.add(Message.INVALID_EMAIL);
 		}
-
 	}
-
 }

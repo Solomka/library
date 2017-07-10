@@ -43,12 +43,11 @@ public class PostAddAuthorCommand implements Command {
 		addRequestAtrributes(request, author, errors);
 		return Page.ADD_AUTHOR_VIEW;
 	}
-	
+
 	private Author getUserInput(HttpServletRequest request) {
 		return new Author.Builder().setName(request.getParameter(Attribute.NAME))
 				.setSurname(request.getParameter(Attribute.SURNAME)).setCountry(request.getParameter(Attribute.COUNTRY))
 				.build();
-
 	}
 
 	private List<String> validateUserInput(Author author) {
@@ -61,11 +60,10 @@ public class PostAddAuthorCommand implements Command {
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_AUTHOR_ADDITION);
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_AUTHORS, urlParams);
-	}	
+	}
 
 	private void addRequestAtrributes(HttpServletRequest request, Author author, List<String> errors) {
 		request.setAttribute(Attribute.AUTHOR, author);
 		request.setAttribute(Attribute.ERRORS, errors);
 	}
-
 }

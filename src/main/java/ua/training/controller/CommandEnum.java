@@ -28,6 +28,7 @@ import ua.training.service.BookService;
 import ua.training.service.UserService;
 
 enum CommandEnum {
+
 	PAGE_NOT_FOUND {
 		{
 			this.key = "GET:pageNotFound";

@@ -3,7 +3,6 @@ package ua.training.locale;
 public final class MessageUtils {
 
 	private MessageUtils() {
-
 	}
 
 	public static String LEFT_PARENTHESIS = "( ";
@@ -19,5 +18,4 @@ public final class MessageUtils {
 	public static String EQUALITY_SIGN = "=";
 	public static String INTERROGATION_MARK = "?";
 	public static String AMPERSAND = "&";
-
 }

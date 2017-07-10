@@ -13,7 +13,6 @@ public class AuthorValidator implements Validator<Author> {
 	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
 	private AuthorValidator() {
-
 	}
 
 	private static class Holder {

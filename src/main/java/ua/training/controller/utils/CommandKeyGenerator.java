@@ -10,7 +10,6 @@ public final class CommandKeyGenerator {
 	private static String DELIMITER = ":";
 
 	private CommandKeyGenerator() {
-
 	}
 
 	public static String generateCommandKeyFromRequest(HttpServletRequest request) {
@@ -21,5 +20,4 @@ public final class CommandKeyGenerator {
 		System.out.println("Key: " + key);
 		return key;
 	}
-
 }

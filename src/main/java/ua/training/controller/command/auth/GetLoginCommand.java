@@ -16,5 +16,4 @@ public class GetLoginCommand implements Command {
 			throws ServletException, IOException {
 		return Page.LOGIN_VIEW;
 	}
-
 }

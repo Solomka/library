@@ -95,10 +95,11 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 		}
 		return bookInstances;
 	}
-	
+
 	@Override
 	public void addBookInstance(BookInstance bookInstance) {
-		try (PreparedStatement query = connection.prepareStatement(ADD_BOOK_INSTANCE, Statement.RETURN_GENERATED_KEYS)) {
+		try (PreparedStatement query = connection.prepareStatement(ADD_BOOK_INSTANCE,
+				Statement.RETURN_GENERATED_KEYS)) {
 			query.setString(1, bookInstance.getInventoryNumber());
 			query.setString(2, bookInstance.getStatus().getValue());
 			query.setLong(3, bookInstance.getBook().getId());
@@ -112,7 +113,7 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 			LOGGER.error("JdbcBookInstanceDao create SQL error: " + bookInstance.toString(), e);
 			throw new ServerException(e);
 		}
-		
+
 	}
 
 	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
@@ -133,5 +134,4 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 			}
 		}
 	}
-
 }

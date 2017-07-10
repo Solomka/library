@@ -13,10 +13,10 @@ import ua.training.entity.Author;
 import ua.training.service.AuthorService;
 
 public class AllAuthorsCommand implements Command {
-	
+
 	private AuthorService authorService;
-	
-	public AllAuthorsCommand(AuthorService authorService){
+
+	public AllAuthorsCommand(AuthorService authorService) {
 		this.authorService = authorService;
 	}
 
@@ -27,5 +27,4 @@ public class AllAuthorsCommand implements Command {
 		request.setAttribute(Attribute.AUTHORS, authors);
 		return Page.ALL_AUTHORS_VIEW;
 	}
-
 }

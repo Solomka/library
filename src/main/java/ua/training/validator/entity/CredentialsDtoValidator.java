@@ -9,11 +9,10 @@ import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
 public final class CredentialsDtoValidator implements Validator<CredentialsDto> {
-	
+
 	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
 	private CredentialsDtoValidator() {
-
 	}
 
 	private static class Holder {
@@ -33,5 +32,4 @@ public final class CredentialsDtoValidator implements Validator<CredentialsDto> 
 
 		return errors;
 	}
-
 }

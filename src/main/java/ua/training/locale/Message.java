@@ -3,7 +3,6 @@ package ua.training.locale;
 public final class Message {	
 	
 	private Message() {
-
 	}
 
 	public static String LOGGED_IN_AS = "library.loggedIn";
@@ -53,7 +52,5 @@ public final class Message {
 	public static String STATUS_UNAVAILABLE = "library.bookInstance.status.unavailable";
 	
 	public static String ROLE_READER = "library.user.role.reader";
-	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
-	
-	
+	public static String ROLE_LIBRARIAN = "library.user.role.librarian";	
 }

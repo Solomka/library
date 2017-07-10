@@ -24,7 +24,6 @@ public class GetAddBookCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		List<Author> authors = authorService.getAllAuthors();
 
 		request.setAttribute(Attribute.AVAILABILITIES, Availability.getValues());
@@ -32,5 +31,4 @@ public class GetAddBookCommand implements Command {
 
 		return Page.ADD_BOOK_VIEW;
 	}
-
 }

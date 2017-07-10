@@ -13,7 +13,6 @@ public class LibrarianValidator implements Validator<Librarian> {
 	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
 	private LibrarianValidator() {
-
 	}
 
 	private static class Holder {
@@ -34,5 +33,4 @@ public class LibrarianValidator implements Validator<Librarian> {
 
 		return errors;
 	}
-
 }

@@ -111,23 +111,6 @@ public class JdbcBookDao implements BookDao {
 		return book;
 	}
 
-	/*
-	 * @Override public List<Book> getAll() {
-	 * 
-	 * List<Book> books = new ArrayList<>(); try (Statement query =
-	 * connection.createStatement(); ResultSet resultSet =
-	 * query.executeQuery(GET_ALL_BOOKS)) { while (resultSet.next()) {
-	 * books.add(extractBookFromResultSet(resultSet)); } } catch (SQLException
-	 * e) { LOGGER.error("JdbcBookDao getAll SQL error", e); throw new
-	 * ServerException(e); } return books;
-	 * 
-	 * 
-	 * try { throw new Exception(); } catch (Exception e) { throw new
-	 * ServerException(e); }
-	 * 
-	 * }
-	 */
-
 	@Override
 	public Optional<Book> getById(Long id) {
 		Optional<Book> book = Optional.empty();
@@ -143,7 +126,7 @@ public class JdbcBookDao implements BookDao {
 		}
 		return book;
 	}
-	
+
 	@Override
 	public Optional<Book> getBookWithAvailableInstances(Long id) {
 		Optional<Book> book = Optional.empty();
@@ -159,15 +142,6 @@ public class JdbcBookDao implements BookDao {
 		}
 		return book;
 	}
-	/*
-	 * @Override public Optional<Book> getById(Long id) { Optional<Book> book =
-	 * Optional.empty(); try (PreparedStatement query =
-	 * connection.prepareStatement(GET_BOOK_BY_ID)) { query.setLong(1, id);
-	 * ResultSet resultSet = query.executeQuery(); if (resultSet.next()) { book
-	 * = Optional.of(extractBookFromResultSet(resultSet)); } } catch
-	 * (SQLException e) { LOGGER.error("JdbcBookDao getById SQL error: " + id,
-	 * e); throw new ServerException(e); } return book; }
-	 */
 
 	private Book extractBookWithInstancesAndAuthors(ResultSet resultSet) throws SQLException {
 		Book book = extractBookFromResultSet(resultSet);
@@ -272,18 +246,6 @@ public class JdbcBookDao implements BookDao {
 	}
 
 	@Override
-	public void close() {
-		if (connectionShouldBeClosed) {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				LOGGER.error("JdbcBookDao Connection can't be closed", e);
-				throw new ServerException(e);
-			}
-		}
-	}
-
-	@Override
 	public void saveBookAuthors(Book book) {
 		List<Author> authors = book.getAuthors();
 
@@ -321,17 +283,15 @@ public class JdbcBookDao implements BookDao {
 				.setBook(new Book.Builder().setId(resultSet.getLong(ID_BOOK)).build()).build();
 	}
 
-	/*
-	 * private Book extractBookFromResultSet(ResultSet resultSet) throws
-	 * SQLException {
-	 * 
-	 * return new
-	 * Book.Builder().setId(resultSet.getLong(ID_BOOK)).setIsbn(resultSet.
-	 * getString(ISBN))
-	 * .setTitle(resultSet.getString(TITLE)).setPublisher(resultSet.getString(
-	 * PUBLISHER))
-	 * .setAvailability(Availability.forValue(resultSet.getString(AVAILABILITY))
-	 * ).build(); }
-	 */
-
+	@Override
+	public void close() {
+		if (connectionShouldBeClosed) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				LOGGER.error("JdbcBookDao Connection can't be closed", e);
+				throw new ServerException(e);
+			}
+		}
+	}
 }

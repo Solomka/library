@@ -3,7 +3,6 @@ package ua.training.controller.constants;
 public final class Attribute {	
 	
 	private Attribute() {
-
 	}
 	
 	public static String ERROR = "error";

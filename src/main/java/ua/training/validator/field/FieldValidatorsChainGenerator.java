@@ -3,7 +3,6 @@ package ua.training.validator.field;
 public final class FieldValidatorsChainGenerator {
 
 	private FieldValidatorsChainGenerator() {
-
 	}
 
 	public static FieldValidator getFieldValidatorsChain() {
@@ -37,5 +36,4 @@ public final class FieldValidatorsChainGenerator {
 
 		return emailFieldValidator;
 	}
-
 }

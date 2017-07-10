@@ -82,5 +82,4 @@ public class JdbcDaoConnection implements DaoConnection {
 			throw new ServerException(e);
 		}
 	}
-
 }

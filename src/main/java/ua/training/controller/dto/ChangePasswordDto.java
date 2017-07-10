@@ -76,4 +76,12 @@ public class ChangePasswordDto {
 		this.confirmPassword = confirmNewPassword;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder2 = new StringBuilder();
+		builder2.append("ChangePasswordDto [ [super: ").append(super.toString()).append("], user=").append(user)
+				.append(", oldPassword=").append(oldPassword).append(", newPassword=").append(newPassword)
+				.append(", confirmPassword=").append(confirmPassword).append("] ");
+		return builder2.toString();
+	}
 }

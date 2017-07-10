@@ -11,7 +11,6 @@ public enum FieldValidatorKey {
 	private String value;
 
 	FieldValidatorKey(String value) {
-
 	}
 
 	public String getValue() {
@@ -26,5 +25,4 @@ public enum FieldValidatorKey {
 		}
 		throw new RuntimeException("FieldValidatorKey with such string value doesn't exist");
 	}
-
 }

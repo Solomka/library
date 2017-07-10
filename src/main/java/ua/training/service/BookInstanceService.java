@@ -32,12 +32,11 @@ public class BookInstanceService {
 			return bookInstancesDao.getBookInstances(bookId);
 		}
 	}
-	
-	public void addBookInstance(BookInstance bookInstance){
+
+	public void addBookInstance(BookInstance bookInstance) {
 		LOGGER.info("Add book instance: " + bookInstance);
-		try(BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao()){
+		try (BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao()) {
 			bookInstanceDao.addBookInstance(bookInstance);
 		}
 	}
-
 }

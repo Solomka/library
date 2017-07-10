@@ -64,7 +64,7 @@ public class UserService {
 			connection.commit();
 		}
 	}
-	
+
 	public boolean changePassword(ChangePasswordDto changePasswordDto) {
 		LOGGER.info("Change user password");
 		User user = changePasswordDto.getUser();
@@ -79,27 +79,8 @@ public class UserService {
 		return false;
 	}
 
-	/*public boolean changePassword(User user, String oldPassword, String newPassword) {
-		LOGGER.info("Change user password");
-		if (isPasswordValid(oldPassword, user)) {
-			user.setPassword(newPassword);
-			hashUserPassword(user);
-			try (DaoConnection connection = daoFactory.getConnection()) {
-				connection.begin();
-				UserDao userDao = daoFactory.createUserDao(connection);
-				Optional<Reader> reader = userDao.getUserById(user.getId());
-				reader.get().setPassword(user.getPassword());
-				reader.get().setSalt(user.getSalt());
-				userDao.update(user);
-				connection.commit();
-				return true;
-			}
-		}
-		return false;
-	}
-	*/
-	public Optional<Reader> getReaderByReaderCardNumber(String readerCardNumber){
-		try(UserDao userDao = daoFactory.createUserDao()){
+	public Optional<Reader> getReaderByReaderCardNumber(String readerCardNumber) {
+		try (UserDao userDao = daoFactory.createUserDao()) {
 			return userDao.searchByReaderCardNumber(readerCardNumber);
 		}
 	}
@@ -114,5 +95,4 @@ public class UserService {
 	private boolean isPasswordValid(String password, User user) {
 		return passwordHashing.checkPassword(password, user.getSalt(), user.getPassword());
 	}
-
 }

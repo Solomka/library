@@ -31,7 +31,6 @@ public final class PasswordHashing {
 			LOGGER.error("Can't load local salt form properties file", e);
 			throw new ServerException(e);
 		}
-
 	}
 
 	private static class Holder {

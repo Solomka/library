@@ -4,13 +4,12 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class PasswordValidator extends FieldValidator{
+public class PasswordValidator extends FieldValidator {
 
 	private static final String PASSWORD_REGEX = "^[\\wА-ЯІЇЄа-яіїє]{8,14}$";
 
 	private PasswordValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
-
 	}
 
 	private static class Holder {
@@ -26,7 +25,5 @@ public class PasswordValidator extends FieldValidator{
 		if (!fieldValue.matches(PASSWORD_REGEX)) {
 			errors.add(Message.INVALID_PASS);
 		}
-
 	}
-
 }

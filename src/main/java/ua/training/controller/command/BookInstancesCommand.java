@@ -42,16 +42,16 @@ public class BookInstancesCommand implements Command {
 
 		request.setAttribute(Attribute.BOOK, book.get());
 		return Page.BOOK_INSTANCES_VIEW;
-
 	}
 
 	private Optional<Book> getBookDependingOnUserRole(HttpSession session, Long bookId) {
-		if (!SessionManager.isUserLoggedIn(session) || SessionManager.getUserFromSession(session).getRole().equals(Role.LIBRARIAN)) {
+		if (!SessionManager.isUserLoggedIn(session)
+				|| SessionManager.getUserFromSession(session).getRole().equals(Role.LIBRARIAN)) {
 			return bookService.getBookWithAuthorsAndInstances(bookId);
 		}
 		return bookService.getBookWithAuthorsAndAvailableInstances(bookId);
 	}
-	
+
 	private void redirectToAllBooksPageWithErrorMessage(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
@@ -59,6 +59,4 @@ public class BookInstancesCommand implements Command {
 		urlParams.put(Attribute.ERROR, Message.NO_AVAILABLE_BOOK_INSTANCES);
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 	}
-
-	
 }

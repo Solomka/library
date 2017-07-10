@@ -11,7 +11,6 @@ public class ChangePasswordDtoValidator implements Validator<ChangePasswordDto> 
 	private static final String PASSWORD_REGEX = "^[\\wА-ЯІЇЄа-яіїє]{8,14}$";
 
 	private ChangePasswordDtoValidator() {
-
 	}
 
 	private static class Holder {
@@ -57,5 +56,4 @@ public class ChangePasswordDtoValidator implements Validator<ChangePasswordDto> 
 			errors.add(Message.INVALID_NEW_CONFIRM_PASSWORD);
 		}
 	}
-
 }

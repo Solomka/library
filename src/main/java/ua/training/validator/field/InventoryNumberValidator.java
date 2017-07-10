@@ -6,15 +6,15 @@ import ua.training.locale.Message;
 
 public class InventoryNumberValidator extends FieldValidator {
 
+	private static final String INVENTORY_NUMBER_REGEX = "^\\d{7,13}$";
+	
 	private InventoryNumberValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
-
-	}
-
-	private static final String INVENTORY_NUMBER_REGEX = "^\\d{7,13}$";
+	}	
 
 	private static class Holder {
-		static final InventoryNumberValidator INSTANCE = new InventoryNumberValidator(FieldValidatorKey.INVENTORY_NUMBER);
+		static final InventoryNumberValidator INSTANCE = new InventoryNumberValidator(
+				FieldValidatorKey.INVENTORY_NUMBER);
 	}
 
 	public static InventoryNumberValidator getInstance() {
@@ -26,7 +26,5 @@ public class InventoryNumberValidator extends FieldValidator {
 		if (!fieldValue.matches(INVENTORY_NUMBER_REGEX)) {
 			errors.add(Message.INVALID_INVENTORY_NUMBER);
 		}
-
 	}
-
 }

@@ -46,5 +46,4 @@ public enum AppLocale {
 		}
 		return appLocales;
 	}
-
 }

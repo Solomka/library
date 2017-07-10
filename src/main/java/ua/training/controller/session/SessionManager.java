@@ -8,7 +8,6 @@ import ua.training.entity.User;
 public final class SessionManager {
 
 	private SessionManager() {
-
 	}
 
 	public static boolean isUserLoggedIn(HttpSession session) {
@@ -26,5 +25,4 @@ public final class SessionManager {
 	public static void invalidateSession(HttpSession session) {
 		session.invalidate();
 	}
-
 }

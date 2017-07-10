@@ -6,12 +6,11 @@ import ua.training.locale.Message;
 
 public class SurnameValidator extends FieldValidator {
 
+	private static final String SURNAME_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
+	
 	public SurnameValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
-
-	}
-
-	private static final String SURNAME_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
+	}	
 
 	private static class Holder {
 		static final SurnameValidator INSTANCE = new SurnameValidator(FieldValidatorKey.SURNAME);
@@ -26,6 +25,5 @@ public class SurnameValidator extends FieldValidator {
 		if (!fieldValue.matches(SURNAME_REGEX)) {
 			errors.add(Message.INVALID_SURNAME_INPUT);
 		}
-
 	}
 }

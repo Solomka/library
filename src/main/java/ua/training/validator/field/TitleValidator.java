@@ -6,12 +6,11 @@ import ua.training.locale.Message;
 
 public class TitleValidator extends FieldValidator {
 
+	private static final String TITLE_REGEX = "[\\wА-ЯІЇЄа-яіїє\\d\\s’'-]{3,100}";
+
 	private TitleValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
-
 	}
-
-	private static final String TITLE_REGEX = "[\\wА-ЯІЇЄа-яіїє\\d\\s’'-]{3,100}";
 
 	private static class Holder {
 		static final TitleValidator INSTANCE = new TitleValidator(FieldValidatorKey.TITLE);
@@ -26,7 +25,5 @@ public class TitleValidator extends FieldValidator {
 		if (!fieldValue.matches(TITLE_REGEX)) {
 			errors.add(Message.INVALID_TITLE);
 		}
-
 	}
-
 }

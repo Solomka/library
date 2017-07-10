@@ -1,7 +1,6 @@
 package ua.training.controller.constants;
 
 public final class Page {
-
 	
 	public static String PREFIX = "/WEB-INF/views/";
 	public static String ERROR_PREFIX = "errors";

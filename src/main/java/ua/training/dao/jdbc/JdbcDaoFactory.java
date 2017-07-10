@@ -128,5 +128,4 @@ public class JdbcDaoFactory extends DaoFactory {
 		Connection sqlConnection = jdbcConnection.getConnection();
 		return new JdbcBookInstanceDao(sqlConnection);
 	}
-
 }

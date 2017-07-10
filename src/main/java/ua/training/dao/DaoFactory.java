@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import ua.training.dao.jdbc.JdbcUserDao;
 import ua.training.exception.ServerException;
 
 /**
@@ -20,7 +19,7 @@ import ua.training.exception.ServerException;
  *
  */
 public abstract class DaoFactory {
-	
+
 	private static final Logger LOGGER = LogManager.getLogger(DaoFactory.class);
 
 	public static final String DB_FILE = "/db.properties";
@@ -34,16 +33,16 @@ public abstract class DaoFactory {
 
 	public abstract UserDao createUserDao(DaoConnection connection);
 
-	// class level dao - can call methods from one dao class
+	// class level dao
 	public abstract BookDao createBookDao();
 
-	// business level dao - can call methods from many dao classes
+	// business level dao
 	public abstract BookDao createBookDao(DaoConnection connection);
-	
+
 	public abstract BookInstanceDao createBookInstancesDao();
 
 	public abstract BookInstanceDao createBookInstancesDao(DaoConnection connection);
-	
+
 	public abstract AuthorDao createAuthorDao();
 
 	public abstract AuthorDao createAuthorDao(DaoConnection connection);
@@ -62,8 +61,6 @@ public abstract class DaoFactory {
 				throw new ServerException(e);
 			}
 		}
-
 		return daoFactory;
 	}
-
 }

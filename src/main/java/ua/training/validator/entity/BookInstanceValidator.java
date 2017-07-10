@@ -13,7 +13,6 @@ public class BookInstanceValidator implements Validator<BookInstance> {
 	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
 	private BookInstanceValidator() {
-
 	}
 
 	private static class Holder {
@@ -32,5 +31,4 @@ public class BookInstanceValidator implements Validator<BookInstance> {
 
 		return errors;
 	}
-
 }

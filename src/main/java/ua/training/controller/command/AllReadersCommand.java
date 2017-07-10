@@ -15,10 +15,11 @@ import ua.training.service.UserService;
 public class AllReadersCommand implements Command {
 
 	private UserService userService;
-	
-	public AllReadersCommand(UserService userService){
+
+	public AllReadersCommand(UserService userService) {
 		this.userService = userService;
 	}
+
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -26,5 +27,4 @@ public class AllReadersCommand implements Command {
 		request.setAttribute(Attribute.READERS, readers);
 		return Page.ALL_READERS_VIEW;
 	}
-
 }

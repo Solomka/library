@@ -34,12 +34,16 @@ public class PostChangePasswordCommand implements Command {
 		ChangePasswordDto changePasswordDto = getUserInput(request);
 		List<String> errors = validateUserInput(changePasswordDto);
 
-		if (errors.isEmpty()) {
-			userService.changePassword(changePasswordDto);
+		if (!errors.isEmpty()) {
+			addRequestAttributes(request, errors);
+			return Page.CHANGE_PASSWORD_VIEW;
+		}
+		if (userService.changePassword(changePasswordDto)) {
 			redirectToHomePageWithSuccessMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
 
+		errors.add(Message.INVALID_OLD_PASSWORD);
 		addRequestAttributes(request, errors);
 		return Page.CHANGE_PASSWORD_VIEW;
 	}
@@ -66,5 +70,4 @@ public class PostChangePasswordCommand implements Command {
 	private void addRequestAttributes(HttpServletRequest request, List<String> errors) {
 		request.setAttribute(Attribute.ERRORS, errors);
 	}
-
 }

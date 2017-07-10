@@ -6,12 +6,11 @@ import ua.training.locale.Message;
 
 public class ReaderCardNumberValidator extends FieldValidator {
 
+	private static final String READER_CARD_NUMBER_REGEX = "[a-zA-ZА-ЯІЇЄа-яіїє\\d]{10,13}";
+	
 	private ReaderCardNumberValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
-
-	}
-
-	private static final String READER_CARD_NUMBER_REGEX = "[a-zA-ZА-ЯІЇЄа-яіїє\\d]{10,13}";
+	}	
 
 	private static class Holder {
 		static final ReaderCardNumberValidator INSTANCE = new ReaderCardNumberValidator(
@@ -27,7 +26,5 @@ public class ReaderCardNumberValidator extends FieldValidator {
 		if (!fieldValue.matches(READER_CARD_NUMBER_REGEX)) {
 			errors.add(Message.INVALID_READER_CARD_NUMBER);
 		}
-
 	}
-
 }

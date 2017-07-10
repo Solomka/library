@@ -67,5 +67,4 @@ public class SearchBookByAuthorCommand implements Command {
 		fieldValidator.validateField(FieldValidatorKey.NAME, author, errors);
 		return errors;
 	}
-
 }

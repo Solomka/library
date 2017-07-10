@@ -22,9 +22,7 @@ public abstract class FieldValidator {
 		if (nextFieldValidator != null) {
 			nextFieldValidator.validateField(fieldValidatorKey, fieldValue, errors);
 		}
-
 	}
 
 	abstract void validateField(String fieldValue, List<String> errors);
-
 }

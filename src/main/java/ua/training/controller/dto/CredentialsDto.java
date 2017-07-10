@@ -36,7 +36,4 @@ public class CredentialsDto {
 				.append(", password=").append(password).append("] ");
 		return builder.toString();
 	}
-
-	
-
 }

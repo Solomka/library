@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.print.attribute.HashAttributeSet;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -49,8 +48,7 @@ public class DirectViewAccessFilter implements Filter {
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.ERROR, Message.DIRECT_VIEW_ACCESS_ERROR);
 		return new StringBuffer(contextPath).append(ServletPath.HOME)
-				.append(RedirectionManager.generateUrlParams(urlParams))
-				.toString();
+				.append(RedirectionManager.generateUrlParams(urlParams)).toString();
 	}
 
 	private void logInfoAboutUnauthorizedAccess(String uri) {

@@ -20,5 +20,4 @@ public class LogoutCommand implements Command {
 		RedirectionManager.redirect(request, response, ServletPath.HOME);
 		return RedirectionManager.REDIRECTION;
 	}
-
 }

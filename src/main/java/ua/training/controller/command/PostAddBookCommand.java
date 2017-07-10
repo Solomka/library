@@ -50,7 +50,7 @@ public class PostAddBookCommand implements Command {
 		addRequestAtrributes(request, book, errors);
 		return Page.ADD_BOOK_VIEW;
 	}
-	
+
 	private Book getUserInput(HttpServletRequest request) {
 		return new Book.Builder().setIsbn(request.getParameter(Attribute.ISBN))
 				.setTitle(request.getParameter(Attribute.TITLE)).setPublisher(request.getParameter(Attribute.PUBLISHER))
@@ -68,7 +68,6 @@ public class PostAddBookCommand implements Command {
 		} else {
 			book.setAuthors(getBookAuthors(authorsIds));
 		}
-
 	}
 
 	private List<Author> getBookAuthors(String[] authorsIds) {
@@ -79,7 +78,7 @@ public class PostAddBookCommand implements Command {
 		}
 		return bookAuthors;
 	}
-	
+
 	private void redirectToAllBooksPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
@@ -95,5 +94,4 @@ public class PostAddBookCommand implements Command {
 		request.setAttribute(Attribute.BOOK, book);
 		request.setAttribute(Attribute.ERRORS, errors);
 	}
-
 }

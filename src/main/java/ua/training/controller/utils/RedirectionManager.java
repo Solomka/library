@@ -50,5 +50,4 @@ public final class RedirectionManager {
 	private static void deleteLastAmpersand(StringBuffer stringBuffer) {
 		stringBuffer.deleteCharAt(stringBuffer.length() - 1);
 	}
-
 }

@@ -9,11 +9,10 @@ public final class HttpWrapper {
 	private HttpServletResponse response;
 
 	public HttpWrapper() {
-
 	}
 
 	public HttpWrapper(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		this.request = request;
 		this.response = response;
 	}

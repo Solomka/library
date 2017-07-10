@@ -47,5 +47,4 @@ public class AuthorService {
 			return authorDao.getBookAuthors(bookId);
 		}
 	}
-
 }

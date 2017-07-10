@@ -26,7 +26,7 @@ public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public FrontController() {
-		super();
+
 	}
 
 	@Override
@@ -61,7 +61,5 @@ public class FrontController extends HttpServlet {
 		if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
 			request.getRequestDispatcher(resultRedirectResource).forward(request, response);
 		}
-
 	}
-
 }

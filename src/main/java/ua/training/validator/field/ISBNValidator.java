@@ -6,12 +6,11 @@ import ua.training.locale.Message;
 
 public class ISBNValidator extends FieldValidator {
 
+	private static final String ISBN_REGEX = "\\d{13}";
+	
 	private ISBNValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
-
-	}
-
-	private static final String ISBN_REGEX = "\\d{13}";
+	}	
 
 	private static class Holder {
 		static final ISBNValidator INSTANCE = new ISBNValidator(FieldValidatorKey.ISBN);
@@ -26,7 +25,5 @@ public class ISBNValidator extends FieldValidator {
 		if (!fieldValue.matches(ISBN_REGEX)) {
 			errors.add(Message.INVALID_ISBN);
 		}
-
 	}
-
 }
