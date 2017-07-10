@@ -17,4 +17,12 @@ public interface BookOrderDao extends GenericDao<BookOrder, Long>, AutoCloseable
 	List<BookOrder> getExecutedReaderOrders(Long readerId);
 
 	List<BookOrder> getOutstandingReaderOrders(Long readerId);
+
+	List<BookOrder> searchOrdersByReaderCardNumber(String readerCardNumber);
+
+	void executeOrder(BookOrder bookOrder);
+
+	void issueBook(BookOrder bookOrder);
+
+	void getBackBook(BookOrder bookOrder);
 }

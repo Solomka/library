@@ -14,7 +14,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.dao.BookOrderDao;
-import ua.training.entity.Book;
 import ua.training.entity.BookInstance;
 import ua.training.entity.BookOrder;
 import ua.training.entity.Reader;
@@ -32,30 +31,32 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	private static String GET_ALL_READER_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE id_reader=?"
-			+ " ORDER BY creation_date";
+			+ " WHERE id_reader=?" + " ORDER BY creation_date";
 	private static String GET_ORDER_BY_ID = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE id_order=?";
 	private static String GET_UNEXECUTED_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE fulfilment_date IS NULL"
-			+ " ORDER BY creation_date";
+			+ " WHERE fulfilment_date IS NULL" + " ORDER BY creation_date";
 	private static String GET_OUTSTANDING_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NOT NULL AND return_date IS NOT NULL"
-			+ " AND return_date > NOW() AND actual_return_date IS NULL"
-			+ " ORDER BY creation_date";
+			+ " AND return_date > NOW() AND actual_return_date IS NULL" + " ORDER BY creation_date";
 	private static String GET_EXECUTED_READER_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE fulfilment_date IS NOT NULL AND id_reader=?"
-			+ " ORDER BY creation_date";
+			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NULL AND id_reader=?" + " ORDER BY creation_date";
 	private static String GET_OUTSTANDING_READER_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NOT NULL AND return_date IS NOT NULL"
-			+ " AND return_date > NOW() AND actual_return_date IS NULL AND reader_id=?"
-			+ " ORDER BY creation_date";
-	private static String UPDATE_ORDER = "UPDATE book_order SET fulfilment_date=?, pickup_date=?, return_date=?, actual_return_date=?, id_librarian=?"
+			+ " AND return_date > NOW() AND actual_return_date IS NULL AND reader_id=?" + " ORDER BY creation_date";
+	private static String SEARCH_ORDER_BY_READER_CARD_NUMBER = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
+			+ " inventory_number, reader_card_number"
+			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
+			+ " WHERE reader_card_number=?" + " ORDER BY creation_date";
+	private static String EXECUTE_ORDER = "UPDATE book_order SET fulfilment_date=?, id_librarian=?"
+			+ " WHERE id_order=?";
+	private static String ISSUE_BOOK = "UPDATE book_order SET pickup_date=?, return_date=?" + " WHERE id_order=?";
+	private static String GET_BACK_BOOK = "UPDATE book_order JOIN book_instance USING (id_book_instance) SET actual_return_date=?, status=?"
 			+ " WHERE id_order=?";
 	private static String CREATE_ORDER = "INSERT INTO book_order (creation_date, id_book_instance, id_reader) VALUES (?, ?, ?)";
 
@@ -91,8 +92,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	public List<BookOrder> getAll() {
 		List<BookOrder> bookOrders = new ArrayList<>();
 
-		try (Statement query = connection.createStatement();
-				ResultSet resultSet = query.executeQuery(GET_ALL_ORDERS)) {
+		try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL_ORDERS)) {
 			while (resultSet.next()) {
 				bookOrders.add(extractBookOrder(resultSet));
 			}
@@ -102,7 +102,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 		}
 		return bookOrders;
 	}
-	
+
 	@Override
 	public List<BookOrder> getAllReaderOrders(Long readerId) {
 		List<BookOrder> bookOrders = new ArrayList<>();
@@ -119,7 +119,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 		}
 		return bookOrders;
 	}
-	
+
 	@Override
 	public List<BookOrder> getExecutedReaderOrders(Long readerId) {
 		List<BookOrder> bookOrders = new ArrayList<>();
@@ -136,7 +136,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 		}
 		return bookOrders;
 	}
-	
+
 	@Override
 	public List<BookOrder> getOutstandingReaderOrders(Long readerId) {
 		List<BookOrder> bookOrders = new ArrayList<>();
@@ -153,7 +153,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 		}
 		return bookOrders;
 	}
-	
+
 	@Override
 	public List<BookOrder> getUnexecutedOrders() {
 		List<BookOrder> bookOrders = new ArrayList<>();
@@ -186,17 +186,22 @@ public class JdbcBookOrderDao implements BookOrderDao {
 		return bookOrders;
 	}
 
-	private BookOrder extractBookOrder(ResultSet resultSet) throws SQLException {
-		return new BookOrder.Builder().setId(resultSet.getLong(ID_ORDER))
-				.setCreationDate(resultSet.getTimestamp(CREATION_DATE).toLocalDateTime())
-				.setFulfilmentDate(resultSet.getTimestamp(FULFILMENT_DATE).toLocalDateTime())
-				.setPickUpDate(resultSet.getTimestamp(PICKUP_DATE).toLocalDateTime())
-				.setReturnDate(resultSet.getTimestamp(RETURN_DATE).toLocalDateTime())
-				.setActualReturnDate(resultSet.getTimestamp(ACTUAL_RETURN_DATE).toLocalDateTime())
-				.setBookInstance(
-						new BookInstance.Builder().setInventoryNumber(resultSet.getString(INVENTORY_NUMBER)).build())
-				.setReader(new Reader.Builder().setReaderCardNumber(resultSet.getString(READER_CARD_NUMBER)).build())
-				.build();
+	List<BookOrder> bookOrders = new ArrayList<>();
+
+	@Override
+	public List<BookOrder> searchOrdersByReaderCardNumber(String readerCardNumber) {
+		List<BookOrder> bookOrders = new ArrayList<>();
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_ORDER_BY_READER_CARD_NUMBER)) {
+			query.setString(1, readerCardNumber);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				bookOrders.add(extractBookOrder(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookOrderDao searchOrdersByReaderCardNumber SQL error", e);
+			throw new ServerException(e);
+		}
+		return bookOrders;
 	}
 
 	@Override
@@ -235,26 +240,81 @@ public class JdbcBookOrderDao implements BookOrderDao {
 
 	@Override
 	public void update(BookOrder bookOrder) {
-		try (PreparedStatement query = connection.prepareStatement(UPDATE_ORDER)) {
+		/*
+		 * try (PreparedStatement query =
+		 * connection.prepareStatement(UPDATE_ORDER)) { query.setTimestamp(1,
+		 * Timestamp.valueOf(bookOrder.getFulfilmentDate()));
+		 * query.setTimestamp(1, Timestamp.valueOf(bookOrder.getPickUpDate()));
+		 * query.setTimestamp(2, Timestamp.valueOf(bookOrder.getReturnDate()));
+		 * query.setTimestamp(3,
+		 * Timestamp.valueOf(bookOrder.getActualReturnDate())); query.setLong(4,
+		 * bookOrder.getLibrarian().getId()); query.setLong(5,
+		 * bookOrder.getId()); query.executeUpdate();
+		 * 
+		 * } catch (SQLException e) {
+		 * LOGGER.error("JdbcBookOrderDao update SQL error: " +
+		 * bookOrder.toString(), e); throw new ServerException(e); }
+		 */
+
+	}
+
+	@Override
+	public void executeOrder(BookOrder bookOrder) {
+		try (PreparedStatement query = connection.prepareStatement(EXECUTE_ORDER)) {
 			query.setTimestamp(1, Timestamp.valueOf(bookOrder.getFulfilmentDate()));
+			query.setLong(2, bookOrder.getLibrarian().getId());
+			query.setLong(3, bookOrder.getId());
+			query.execute();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookOrderDao executeOrder SQL error: " + bookOrder.getId(), e);
+			throw new ServerException(e);
+
+		}
+	}
+
+	@Override
+	public void issueBook(BookOrder bookOrder) {
+		try (PreparedStatement query = connection.prepareStatement(ISSUE_BOOK)) {
 			query.setTimestamp(1, Timestamp.valueOf(bookOrder.getPickUpDate()));
 			query.setTimestamp(2, Timestamp.valueOf(bookOrder.getReturnDate()));
-			query.setTimestamp(3, Timestamp.valueOf(bookOrder.getActualReturnDate()));
-			query.setLong(4, bookOrder.getLibrarian().getId());
-			query.setLong(5, bookOrder.getId());
-			query.executeUpdate();
-
+			query.setLong(3, bookOrder.getId());
+			query.execute();
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookOrderDao update SQL error: " + bookOrder.toString(), e);
+			LOGGER.error("JdbcBookOrderDao issueBook SQL error: " + bookOrder.getId(), e);
 			throw new ServerException(e);
 		}
+	}
 
+	@Override
+	public void getBackBook(BookOrder bookOrder) {
+		try (PreparedStatement query = connection.prepareStatement(GET_BACK_BOOK)) {
+			query.setTimestamp(1, Timestamp.valueOf(bookOrder.getActualReturnDate()));
+			query.setString(2, bookOrder.getBookInstance().getStatus().getValue());
+			query.setLong(3, bookOrder.getId());
+			query.execute();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookOrderDao getBackBook SQL error: " + bookOrder.getId(), e);
+			throw new ServerException(e);
+		}
 	}
 
 	@Override
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private BookOrder extractBookOrder(ResultSet resultSet) throws SQLException {
+		return new BookOrder.Builder().setId(resultSet.getLong(ID_ORDER))
+				.setCreationDate(resultSet.getTimestamp(CREATION_DATE).toLocalDateTime())
+				.setFulfilmentDate(resultSet.getTimestamp(FULFILMENT_DATE).toLocalDateTime())
+				.setPickUpDate(resultSet.getTimestamp(PICKUP_DATE).toLocalDateTime())
+				.setReturnDate(resultSet.getTimestamp(RETURN_DATE).toLocalDateTime())
+				.setActualReturnDate(resultSet.getTimestamp(ACTUAL_RETURN_DATE).toLocalDateTime())
+				.setBookInstance(
+						new BookInstance.Builder().setInventoryNumber(resultSet.getString(INVENTORY_NUMBER)).build())
+				.setReader(new Reader.Builder().setReaderCardNumber(resultSet.getString(READER_CARD_NUMBER)).build())
+				.build();
 	}
 
 	@Override
@@ -269,5 +329,4 @@ public class JdbcBookOrderDao implements BookOrderDao {
 		}
 	}
 
-	
 }

@@ -249,7 +249,7 @@ public class JdbcBookDao implements BookDao {
 	}
 	
 	@Override
-	public Optional<Book> getBookByInstanceInventoryNumber(String instanceInventoryNumber) {
+	public Optional<Book> searchByBookInstanceInventoryNumber(String instanceInventoryNumber) {
 		Optional<Book> book = Optional.empty();
 		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER)) {
 			query.setString(1, instanceInventoryNumber);

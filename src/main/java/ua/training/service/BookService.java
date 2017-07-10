@@ -86,7 +86,7 @@ public class BookService {
 	public Optional<Book> searchBookByInstanceInventoryNumber(String instanceInventoryNumber){
 		LOGGER.info("Search book by instanceInventoryNumber: " + instanceInventoryNumber);
 		try (BookDao bookDao = daoFactory.createBookDao()) {
-			return bookDao.getBookByInstanceInventoryNumber(instanceInventoryNumber);
+			return bookDao.searchByBookInstanceInventoryNumber(instanceInventoryNumber);
 		}		
 	}
 

@@ -31,60 +31,84 @@ public class BookOrderService {
 
 	public List<BookOrder> getAllOrders() {
 		LOGGER.info("Get all orders");
-		try(BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()){
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
 			return bookOrderDao.getAll();
 		}
 	}
 
 	public List<BookOrder> getUnexecutedOrders() {
-		return null;
+		LOGGER.info("Get unexecuted orders");
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.getUnexecutedOrders();
+		}
 	}
 
 	public List<BookOrder> getOutstandingOrders() {
-		return null;
+		LOGGER.info("Get outstanding orders");
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.getOutstandingOrders();
+		}
 	}
-	
-	//sorted by date
-	public List<BookOrder> searchOrdersByReaderCardNumber(String readerCardNumber){
-		return null;
+
+	public List<BookOrder> searchOrdersByReaderCardNumber(String readerCardNumber) {
+		LOGGER.info("Search orders by readerCardNumber: " + readerCardNumber);
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.searchOrdersByReaderCardNumber(readerCardNumber);
+		}
 	}
-	
-	//sorted by date
+
 	public List<BookOrder> getAllReaderOrders(Long readerId) {
-		return null;
+		LOGGER.info("Get all reader orders: " + readerId);
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.getAllReaderOrders(readerId);
+		}
 	}
-	
-	//executed but not taken
+
 	public List<BookOrder> getExecutedReaderOrders(Long readerId) {
-		return null;
+		LOGGER.info("Get executed reader orders: " + readerId);
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.getExecutedReaderOrders(readerId);
+		}
 	}
-	
+
 	public List<BookOrder> getOutstandingReaderOrders(Long readerId) {
-		return null;
+		LOGGER.info("Get outstanding reader orders: " + readerId);
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.getOutstandingReaderOrders(readerId);
+		}
 	}
 
 	public void createOrder(BookOrder order) {
 		LOGGER.info("Create order: " + order.toString());
-		try(DaoConnection connection = daoFactory.getConnection()){
+		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();
 			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
 			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
 			bookOrderDao.create(order);
 			bookInstanceDao.update(order.getBookInstance());
-			connection.commit();			
+			connection.commit();
 		}
 	}
 
-	public void executeOrder(Long orderId) {
-
+	public void executeOrder(BookOrder order) {
+		LOGGER.info("Execute order: " + order.getId());
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			bookOrderDao.executeOrder(order);
+		}
 	}
 
-	public void issueBook(Long orderId) {
-
+	public void issueBook(BookOrder order) {
+		LOGGER.info("Issue book: " + order.getId());
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			bookOrderDao.issueBook(order);
+		}
 	}
 
-	public void getBackBook(Long orderId) {
-
+	public void getBackBook(BookOrder order) {
+		LOGGER.info("Get back book: " + order.getId());
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			bookOrderDao.getBackBook(order);
+		}
 	}
 
 }

@@ -79,7 +79,7 @@ public class UserService {
 		return false;
 	}
 
-	public Optional<Reader> getReaderByReaderCardNumber(String readerCardNumber) {
+	public Optional<Reader> searchReaderByReaderCardNumber(String readerCardNumber) {
 		try (UserDao userDao = daoFactory.createUserDao()) {
 			return userDao.searchByReaderCardNumber(readerCardNumber);
 		}
