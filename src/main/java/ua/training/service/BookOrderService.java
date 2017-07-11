@@ -1,15 +1,21 @@
 package ua.training.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.controller.constants.AppConstants;
 import ua.training.dao.BookInstanceDao;
 import ua.training.dao.BookOrderDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
 import ua.training.entity.BookOrder;
+import ua.training.entity.Librarian;
+import ua.training.exception.ServiceException;
+import ua.training.locale.Message;
 
 public class BookOrderService {
 
@@ -90,25 +96,107 @@ public class BookOrderService {
 		}
 	}
 
-	public void executeOrder(BookOrder order) {
-		LOGGER.info("Execute order: " + order.getId());
+	public void fulfilOrder(Long orderId, Long librarianId) {
+		LOGGER.info("Fulfil order: " + orderId);
+		// class level dao
+		// connection will be closed regardless of exception
+		// here transaction is closed but connection is not
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			bookOrderDao.executeOrder(order);
+			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
+
+			if (!isOrderPresent(optionalOrder)) {
+				throw new ServiceException(Message.INVALID_BOOK_ORDER_ID + orderId);
+			}
+
+			BookOrder order = optionalOrder.get();
+
+			if (isOrderFulfilled(order)) {
+				LOGGER.error("Can't fulfill order 'cause it's already fulfilled: " + orderId);
+				throw new ServiceException(Message.ORDER_ALREADY_FULFILLED);
+			}
+			order.setFulfilmentDate(getCurrentLocalDateTime());
+			order.setLibrarian(new Librarian.Builder().setId(librarianId).build());
+			bookOrderDao.fulfilOrder(order);
 		}
 	}
 
-	public void issueBook(BookOrder order) {
-		LOGGER.info("Issue book: " + order.getId());
+	public void issueBook(Long orderId) {
+		LOGGER.info("Issue book: " + orderId);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
+
+			if (!isOrderPresent(optionalOrder)) {
+				throw new ServiceException(Message.INVALID_BOOK_ORDER_ID + orderId);
+			}
+
+			BookOrder order = optionalOrder.get();
+
+			if (!isOrderFulfilled(order)) {
+				LOGGER.error("Can't issue Book 'cause Order is not fulfilled: " + orderId);
+				throw new ServiceException(Message.ORDER_IS_NOT_FULFILLED);
+			}
+			if (isBookIssued(order)) {
+				LOGGER.error("Can't issue Book 'cause it's already issued: " + orderId);
+				throw new ServiceException(Message.BOOK_ALREADY_ISSUED);
+			}
+			LocalDateTime pickUpDate = getCurrentLocalDateTime();
+			order.setPickUpDate(pickUpDate);
+			order.setReturnDate(getReturnOrderDate(pickUpDate));
 			bookOrderDao.issueBook(order);
 		}
 	}
 
-	public void getBackBook(BookOrder order) {
-		LOGGER.info("Get back book: " + order.getId());
+	public void returnBook(Long orderId) {
+		LOGGER.info("Get back book: " + orderId);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			bookOrderDao.getBackBook(order);
+			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
+
+			if (!isOrderPresent(optionalOrder)) {
+				throw new ServiceException(Message.INVALID_BOOK_ORDER_ID + orderId);
+			}
+
+			BookOrder order = optionalOrder.get();
+
+			if (!isOrderFulfilled(order)) {
+				LOGGER.error("Can't return book 'cause it's not fulfilled: " + orderId);
+				throw new ServiceException(Message.ORDER_IS_NOT_FULFILLED);
+			}
+			if (!isBookIssued(order)) {
+				LOGGER.error("Can't return book 'cause it's not issued: " + orderId);
+				throw new ServiceException(Message.BOOK_IS_NOT_ISSUED);
+			}
+			if (isBookReturned(order)) {
+				LOGGER.error("Can't return book 'cause it's already returned: " + orderId);
+				throw new ServiceException(Message.BOOK_ALREADY_RETURNED);
+			}
+			LocalDateTime actualReturnDate = getCurrentLocalDateTime();
+			order.setActualReturnDate(actualReturnDate);
+			bookOrderDao.returnBook(order);
 		}
+	}
+
+	private boolean isOrderPresent(Optional<BookOrder> optionalOrder) {
+		return (optionalOrder.isPresent() ? true : false);
+	}
+
+	private boolean isOrderFulfilled(BookOrder order) {
+		return order.getFulfilmentDate() != null;
+	}
+
+	private boolean isBookIssued(BookOrder order) {
+		return order.getPickUpDate() != null && order.getReturnDate() != null;
+	}
+
+	private boolean isBookReturned(BookOrder order) {
+		return order.getActualReturnDate() != null;
+	}
+
+	private LocalDateTime getCurrentLocalDateTime() {
+		return LocalDateTime.now();
+	}
+
+	private LocalDateTime getReturnOrderDate(LocalDateTime pickUpDate) {
+		return pickUpDate.plusMonths(AppConstants.RETURN_BOOK_MONTH_PERIOD);
 	}
 
 }

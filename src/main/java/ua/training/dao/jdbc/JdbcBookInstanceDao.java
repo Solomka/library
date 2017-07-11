@@ -136,7 +136,7 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 
 	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
 		return new BookInstance.Builder().setId(resultSet.getLong(ID_BOOK_INSTANCE))
-				.setStatus(Status.forValur(resultSet.getString(STATUS)))
+				.setStatus(Status.forValue(resultSet.getString(STATUS)))
 				.setInventoryNumber(resultSet.getString(INVENTORY_NUMBER))
 				.setBook(new Book.Builder().setId(resultSet.getLong(ID_BOOK)).build()).build();
 	}

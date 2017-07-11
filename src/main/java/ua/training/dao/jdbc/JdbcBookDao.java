@@ -35,7 +35,7 @@ public class JdbcBookDao implements BookDao {
 	// id_book=?";
 	private static String GET_BOOK_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country,"
 			+ " id_book_instance, status, inventory_number"
-			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
+			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) LEFT JOIN book_instance USING (id_book)"
 			+ " WHERE id_book=?";
 	private static String GET_BOOK_WITH_AVAILABLE_INSTANCES = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country,"
 			+ " id_book_instance, status, inventory_number"
@@ -296,9 +296,13 @@ public class JdbcBookDao implements BookDao {
 
 	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
 		return new BookInstance.Builder().setId(resultSet.getLong(ID_BOOK_INSTANCE))
-				.setStatus(Status.forValur(resultSet.getString(STATUS)))
+				.setStatus(checkResultSetStatusValue(resultSet))
 				.setInventoryNumber(resultSet.getString(INVENTORY_NUMBER))
 				.setBook(new Book.Builder().setId(resultSet.getLong(ID_BOOK)).build()).build();
+	}
+	
+	private Status checkResultSetStatusValue(ResultSet resultSet) throws SQLException{
+		return (resultSet.getString(STATUS) == null)? null: Status.forValue(resultSet.getString(STATUS));
 	}
 
 	@Override

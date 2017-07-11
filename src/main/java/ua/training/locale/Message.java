@@ -45,6 +45,13 @@ public final class Message {
 	public static String IVALID_CONFIRM_PASSWORD = "library.error.invalidConfirmPassword";
 	public static String INVALID_NEW_CONFIRM_PASSWORD = "library.error.invalidNewConfirmPassword";
 	
+	public static String INVALID_BOOK_ORDER_ID = "library.error.invalidBookOrderId";
+	public static String ORDER_ALREADY_FULFILLED = "library.error.orderAlreadyFulfilled";
+	public static String ORDER_IS_NOT_FULFILLED = "library.error.orderIsNotFulfilled";
+	public static String BOOK_ALREADY_ISSUED = "library.error.bookAlreadyIssued";
+	public static String BOOK_IS_NOT_ISSUED = "library.error.bookIsNotIssued";
+	public static String BOOK_ALREADY_RETURNED = "library.error.bookAlreadyReturned";
+	
 	public static String AVAILABILITY_READING_ROOM = "library.book.availability.readingRoom";
 	public static String AVAILABILITY_SUBSCRIPTION = "library.book.availability.subscription";
 
@@ -54,5 +61,10 @@ public final class Message {
 	
 	public static String ROLE_READER = "library.user.role.reader";
 	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
+	
+	
+	
+	
+	
 		
 }

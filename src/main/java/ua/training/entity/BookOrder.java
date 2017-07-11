@@ -139,7 +139,7 @@ public class BookOrder implements Serializable {
 		return actialReturnDate;
 	}
 
-	public void setActialReturnDate(LocalDateTime actialReturnDate) {
+	public void setActualReturnDate(LocalDateTime actialReturnDate) {
 		this.actialReturnDate = actialReturnDate;
 	}
 

@@ -109,9 +109,11 @@
 					<tr>
 						<td>${status.index + 1}</td>
 						<td>${bookInstance.getInventoryNumber()}</td>
-						<td><fmt:message
-								key="${bookInstance.getStatus().getLocalizedValue()}"
-								bundle="${rb}" /></td>
+						<td><c:if test="${not empty bookInstance.getStatus()}">
+								<fmt:message
+									key="${bookInstance.getStatus().getLocalizedValue()}"
+									bundle="${rb}" />
+							</c:if></td>
 						<c:if test="${user.getRole().getValue() eq 'reader' }">
 							<td><a
 								href="./reader/createOrder?id_book_instance=${bookInstance.getId()}"><fmt:message

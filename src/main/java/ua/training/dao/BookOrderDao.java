@@ -20,9 +20,9 @@ public interface BookOrderDao extends GenericDao<BookOrder, Long>, AutoCloseable
 
 	List<BookOrder> searchOrdersByReaderCardNumber(String readerCardNumber);
 
-	void executeOrder(BookOrder bookOrder);
+	void fulfilOrder(BookOrder bookOrder);
 
 	void issueBook(BookOrder bookOrder);
 
-	void getBackBook(BookOrder bookOrder);
+	void returnBook(BookOrder bookOrder);
 }

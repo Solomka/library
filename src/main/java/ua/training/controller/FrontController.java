@@ -1,6 +1,8 @@
 package ua.training.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,10 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ua.training.controller.command.Command;
 import ua.training.controller.command.i18n.AppLocale;
 import ua.training.controller.constants.Attribute;
+import ua.training.controller.constants.ServletPath;
 import ua.training.controller.utils.CommandKeyGenerator;
+import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.exception.ServiceException;
 
 /**
  * Application HTTP Front Servlet
@@ -55,11 +61,19 @@ public class FrontController extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
-		String resultRedirectResource = CommandFactory.getCommand(commandKey).execute(request, response);
-		if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
-			request.getRequestDispatcher(resultRedirectResource).forward(request, response);
+		Command command =  CommandFactory.getCommand(commandKey);		
+		try{
+			String resultRedirectResource = command.execute(request, response);
+			if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
+				request.getRequestDispatcher(resultRedirectResource).forward(request, response);
+			}			
+		}catch(ServiceException ex){
+			HttpWrapper httpWrapper = new HttpWrapper(request, response);
+			Map<String, String> urlParams = new HashMap<>();
+			urlParams.put(Attribute.ERROR, ex.getMessage());
+			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
 		}
+		
 	}
 }

@@ -38,7 +38,7 @@ public enum Status {
 	 *            value describing Status
 	 * @return Status or RuntimeException if appropriate status wasn't found
 	 */
-	public static Status forValur(String value) {
+	public static Status forValue(String value) {
 		for (final Status status : Status.values()) {
 			if (status.getValue().equals(value)) {
 				return status;
