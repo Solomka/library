@@ -1,6 +1,7 @@
 package ua.training.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class BookOrder implements Serializable {
@@ -13,11 +14,11 @@ public class BookOrder implements Serializable {
 	private Long id;
 	private BookInstance bookInstance;
 	private Reader reader;
-	private LocalDateTime creationDate;
-	private LocalDateTime fulfilmentDate;
-	private LocalDateTime pickUpDate;
-	private LocalDateTime returnDate;
-	private LocalDateTime actialReturnDate;
+	private LocalDate creationDate;
+	private LocalDate fulfilmentDate;
+	private LocalDate pickUpDate;
+	private LocalDate returnDate;
+	private LocalDate actualReturnDate;
 	private Librarian librarian;
 
 	public BookOrder() {
@@ -42,28 +43,28 @@ public class BookOrder implements Serializable {
 			return this;
 		}
 
-		public Builder setCreationDate(LocalDateTime creationDate) {
+		public Builder setCreationDate(LocalDate creationDate) {
 			bookOrder.creationDate = creationDate;
 			return this;
 		}
 
-		public Builder setFulfilmentDate(LocalDateTime fulfilmentDate) {
+		public Builder setFulfilmentDate(LocalDate fulfilmentDate) {
 			bookOrder.fulfilmentDate = fulfilmentDate;
 			return this;
 		}
 
-		public Builder setPickUpDate(LocalDateTime pickUpDate) {
+		public Builder setPickUpDate(LocalDate pickUpDate) {
 			bookOrder.pickUpDate = pickUpDate;
 			return this;
 		}
 
-		public Builder setReturnDate(LocalDateTime returnDate) {
+		public Builder setReturnDate(LocalDate returnDate) {
 			bookOrder.returnDate = returnDate;
 			return this;
 		}
 
-		public Builder setActualReturnDate(LocalDateTime actualReturnDate) {
-			bookOrder.actialReturnDate = actualReturnDate;
+		public Builder setActualReturnDate(LocalDate actualReturnDate) {
+			bookOrder.actualReturnDate = actualReturnDate;
 			return this;
 		}
 
@@ -103,44 +104,44 @@ public class BookOrder implements Serializable {
 		this.reader = reader;
 	}
 
-	public LocalDateTime getCreationDate() {
+	public LocalDate getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(LocalDateTime creationDate) {
+	public void setCreationDate(LocalDate creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public LocalDateTime getFulfilmentDate() {
+	public LocalDate getFulfilmentDate() {
 		return fulfilmentDate;
 	}
 
-	public void setFulfilmentDate(LocalDateTime fulfilmentDate) {
+	public void setFulfilmentDate(LocalDate fulfilmentDate) {
 		this.fulfilmentDate = fulfilmentDate;
 	}
 
-	public LocalDateTime getPickUpDate() {
+	public LocalDate getPickUpDate() {
 		return pickUpDate;
 	}
 
-	public void setPickUpDate(LocalDateTime pickUpDate) {
+	public void setPickUpDate(LocalDate pickUpDate) {
 		this.pickUpDate = pickUpDate;
 	}
 
-	public LocalDateTime getReturnDate() {
+	public LocalDate getReturnDate() {
 		return returnDate;
 	}
 
-	public void setReturnDate(LocalDateTime returnDate) {
+	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
 	}
 
-	public LocalDateTime getActualReturnDate() {
-		return actialReturnDate;
+	public LocalDate getActualReturnDate() {
+		return actualReturnDate;
 	}
 
-	public void setActualReturnDate(LocalDateTime actialReturnDate) {
-		this.actialReturnDate = actialReturnDate;
+	public void setActualReturnDate(LocalDate actialReturnDate) {
+		this.actualReturnDate = actialReturnDate;
 	}
 
 	public Librarian getLibrarian() {
@@ -189,7 +190,7 @@ public class BookOrder implements Serializable {
 				.append(", bookInstance=").append(bookInstance).append(", reader=").append(reader)
 				.append(", creationDate=").append(creationDate).append(", fulfilmentDate=").append(fulfilmentDate)
 				.append(", pickUpDate=").append(pickUpDate).append(", returnDate=").append(returnDate)
-				.append(", actialReturnDate=").append(actialReturnDate).append(", librarian=").append(librarian)
+				.append(", actialReturnDate=").append(actualReturnDate).append(", librarian=").append(librarian)
 				.append("] ");
 		return builder2.toString();
 	}

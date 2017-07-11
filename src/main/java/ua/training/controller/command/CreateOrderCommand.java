@@ -1,6 +1,7 @@
 package ua.training.controller.command;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class CreateOrderCommand implements Command {
 		String bookInstanceId = request.getParameter(Attribute.ID_BOOK_INSTANCE);
 		return new BookOrder.Builder()
 				.setReader(new Reader.Builder().setId(Long.valueOf(SessionManager.getUserFromSession(request.getSession()).getId())).build())
-				.setCreationDate(LocalDateTime.now()).setBookInstance(new BookInstance.Builder()
+				.setCreationDate(LocalDate.now()).setBookInstance(new BookInstance.Builder()
 						.setId(Long.valueOf(bookInstanceId)).setStatus(Status.UNAVAILABLE).build())
 				.build();
 	}

@@ -32,7 +32,7 @@ public class AllOrdersCommand implements Command {
 		if (user.getRole().equals(Role.LIBRARIAN)) {
 			orders = bookOrderService.getAllOrders();
 		} else {
-			orders = bookOrderService.getAllReaderOrders(user.getId());
+			orders = bookOrderService.getNotReturnedReaderOrders(user.getId());
 		}
 		request.setAttribute(Attribute.ORDERS, orders);
 		return Page.ALL_ORDERS_VIEW;

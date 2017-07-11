@@ -1,5 +1,6 @@
 package ua.training.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -56,17 +57,17 @@ public class BookOrderService {
 		}
 	}
 
-	public List<BookOrder> searchOrdersByReaderCardNumber(String readerCardNumber) {
-		LOGGER.info("Search orders by readerCardNumber: " + readerCardNumber);
+	public List<BookOrder> searchNotReturnedOrdersByReaderCardNumber(String readerCardNumber) {
+		LOGGER.info("Search not returned orders by readerCardNumber: " + readerCardNumber);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			return bookOrderDao.searchOrdersByReaderCardNumber(readerCardNumber);
+			return bookOrderDao.searchNotReturnedOrdersByReaderCardNumber(readerCardNumber);
 		}
 	}
 
-	public List<BookOrder> getAllReaderOrders(Long readerId) {
-		LOGGER.info("Get all reader orders: " + readerId);
+	public List<BookOrder> getNotReturnedReaderOrders(Long readerId) {
+		LOGGER.info("Get not returned reader orders: " + readerId);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			return bookOrderDao.getAllReaderOrders(readerId);
+			return bookOrderDao.getNotReturnedReaderOrders(readerId);
 		}
 	}
 
@@ -114,7 +115,7 @@ public class BookOrderService {
 				LOGGER.error("Can't fulfill order 'cause it's already fulfilled: " + orderId);
 				throw new ServiceException(Message.ORDER_ALREADY_FULFILLED);
 			}
-			order.setFulfilmentDate(getCurrentLocalDateTime());
+			order.setFulfilmentDate(getCurrentLocalDate());
 			order.setLibrarian(new Librarian.Builder().setId(librarianId).build());
 			bookOrderDao.fulfilOrder(order);
 		}
@@ -139,7 +140,7 @@ public class BookOrderService {
 				LOGGER.error("Can't issue Book 'cause it's already issued: " + orderId);
 				throw new ServiceException(Message.BOOK_ALREADY_ISSUED);
 			}
-			LocalDateTime pickUpDate = getCurrentLocalDateTime();
+			LocalDate pickUpDate = getCurrentLocalDate();
 			order.setPickUpDate(pickUpDate);
 			order.setReturnDate(getReturnOrderDate(pickUpDate));
 			bookOrderDao.issueBook(order);
@@ -169,7 +170,7 @@ public class BookOrderService {
 				LOGGER.error("Can't return book 'cause it's already returned: " + orderId);
 				throw new ServiceException(Message.BOOK_ALREADY_RETURNED);
 			}
-			LocalDateTime actualReturnDate = getCurrentLocalDateTime();
+			LocalDate actualReturnDate = getCurrentLocalDate();
 			order.setActualReturnDate(actualReturnDate);
 			bookOrderDao.returnBook(order);
 		}
@@ -191,11 +192,11 @@ public class BookOrderService {
 		return order.getActualReturnDate() != null;
 	}
 
-	private LocalDateTime getCurrentLocalDateTime() {
-		return LocalDateTime.now();
+	private LocalDate getCurrentLocalDate() {
+		return LocalDate.now();
 	}
 
-	private LocalDateTime getReturnOrderDate(LocalDateTime pickUpDate) {
+	private LocalDate getReturnOrderDate(LocalDate pickUpDate) {
 		return pickUpDate.plusMonths(AppConstants.RETURN_BOOK_MONTH_PERIOD);
 	}
 
