@@ -163,7 +163,7 @@ enum CommandEnum {
 	},
 	ALL_ORDERS{
 		{
-			this.key = "GET:reader/orders";
+			this.key = "GET:orders";
 			this.command = new AllOrdersCommand(BookOrderService.getInstance());
 		}
 	},
