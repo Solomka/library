@@ -291,23 +291,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 
 	@Override
 	public void update(BookOrder bookOrder) {
-		/*
-		 * try (PreparedStatement query =
-		 * connection.prepareStatement(UPDATE_ORDER)) { query.setTimestamp(1,
-		 * Timestamp.valueOf(bookOrder.getFulfilmentDate()));
-		 * query.setTimestamp(1, Timestamp.valueOf(bookOrder.getPickUpDate()));
-		 * query.setTimestamp(2, Timestamp.valueOf(bookOrder.getReturnDate()));
-		 * query.setTimestamp(3,
-		 * Timestamp.valueOf(bookOrder.getActualReturnDate())); query.setLong(4,
-		 * bookOrder.getLibrarian().getId()); query.setLong(5,
-		 * bookOrder.getId()); query.executeUpdate();
-		 * 
-		 * } catch (SQLException e) {
-		 * LOGGER.error("JdbcBookOrderDao update SQL error: " +
-		 * bookOrder.toString(), e); throw new ServerException(e); }
-		 */
-
-	}
+		}
 
 	@Override
 	public void fulfilOrder(BookOrder bookOrder) {

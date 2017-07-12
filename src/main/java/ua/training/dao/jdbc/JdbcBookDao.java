@@ -26,13 +26,8 @@ public class JdbcBookDao implements BookDao {
 
 	// SQL queries
 	private static String CREATE_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
-	// private static String GET_ALL_BOOKS = "SELECT * FROM book ORDER BY
-	// title";
 	private static String GET_ALL_BOOKS = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) ORDER BY title";
-
-	// private static String GET_BOOK_BY_ID = "SELECT * FROM book WHERE
-	// id_book=?";
 	private static String GET_BOOK_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country,"
 			+ " id_book_instance, status, inventory_number"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) LEFT JOIN book_instance USING (id_book)"
