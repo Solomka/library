@@ -161,9 +161,15 @@ enum CommandEnum {
 			this.command = new PostChangePasswordCommand(UserService.getInstance());
 		}
 	},
-	ALL_ORDERS{
+	ALL_READER_ORDERS{
 		{
-			this.key = "GET:orders";
+			this.key = "GET:reader/orders";
+			this.command = new AllOrdersCommand(BookOrderService.getInstance());
+		}
+	},
+	ALL_LIBRARIAN_ORDERS{
+		{
+			this.key = "GET:librarian/orders";
 			this.command = new AllOrdersCommand(BookOrderService.getInstance());
 		}
 	},

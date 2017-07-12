@@ -29,7 +29,8 @@ import ua.training.locale.Message;
 public class UrlUnAuthorizedAccessFilter implements Filter {
 
 	private final static Logger LOGGER = Logger.getLogger(UrlUnAuthorizedAccessFilter.class);
-	private static String UNAUTHORIZED_ACCESS = "Unauthorized access to the resource: ";
+	private static final String UNAUTHORIZED_ACCESS = "Unauthorized access to the resource: ";
+	private static final String ORDERS_PAGE = "orders";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -78,7 +79,7 @@ public class UrlUnAuthorizedAccessFilter implements Filter {
 	private boolean isLibrarianPage(String requestURI) {
 		return requestURI.contains(Role.LIBRARIAN.getValue());
 	}
-
+	
 	private void logInfoAboutUnauthorizedAccess(String uri) {
 		LOGGER.info(UNAUTHORIZED_ACCESS + uri);
 	}

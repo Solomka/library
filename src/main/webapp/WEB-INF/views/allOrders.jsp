@@ -2,6 +2,67 @@
 
 <div class="container-fluid">
 
+	<div class="row-fluid" align="left">
+		<div class="btn-group" role="group" aria-label="buttons">
+			<c:if test="${user.getRole().getValue() eq 'librarian' }">
+				<button type="button" class="btn btn-default" data-toggle="modal"
+					data-target="#searchByReaderCardNumber">
+					<fmt:message key="library.order.searchByReaderCardNumber"
+						bundle="${rb}" />
+				</button>			
+			<button type="button" class="btn btn-default"
+				onclick="location.href='./unfulfilled';">
+				<fmt:message key="library.order.unfulfilled" bundle="${rb}" />
+			</button>
+			<button type="button" class="btn btn-default"
+				onclick="location.href='./toCancellation';">
+				<fmt:message key="library.order.toCancellation" bundle="${rb}" />
+			</button>
+			</c:if>
+			<button type="button" class="btn btn-default"
+				onclick="location.href='./outstanding';">
+				<fmt:message key="library.order.outstanding" bundle="${rb}" />
+			</button>
+			
+		</div>
+	</div>
+
+	<!-- modal -->
+	<div class="modal fade" id="searchByReaderCardNumber" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						<fmt:message key="library.order.searchByReaderCardNumber"
+							bundle="${rb}" />
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form action="./readerCardNumber" method="POST"
+						role="form">
+
+						<div class="form-group">
+							<label for="readerCardNumber"><fmt:message
+									key="library.readerCardNumber" bundle="${rb}" /></label> <input
+								type="text" class="form-control" id="readerCardNumber"
+								name="readerCardNumber" />
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-default" id="submitButton">
+								<fmt:message key="library.search" bundle="${rb}" />
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="row-fluid" align="center">
 		<h2>
 			<fmt:message key="library.orders" bundle="${rb}" />
@@ -22,36 +83,58 @@
 			</div>
 		</c:if>
 	</div>
-	
+
 	<div class="row-fluid top-margin" align="center">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
 					<th>#</th>
 					<c:if test="${user.getRole().getValue() eq 'librarian' }">
-					<th><fmt:message key="library.readerCardNumber" bundle="${rb}" /></th>
+						<th><fmt:message key="library.readerCardNumber"
+								bundle="${rb}" /></th>
 					</c:if>
 					<th><fmt:message key="library.inventoryNumber" bundle="${rb}" /></th>
-					<th><fmt:message key="library.authors" bundle="${rb}" /></th>
-					<th><fmt:message key="library.publisher" bundle="${rb}" /></th>
-					<th><fmt:message key="library.availability" bundle="${rb}" /></th>
-					<th>***</th>
+					<th><fmt:message key="library.orderCreationDate"
+							bundle="${rb}" /></th>
+					<th><fmt:message key="library.orderFulfilmentDate"
+							bundle="${rb}" /></th>
+					<c:if test="${user.getRole().getValue() eq 'librarian' }">
+						<th><fmt:message key="library.orderIssuanceDate"
+								bundle="${rb}" /></th>
+					</c:if>
+					<th><fmt:message key="library.orderReturnDate" bundle="${rb}" /></th>
+					<c:if test="${user.getRole().getValue() eq 'librarian' }">
+						<th><fmt:message key="library.orderActualReturnDate"
+								bundle="${rb}" /></th>
+						<th>***</th>
+					</c:if>
+
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${books}" var="book" varStatus="status">
+				<c:forEach items="${orders}" var="order" varStatus="status">
 					<tr>
 						<td>${status.index + 1}</td>
-						<td>${book.getIsbn()}</td>
-						<td>${book.getTitle()}</td>
-						<td><c:forEach items="${book.getAuthors()}" var="author">
-						${author.getName()} ${author.getSurname()}<br />
-							</c:forEach></td>
-						<td>${book.publisher}</td>
-						<td><fmt:message
-								key="${book.availability.getLocalizedValue()}" bundle="${rb}" /></td>
-						<td><a href="./bookInstances?id_book=${book.getId()}"><fmt:message
-									key="library.instances" bundle="${rb}" /></a></td>
+						<c:if test="${user.getRole().getValue() eq 'librarian' }">
+							<td>${order.getReader().getReaderCardNumber()}</td>
+						</c:if>
+						<td>${order.getBookInstance().getInventoryNumber()}</td>
+						<td>${order.getCreationDate()}</td>
+						<td>${order.getFulfilmentDate()}</td>
+						<c:if test="${user.getRole().getValue() eq 'librarian' }">
+							<td>${order.getPickUpDate()}</td>
+						</c:if>
+						<td>${order.getReturnDate()}</td>
+						<c:if test="${user.getRole().getValue() eq 'librarian' }">
+							<td>${order.getActualReturnDate()}</td>
+							<td><a
+								href="./librarian/fulfilOrder?id_order=${order.getId()}"><fmt:message
+										key="library.fulfilOrder" bundle="${rb}" /></a> <a
+								href="./librarian/issueBook?id_order=${order.getId()}"><fmt:message
+										key="library.issueBook" bundle="${rb}" /></a> <a
+								href="./librarian/returnBook?id_order=${order.getId()}"><fmt:message
+										key="library.returnBook" bundle="${rb}" /></a></td>
+						</c:if>
 					</tr>
 				</c:forEach>
 			</tbody>
