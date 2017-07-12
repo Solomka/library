@@ -1,7 +1,6 @@
 package ua.training.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +44,7 @@ public class BookOrderService {
 		}
 	}
 
-	public List<BookOrder> getUnexecutedOrders() {
+	public List<BookOrder> getUnfulfilledOrders() {
 		LOGGER.info("Get unexecuted orders");
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
 			return bookOrderDao.getUnexecutedOrders();
@@ -72,14 +71,14 @@ public class BookOrderService {
 			return bookOrderDao.getNotReturnedReaderOrders(readerId);
 		}
 	}
-	
-	/*public List<BookOrder> getOrdersForCancellation() {
-		LOGGER.info("Get orders for cacellation: ");
-		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			return bookOrderDao.getOrdersForCancellation();
-		}
-	}*/
-	
+
+	/*
+	 * public List<BookOrder> getOrdersForCancellation() {
+	 * LOGGER.info("Get orders for cacellation: "); try (BookOrderDao
+	 * bookOrderDao = daoFactory.createBookOrderDao()) { return
+	 * bookOrderDao.getOrdersForCancellation(); } }
+	 */
+
 	public List<BookOrder> getOrdersForReadingRoomReturn() {
 		LOGGER.info("Get orders for reading room return: ");
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
@@ -87,20 +86,17 @@ public class BookOrderService {
 		}
 	}
 
-	/*public List<BookOrder> getExecutedReaderOrders(Long readerId) {
-		LOGGER.info("Get executed reader orders: " + readerId);
-		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			return bookOrderDao.getExecutedReaderOrders(readerId);
-		}
-	}
-
-	public List<BookOrder> getOutstandingReaderOrders(Long readerId) {
-		LOGGER.info("Get outstanding reader orders: " + readerId);
-		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			return bookOrderDao.getOutstandingReaderOrders(readerId);
-		}
-	}
-*/
+	/*
+	 * public List<BookOrder> getExecutedReaderOrders(Long readerId) {
+	 * LOGGER.info("Get executed reader orders: " + readerId); try (BookOrderDao
+	 * bookOrderDao = daoFactory.createBookOrderDao()) { return
+	 * bookOrderDao.getExecutedReaderOrders(readerId); } }
+	 * 
+	 * public List<BookOrder> getOutstandingReaderOrders(Long readerId) {
+	 * LOGGER.info("Get outstanding reader orders: " + readerId); try
+	 * (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) { return
+	 * bookOrderDao.getOutstandingReaderOrders(readerId); } }
+	 */
 	public void createOrder(BookOrder order) {
 		LOGGER.info("Create order: " + order.toString());
 		try (DaoConnection connection = daoFactory.getConnection()) {
@@ -162,9 +158,29 @@ public class BookOrderService {
 			bookOrderDao.issueOrder(order);
 		}
 	}
-	
-	public void backOrderToReadingRoom(){
-		
+
+	public void backOrderToReadingRoom(Long orderId) {
+		LOGGER.info("Return order to reading room: " + orderId);
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();
+			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
+			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
+			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
+
+			if (!isOrderPresent(optionalOrder)) {
+				throw new ServiceException(Message.INVALID_BOOK_ORDER_ID + orderId);
+			}
+
+			BookOrder order = optionalOrder.get();
+
+			LocalDate actualReturnDate = getCurrentLocalDate();
+			order.setActualReturnDate(actualReturnDate);
+			BookInstance bookInstance = order.getBookInstance();
+			bookInstance.setStatus(Status.AVAILABLE);
+			bookOrderDao.returnOrder(order);
+			bookInstanceDao.update(bookInstance);
+			connection.commit();
+		}
 	}
 
 	public void returnOrder(Long orderId) {
@@ -172,7 +188,7 @@ public class BookOrderService {
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();
 			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
-			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);			
+			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
 			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
 
 			if (!isOrderPresent(optionalOrder)) {
@@ -197,34 +213,10 @@ public class BookOrderService {
 			order.setActualReturnDate(actualReturnDate);
 			BookInstance bookInstance = order.getBookInstance();
 			bookInstance.setStatus(Status.AVAILABLE);
-			bookOrderDao.returnOrder(order);			
+			bookOrderDao.returnOrder(order);
 			bookInstanceDao.update(bookInstance);
 			connection.commit();
 		}
-	}
-	
-	public void returnOrderBookToReadingRoom(Long orderId){
-		try (DaoConnection connection = daoFactory.getConnection()) {
-			connection.begin();
-			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
-			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);			
-			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
-
-			if (!isOrderPresent(optionalOrder)) {
-				throw new ServiceException(Message.INVALID_BOOK_ORDER_ID + orderId);
-			}
-
-			BookOrder order = optionalOrder.get();
-
-			LocalDate actualReturnDate = getCurrentLocalDate();
-			order.setActualReturnDate(actualReturnDate);
-			BookInstance bookInstance = order.getBookInstance();
-			bookInstance.setStatus(Status.AVAILABLE);
-			bookOrderDao.returnOrder(order);			
-			bookInstanceDao.update(bookInstance);
-			connection.commit();
-		}
-		
 	}
 
 	private boolean isOrderPresent(Optional<BookOrder> optionalOrder) {

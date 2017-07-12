@@ -15,8 +15,8 @@
 					<fmt:message key="library.order.unfulfilled" bundle="${rb}" />
 				</button>
 				<button type="button" class="btn btn-default"
-					onclick="location.href='./orders/backToReadingRoom';">
-					<fmt:message key="library.order.backToReadingRoom" bundle="${rb}" />
+					onclick="location.href='./orders/toRreadingRoom';">
+					<fmt:message key="library.order.toReadingRoom" bundle="${rb}" />
 				</button>
 				<button type="button" class="btn btn-default"
 					onclick="location.href='./orders/outstanding';">
@@ -125,12 +125,23 @@
 						<td>${order.getReturnDate()}</td>
 						<c:if test="${user.getRole().getValue() eq 'librarian' }">
 							<td>${order.getActualReturnDate()}</td>
-							<td><a href="./orders/fulfil?id_order=${order.getId()}"><fmt:message
-										key="library.fulfilOrder" bundle="${rb}" /></a> <br />
-							<a href="./orders/issue?id_order=${order.getId()}"><fmt:message
-										key="library.issueOrder" bundle="${rb}" /></a> <br />
-							<a href="./orders/return?id_order=${order.getId()}"><fmt:message
-										key="library.returnOrder" bundle="${rb}" /></a></td>
+
+							<td><c:choose>
+									<c:when test="${not empty back_to_reading_room }">
+										<a href="./orders/backToReadingRoom?id_order=${order.getId()}"><fmt:message
+												key="library.backToReadingRoom" bundle="${rb}" /></a>
+									</c:when>
+									<c:otherwise>
+										<a href="./orders/fulfil?id_order=${order.getId()}"><fmt:message
+												key="library.fulfilOrder" bundle="${rb}" /></a>
+										<br />
+										<a href="./orders/issue?id_order=${order.getId()}"><fmt:message
+												key="library.issueOrder" bundle="${rb}" /></a>
+										<br />
+										<a href="./orders/return?id_order=${order.getId()}"><fmt:message
+												key="library.returnOrder" bundle="${rb}" /></a>
+									</c:otherwise>
+								</c:choose></td>
 						</c:if>
 					</tr>
 				</c:forEach>

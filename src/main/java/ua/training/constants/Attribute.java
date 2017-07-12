@@ -51,4 +51,6 @@ public final class Attribute {
 	public static String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
 	
 	public static String ID_ORDER = "id_order";
+	
+	public static String BACK_TO_READING_ROOM = "back_to_reading_room";
 }

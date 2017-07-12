@@ -23,6 +23,7 @@ public final class Message {
 	public static String SUCCESS_ORDER_FULFILMENT = "library.success.orderFulfilment";
 	public static String SUCCESS_ORDER_ISSUANCE = "library.success.orderIssuance";
 	public static String SUCCESS_ORDER_RETURN = "library.success.orderReturn";
+	public static String SUCCESS_RETURN_ORDER_TO_READING_ROOM = "library.success.orderReturnToReadingRoom";
 	
 	public static String INVALID_NAME_INPUT = "library.error.invalidName";
 	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurname";
@@ -66,6 +67,7 @@ public final class Message {
 	
 	public static String ROLE_READER = "library.user.role.reader";
 	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
+	
 	
 	
 	

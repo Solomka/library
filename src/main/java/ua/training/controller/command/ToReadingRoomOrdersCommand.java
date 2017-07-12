@@ -12,31 +12,28 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
-import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.entity.BookOrder;
-import ua.training.entity.Role;
-import ua.training.entity.User;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
 
-public class OutstandingOrdersCommand implements Command {
+public class ToReadingRoomOrdersCommand implements Command {
+private BookOrderService bookOrderService;
 	
-	private BookOrderService bookOrderService;
-	
-	public OutstandingOrdersCommand(BookOrderService bookOrderService){
+	public ToReadingRoomOrdersCommand(BookOrderService bookOrderService){
 		this.bookOrderService = bookOrderService;
 	}
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<BookOrder> orders = bookOrderService.getOutstandingOrders();		
+		List<BookOrder> orders = bookOrderService.getOrdersForReadingRoomReturn();		
 		if(orders.isEmpty()){
 			redirectToAllOrdersPageWithErrorMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
+		request.setAttribute(Attribute.BACK_TO_READING_ROOM, true);
 		request.setAttribute(Attribute.ORDERS, orders);
 		return Page.ALL_ORDERS_VIEW;
 	}
