@@ -32,9 +32,8 @@ public final class Attribute {
 	public static String PUBLISHER = "publisher";	
 	public static String AVAILABILITY = "availability";
 	
-	public static String INVENTORY_NUMBER = "inventoryNumber";
-	
 	public static String ID_BOOK_INSTANCE = "id_book_instance";
+	public static String INVENTORY_NUMBER = "inventoryNumber";	
 	
 	public static String AUTHOR = "author";	
 	public static String NAME = "name";
@@ -46,8 +45,10 @@ public final class Attribute {
 	public static String PATRONYMIC = "patronymic";
 	public static String PHONE = "phone";
 	public static String ADDRESS = "address";	
-	
+		
 	public static String OLD_PASSWORD = "oldPassword";
 	public static String NEW_PASSWORD = "newPassword";
-	public static String CONFIRM_NEW_PASSWORD = "confirmNewPassword";	
+	public static String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
+	
+	public static String ID_ORDER = "id_order";
 }

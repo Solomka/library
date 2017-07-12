@@ -14,15 +14,15 @@ public interface BookOrderDao extends GenericDao<BookOrder, Long>, AutoCloseable
 
 	List<BookOrder> getNotReturnedReaderOrders(Long readerId);
 
-	List<BookOrder> getExecutedReaderOrders(Long readerId);
+	/*List<BookOrder> getExecutedReaderOrders(Long readerId);
 
-	List<BookOrder> getOutstandingReaderOrders(Long readerId);
+	List<BookOrder> getOutstandingReaderOrders(Long readerId);*/
 
 	List<BookOrder> searchNotReturnedOrdersByReaderCardNumber(String readerCardNumber);
 
 	void fulfilOrder(BookOrder bookOrder);
 
-	void issueBook(BookOrder bookOrder);
+	void issueOrder(BookOrder bookOrder);
 
-	void returnBook(BookOrder bookOrder);
+	void returnOrder(BookOrder bookOrder);
 }

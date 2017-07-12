@@ -13,12 +13,16 @@ public final class Message {
 	public static String SUCCESS_BOOK_ADDITION = "library.success.addBook";
 	public static String BOOK_IS_NOT_FOUND = "library.error.bookIsNotFound";
 	public static String NO_AVAILABLE_BOOK_INSTANCES = "library.error.noAvailableBookIntstances";
+	public static String ORDERS_ARE_NOT_FOUND = "library.error.ordersAreNotFound";
 	
 	public static String SUCCESS_AUTHOR_ADDITION = "library.success.addAuthor";
 	public static String SUCCESS_READER_ADDITION = "library.success.addReader";
 	public static String SUCCESS_BOOK_INSTANCE_ADDITION = "library.success.addBookInstance";
 	public static String SUCCESS_PASSWORD_CHANGE = "library.success.changePassword";
 	public static String SUCCESS_ORDER_CREATION = "library.success.orderCreation";
+	public static String SUCCESS_ORDER_FULFILMENT = "library.success.orderFulfilment";
+	public static String SUCCESS_ORDER_ISSUANCE = "library.success.orderIssuance";
+	public static String SUCCESS_ORDER_RETURN = "library.success.orderReturn";
 	
 	public static String INVALID_NAME_INPUT = "library.error.invalidName";
 	public static String INVALID_SURNAME_INPUT = "library.error.invalidSurname";
@@ -48,6 +52,7 @@ public final class Message {
 	public static String INVALID_BOOK_ORDER_ID = "library.error.invalidBookOrderId";
 	public static String ORDER_ALREADY_FULFILLED = "library.error.orderAlreadyFulfilled";
 	public static String ORDER_IS_NOT_FULFILLED = "library.error.orderIsNotFulfilled";
+	public static String ORDER_RETURN_IS_NOT_FULFILLED = "library.error.orderReturnIsNotFulfilled";
 	public static String BOOK_ALREADY_ISSUED = "library.error.bookAlreadyIssued";
 	public static String BOOK_IS_NOT_ISSUED = "library.error.bookIsNotIssued";
 	public static String BOOK_ALREADY_RETURNED = "library.error.bookAlreadyReturned";
@@ -61,6 +66,7 @@ public final class Message {
 	
 	public static String ROLE_READER = "library.user.role.reader";
 	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
+	
 	
 	
 	

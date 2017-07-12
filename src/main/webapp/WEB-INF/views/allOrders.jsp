@@ -9,21 +9,21 @@
 					data-target="#searchByReaderCardNumber">
 					<fmt:message key="library.order.searchByReaderCardNumber"
 						bundle="${rb}" />
-				</button>			
-			<button type="button" class="btn btn-default"
-				onclick="location.href='./unfulfilled';">
-				<fmt:message key="library.order.unfulfilled" bundle="${rb}" />
-			</button>
-			<button type="button" class="btn btn-default"
-				onclick="location.href='./toCancellation';">
-				<fmt:message key="library.order.toCancellation" bundle="${rb}" />
-			</button>
+				</button>
+				<button type="button" class="btn btn-default"
+					onclick="location.href='./orders/unfulfilled';">
+					<fmt:message key="library.order.unfulfilled" bundle="${rb}" />
+				</button>
+				<button type="button" class="btn btn-default"
+					onclick="location.href='./orders/toCancellation';">
+					<fmt:message key="library.order.toCancellation" bundle="${rb}" />
+				</button>
+				<button type="button" class="btn btn-default"
+					onclick="location.href='./orders/outstanding';">
+					<fmt:message key="library.order.outstanding" bundle="${rb}" />
+				</button>
 			</c:if>
-			<button type="button" class="btn btn-default"
-				onclick="location.href='./outstanding';">
-				<fmt:message key="library.order.outstanding" bundle="${rb}" />
-			</button>
-			
+
 		</div>
 	</div>
 
@@ -43,9 +43,7 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<form action="./readerCardNumber" method="POST"
-						role="form">
-
+					<form action="./orders/readerCardNumber" method="GET" role="form">
 						<div class="form-group">
 							<label for="readerCardNumber"><fmt:message
 									key="library.readerCardNumber" bundle="${rb}" /></label> <input
@@ -127,13 +125,12 @@
 						<td>${order.getReturnDate()}</td>
 						<c:if test="${user.getRole().getValue() eq 'librarian' }">
 							<td>${order.getActualReturnDate()}</td>
-							<td><a
-								href="./librarian/fulfilOrder?id_order=${order.getId()}"><fmt:message
-										key="library.fulfilOrder" bundle="${rb}" /></a> <a
-								href="./librarian/issueBook?id_order=${order.getId()}"><fmt:message
-										key="library.issueBook" bundle="${rb}" /></a> <a
-								href="./librarian/returnBook?id_order=${order.getId()}"><fmt:message
-										key="library.returnBook" bundle="${rb}" /></a></td>
+							<td><a href="./orders/fulfil?id_order=${order.getId()}"><fmt:message
+										key="library.fulfilOrder" bundle="${rb}" /></a> <br />
+							<a href="./orders/issue?id_order=${order.getId()}"><fmt:message
+										key="library.issueOrder" bundle="${rb}" /></a> <br />
+							<a href="./orders/return?id_order=${order.getId()}"><fmt:message
+										key="library.returnOrder" bundle="${rb}" /></a></td>
 						</c:if>
 					</tr>
 				</c:forEach>

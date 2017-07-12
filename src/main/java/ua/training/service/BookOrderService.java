@@ -71,7 +71,7 @@ public class BookOrderService {
 		}
 	}
 
-	public List<BookOrder> getExecutedReaderOrders(Long readerId) {
+	/*public List<BookOrder> getExecutedReaderOrders(Long readerId) {
 		LOGGER.info("Get executed reader orders: " + readerId);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
 			return bookOrderDao.getExecutedReaderOrders(readerId);
@@ -84,7 +84,7 @@ public class BookOrderService {
 			return bookOrderDao.getOutstandingReaderOrders(readerId);
 		}
 	}
-
+*/
 	public void createOrder(BookOrder order) {
 		LOGGER.info("Create order: " + order.toString());
 		try (DaoConnection connection = daoFactory.getConnection()) {
@@ -121,8 +121,8 @@ public class BookOrderService {
 		}
 	}
 
-	public void issueBook(Long orderId) {
-		LOGGER.info("Issue book: " + orderId);
+	public void issueOrder(Long orderId) {
+		LOGGER.info("Issue order: " + orderId);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
 			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
 
@@ -133,22 +133,22 @@ public class BookOrderService {
 			BookOrder order = optionalOrder.get();
 
 			if (!isOrderFulfilled(order)) {
-				LOGGER.error("Can't issue Book 'cause Order is not fulfilled: " + orderId);
+				LOGGER.error("Can't issue Order 'cause Order is not fulfilled: " + orderId);
 				throw new ServiceException(Message.ORDER_IS_NOT_FULFILLED);
 			}
 			if (isBookIssued(order)) {
-				LOGGER.error("Can't issue Book 'cause it's already issued: " + orderId);
+				LOGGER.error("Can't issue Order 'cause it's already issued: " + orderId);
 				throw new ServiceException(Message.BOOK_ALREADY_ISSUED);
 			}
 			LocalDate pickUpDate = getCurrentLocalDate();
 			order.setPickUpDate(pickUpDate);
 			order.setReturnDate(getReturnOrderDate(pickUpDate));
-			bookOrderDao.issueBook(order);
+			bookOrderDao.issueOrder(order);
 		}
 	}
 
-	public void returnBook(Long orderId) {
-		LOGGER.info("Get back book: " + orderId);
+	public void returnOrder(Long orderId) {
+		LOGGER.info("Return order: " + orderId);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
 			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
 
@@ -159,11 +159,11 @@ public class BookOrderService {
 			BookOrder order = optionalOrder.get();
 
 			if (!isOrderFulfilled(order)) {
-				LOGGER.error("Can't return book 'cause it's not fulfilled: " + orderId);
-				throw new ServiceException(Message.ORDER_IS_NOT_FULFILLED);
+				LOGGER.error("Can't return Order 'cause it's not fulfilled: " + orderId);
+				throw new ServiceException(Message.ORDER_RETURN_IS_NOT_FULFILLED);
 			}
 			if (!isBookIssued(order)) {
-				LOGGER.error("Can't return book 'cause it's not issued: " + orderId);
+				LOGGER.error("Can't return Order 'cause it's not issued: " + orderId);
 				throw new ServiceException(Message.BOOK_IS_NOT_ISSUED);
 			}
 			if (isBookReturned(order)) {
@@ -172,7 +172,7 @@ public class BookOrderService {
 			}
 			LocalDate actualReturnDate = getCurrentLocalDate();
 			order.setActualReturnDate(actualReturnDate);
-			bookOrderDao.returnBook(order);
+			bookOrderDao.returnOrder(order);
 		}
 	}
 

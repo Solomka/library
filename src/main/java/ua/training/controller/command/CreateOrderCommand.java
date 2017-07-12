@@ -53,7 +53,7 @@ public class CreateOrderCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_ORDER_CREATION);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
+		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.READER_ORDERS, urlParams);
 		
 	}
 

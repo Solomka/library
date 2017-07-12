@@ -7,19 +7,24 @@ import ua.training.controller.command.AllReadersCommand;
 import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
 import ua.training.controller.command.CreateOrderCommand;
+import ua.training.controller.command.FulfilOrderCommand;
 import ua.training.controller.command.GetAddAuthorCommand;
 import ua.training.controller.command.GetAddBookCommand;
 import ua.training.controller.command.GetAddReaderCommand;
 import ua.training.controller.command.GetChangePasswordCommand;
 import ua.training.controller.command.HomeCommand;
+import ua.training.controller.command.IssueOrderCommand;
+import ua.training.controller.command.OutstandingOrdersCommand;
 import ua.training.controller.command.PageNotFoundCommand;
 import ua.training.controller.command.PostAddAuthorCommand;
 import ua.training.controller.command.PostAddBookCommand;
 import ua.training.controller.command.PostAddBookInstanceCommand;
 import ua.training.controller.command.PostAddReaderCommand;
 import ua.training.controller.command.PostChangePasswordCommand;
+import ua.training.controller.command.ReturnOrderCommand;
 import ua.training.controller.command.SearchBookByAuthorCommand;
 import ua.training.controller.command.SearchBookByTitleCommand;
+import ua.training.controller.command.SearchOrderByReaderCardNumberCommand;
 import ua.training.controller.command.auth.GetLoginCommand;
 import ua.training.controller.command.auth.LogoutCommand;
 import ua.training.controller.command.auth.PostLoginCommand;
@@ -161,23 +166,54 @@ enum CommandEnum {
 			this.command = new PostChangePasswordCommand(UserService.getInstance());
 		}
 	},
-	ALL_READER_ORDERS{
+	ALL_READER_ORDERS {
 		{
 			this.key = "GET:reader/orders";
 			this.command = new AllOrdersCommand(BookOrderService.getInstance());
 		}
 	},
-	ALL_LIBRARIAN_ORDERS{
+	ALL_ORDERS {
 		{
 			this.key = "GET:librarian/orders";
 			this.command = new AllOrdersCommand(BookOrderService.getInstance());
 		}
 	},
-	CREATE_ORDER{
+	CREATE_ORDER {
 		{
 			this.key = "GET:reader/createOrder";
 			this.command = new CreateOrderCommand(BookOrderService.getInstance());
-			
+
+		}
+	},
+	OUTSTANDING_ORDERS {
+		{
+			this.key = "GET:librarian/orders/outstanding";
+			this.command = new OutstandingOrdersCommand(BookOrderService.getInstance());
+
+		}
+	},
+	SEARCH_ORDER_BY_READER_CARD_NUMBER{
+		{
+			this.key = "GET:librarian/orders/readerCardNumber";
+			this.command = new SearchOrderByReaderCardNumberCommand(BookOrderService.getInstance());
+		}
+	},
+	FULFIL_ORDER{
+		{
+			this.key = "GET:librarian/orders/fulfil";
+			this.command = new FulfilOrderCommand(BookOrderService.getInstance());			
+		}
+	},
+	ISSUE_ORDER{
+		{
+			this.key = "GET:librarian/orders/issue";
+			this.command = new IssueOrderCommand(BookOrderService.getInstance());			
+		}
+	},
+	RETURN_ORDER{
+		{
+			this.key = "GET:librarian/orders/return";
+			this.command = new ReturnOrderCommand(BookOrderService.getInstance());			
 		}
 	};
 
