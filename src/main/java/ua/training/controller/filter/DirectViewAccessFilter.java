@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ua.training.controller.constants.Attribute;
-import ua.training.controller.constants.ServletPath;
+import ua.training.constants.Attribute;
+import ua.training.constants.ServletPath;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 

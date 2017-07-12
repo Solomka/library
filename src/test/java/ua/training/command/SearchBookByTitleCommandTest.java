@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
+import ua.training.constants.Attribute;
+import ua.training.constants.Page;
 import ua.training.controller.command.SearchBookByTitleCommand;
-import ua.training.controller.constants.Attribute;
-import ua.training.controller.constants.Page;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.entity.Availability;
 import ua.training.entity.Book;

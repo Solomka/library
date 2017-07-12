@@ -8,13 +8,15 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import ua.training.controller.constants.AppConstants;
+import ua.training.constants.AppConstants;
 import ua.training.dao.BookInstanceDao;
 import ua.training.dao.BookOrderDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
+import ua.training.entity.BookInstance;
 import ua.training.entity.BookOrder;
 import ua.training.entity.Librarian;
+import ua.training.entity.Status;
 import ua.training.exception.ServiceException;
 import ua.training.locale.Message;
 
@@ -68,6 +70,20 @@ public class BookOrderService {
 		LOGGER.info("Get not returned reader orders: " + readerId);
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
 			return bookOrderDao.getNotReturnedReaderOrders(readerId);
+		}
+	}
+	
+	/*public List<BookOrder> getOrdersForCancellation() {
+		LOGGER.info("Get orders for cacellation: ");
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.getOrdersForCancellation();
+		}
+	}*/
+	
+	public List<BookOrder> getOrdersForReadingRoomReturn() {
+		LOGGER.info("Get orders for reading room return: ");
+		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+			return bookOrderDao.getOrdersForReadingRoomReturn();
 		}
 	}
 
@@ -146,10 +162,17 @@ public class BookOrderService {
 			bookOrderDao.issueOrder(order);
 		}
 	}
+	
+	public void backOrderToReadingRoom(){
+		
+	}
 
 	public void returnOrder(Long orderId) {
 		LOGGER.info("Return order: " + orderId);
-		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();
+			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
+			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);			
 			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
 
 			if (!isOrderPresent(optionalOrder)) {
@@ -172,8 +195,36 @@ public class BookOrderService {
 			}
 			LocalDate actualReturnDate = getCurrentLocalDate();
 			order.setActualReturnDate(actualReturnDate);
-			bookOrderDao.returnOrder(order);
+			BookInstance bookInstance = order.getBookInstance();
+			bookInstance.setStatus(Status.AVAILABLE);
+			bookOrderDao.returnOrder(order);			
+			bookInstanceDao.update(bookInstance);
+			connection.commit();
 		}
+	}
+	
+	public void returnOrderBookToReadingRoom(Long orderId){
+		try (DaoConnection connection = daoFactory.getConnection()) {
+			connection.begin();
+			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
+			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);			
+			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
+
+			if (!isOrderPresent(optionalOrder)) {
+				throw new ServiceException(Message.INVALID_BOOK_ORDER_ID + orderId);
+			}
+
+			BookOrder order = optionalOrder.get();
+
+			LocalDate actualReturnDate = getCurrentLocalDate();
+			order.setActualReturnDate(actualReturnDate);
+			BookInstance bookInstance = order.getBookInstance();
+			bookInstance.setStatus(Status.AVAILABLE);
+			bookOrderDao.returnOrder(order);			
+			bookInstanceDao.update(bookInstance);
+			connection.commit();
+		}
+		
 	}
 
 	private boolean isOrderPresent(Optional<BookOrder> optionalOrder) {
@@ -197,7 +248,7 @@ public class BookOrderService {
 	}
 
 	private LocalDate getReturnOrderDate(LocalDate pickUpDate) {
-		return pickUpDate.plusMonths(AppConstants.RETURN_BOOK_MONTH_PERIOD);
+		return pickUpDate.plusMonths(AppConstants.RETURN_BOOK_MONTHS_PERIOD);
 	}
 
 }

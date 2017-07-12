@@ -15,8 +15,8 @@
 					<fmt:message key="library.order.unfulfilled" bundle="${rb}" />
 				</button>
 				<button type="button" class="btn btn-default"
-					onclick="location.href='./orders/toCancellation';">
-					<fmt:message key="library.order.toCancellation" bundle="${rb}" />
+					onclick="location.href='./orders/backToReadingRoom';">
+					<fmt:message key="library.order.backToReadingRoom" bundle="${rb}" />
 				</button>
 				<button type="button" class="btn btn-default"
 					onclick="location.href='./orders/outstanding';">

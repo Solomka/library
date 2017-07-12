@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
+import ua.training.constants.Page;
 import ua.training.controller.command.BookInstancesCommand;
-import ua.training.controller.constants.Page;
 import ua.training.entity.Book;
 import ua.training.service.BookService;
 

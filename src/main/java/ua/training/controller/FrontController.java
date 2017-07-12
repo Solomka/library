@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ua.training.constants.Attribute;
+import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
 import ua.training.controller.command.i18n.AppLocale;
-import ua.training.controller.constants.Attribute;
-import ua.training.controller.constants.ServletPath;
 import ua.training.controller.utils.CommandKeyGenerator;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;

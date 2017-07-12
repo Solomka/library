@@ -25,4 +25,10 @@ public interface BookOrderDao extends GenericDao<BookOrder, Long>, AutoCloseable
 	void issueOrder(BookOrder bookOrder);
 
 	void returnOrder(BookOrder bookOrder);
+
+	//void cancelOrder(BookOrder bookOrder);
+
+	//List<BookOrder> getOrdersForCancellation();
+
+	List<BookOrder> getOrdersForReadingRoomReturn();
 }

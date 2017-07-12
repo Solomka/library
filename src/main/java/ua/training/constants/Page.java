@@ -1,4 +1,4 @@
-package ua.training.controller.constants;
+package ua.training.constants;
 
 public final class Page {
 	

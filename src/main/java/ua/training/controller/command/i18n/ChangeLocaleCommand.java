@@ -5,9 +5,9 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ua.training.constants.Attribute;
+import ua.training.constants.Page;
 import ua.training.controller.command.Command;
-import ua.training.controller.constants.Attribute;
-import ua.training.controller.constants.Page;
 import ua.training.locale.MessageLocale;
 
 public class ChangeLocaleCommand implements Command {

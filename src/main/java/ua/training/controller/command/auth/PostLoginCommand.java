@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ua.training.constants.Attribute;
+import ua.training.constants.Page;
+import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
-import ua.training.controller.constants.Attribute;
-import ua.training.controller.constants.Page;
-import ua.training.controller.constants.ServletPath;
 import ua.training.controller.dto.CredentialsDto;
 import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.RedirectionManager;

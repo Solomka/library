@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.training.controller.constants.Page;
+import ua.training.constants.Page;
 
 public class GetAddReaderCommand implements Command {
 

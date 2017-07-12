@@ -9,9 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.training.controller.constants.Attribute;
-import ua.training.controller.constants.Page;
-import ua.training.controller.constants.ServletPath;
+import ua.training.constants.Attribute;
+import ua.training.constants.Page;
+import ua.training.constants.ServletPath;
 import ua.training.controller.dto.ChangePasswordDto;
 import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
