@@ -41,20 +41,25 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			+ " WHERE fulfilment_date IS NULL" + " ORDER BY creation_date ASC";
 	private static String GET_OUTSTANDING_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NOT NULL AND return_date IS NOT NULL"
-			+ " AND actual_return_date IS NULL AND NOW() > return_date" + " ORDER BY return_date ASC";
+			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NOT NULL"
+			+ " AND actual_return_date IS NULL AND CURDATE() > return_date" + " ORDER BY return_date ASC";
 	private static String GET_EXECUTED_READER_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NULL AND id_reader=?"
 			+ " ORDER BY creation_date DESC";
 	private static String GET_OUTSTANDING_READER_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date, inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NOT NULL AND return_date IS NOT NULL"
-			+ " AND actual_return_date IS NULL AND NOW() > return_date  AND reader_id=?" + " ORDER BY return_date ASC";
+			+ " WHERE fulfilment_date IS NOT NULL AND pickup_date IS NOT NULL"
+			+ " AND actual_return_date IS NULL AND CURDATE() > return_date  AND reader_id=?" + " ORDER BY return_date ASC";
 	private static String SEARCH_NOT_RETURNED_ORDERS_BY_READER_CARD_NUMBER = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " inventory_number, reader_card_number"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE actual_return_date IS NULL AND reader_card_number=?" + " ORDER BY creation_date DESC";
+	private static String GET_ORDERS_FOR_CANCELLATION = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
+			+ " inventory_number, reader_card_number"
+			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
+			+ " WHERE fulfilment_date <= CURDATE() - INETRVAL ? DAY"
+			+ " ORDER BY fulfilment_date ASC";
 	private static String FULFIL_ORDER = "UPDATE book_order SET fulfilment_date=?, id_librarian=?"
 			+ " WHERE id_order=?";
 	private static String ISSUE_BOOK = "UPDATE book_order SET pickup_date=?, return_date=?" + " WHERE id_order=?";
