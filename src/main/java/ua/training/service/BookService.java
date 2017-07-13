@@ -57,31 +57,15 @@ public class BookService {
 
 	public List<Book> searchBookByTitle(String title) {
 		LOGGER.info("Search book by title");
-		try (DaoConnection connection = daoFactory.getConnection()) {
-			connection.begin();
-			BookDao bookDao = daoFactory.createBookDao(connection);
-			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
-			List<Book> books = bookDao.searchByTitle(title);
-			for (Book book : books) {
-				book.setAuthors(authorDao.getBookAuthors(book.getId()));
-			}
-			connection.commit();
-			return books;
+		try (BookDao bookDao = daoFactory.createBookDao()) {			
+			return bookDao.searchByTitle(title);
 		}
 	}
 
 	public List<Book> searchBookByAuthor(String author) {
 		LOGGER.info("Search book by author surname");
-		try (DaoConnection connection = daoFactory.getConnection()) {
-			connection.begin();
-			BookDao bookDao = daoFactory.createBookDao(connection);
-			AuthorDao authorDao = daoFactory.createAuthorDao(connection);
-			List<Book> books = bookDao.searchByAuthor(author);
-			for (Book book : books) {
-				book.setAuthors(authorDao.getBookAuthors(book.getId()));
-			}
-			connection.commit();
-			return books;
+		try (BookDao bookDao = daoFactory.createBookDao()) {			
+			return bookDao.searchByAuthor(author);
 		}
 	}
 	
