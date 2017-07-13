@@ -29,7 +29,7 @@ public class ReturnOrderToReadingRoomCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long orderId = Long.valueOf(request.getParameter(Attribute.ID_ORDER));
-		bookOrderService.backOrderToReadingRoom(orderId);
+		bookOrderService.returnOrderToReadingRoom(orderId);
 		redirectToAllOrdersPageWithSuccessMessage(request, response);
 		return RedirectionManager.REDIRECTION;
 	}

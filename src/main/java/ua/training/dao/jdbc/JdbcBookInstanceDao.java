@@ -21,7 +21,6 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookInstanceDao.class);
 
-	// queries
 	private static String GET_BOOK_INSTANCE_BY_ID = "SELECT * FROM book_instance WHERE id_book_instance=?";
 	private static String CREATE_BOOK_INSTANCE = "INSERT INTO book_instance (inventory_number, status, id_book) VALUES (?, ?, ?)";
 	private static String UPDATE_BOOK_INSTANCE = "UPDATE book_instance SET status=?, inventory_number=? WHERE id_book_instance=?";
