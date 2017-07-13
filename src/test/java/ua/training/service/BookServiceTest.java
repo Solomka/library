@@ -116,7 +116,7 @@ public class BookServiceTest {
 		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
 
 		BookService bookService = new BookService(daoFactory);
-		bookService.createBook(book);
+		//bookService.createBook(book);
 
 		verify(daoFactory).getConnection();		
 		verify(daoFactory).createBookDao(daoConnection);

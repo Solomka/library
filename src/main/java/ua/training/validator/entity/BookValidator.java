@@ -3,12 +3,13 @@ package ua.training.validator.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import ua.training.entity.Book;
+import ua.training.dto.BookDto;
+import ua.training.locale.Message;
 import ua.training.validator.field.FieldValidator;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
-public class BookValidator implements Validator<Book> {
+public class BookValidator implements Validator<BookDto> {
 
 	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
@@ -24,13 +25,21 @@ public class BookValidator implements Validator<Book> {
 	}
 
 	@Override
-	public List<String> validate(Book book) {
+	public List<String> validate(BookDto book) {
 		List<String> errors = new ArrayList<>();
 
 		fieldValidator.validateField(FieldValidatorKey.ISBN, book.getIsbn(), errors);
 		fieldValidator.validateField(FieldValidatorKey.TITLE, book.getTitle(), errors);
 		fieldValidator.validateField(FieldValidatorKey.PUBLISHER, book.getPublisher(), errors);
+		checkBookAuthors(book.getAuthorsIds(), errors);
 
 		return errors;
+	}
+
+	private void checkBookAuthors(String[] authorsIds, List<String> errors) {
+		if (authorsIds == null) {
+			errors.add(Message.INVALID_BOOK_AUTHORS_SELECTION);
+		}
+
 	}
 }

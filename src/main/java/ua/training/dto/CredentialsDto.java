@@ -1,4 +1,4 @@
-package ua.training.controller.dto;
+package ua.training.dto;
 
 public class CredentialsDto {
 

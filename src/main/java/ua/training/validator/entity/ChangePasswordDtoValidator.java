@@ -3,7 +3,7 @@ package ua.training.validator.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import ua.training.controller.dto.ChangePasswordDto;
+import ua.training.dto.ChangePasswordDto;
 import ua.training.locale.Message;
 
 public class ChangePasswordDtoValidator implements Validator<ChangePasswordDto> {

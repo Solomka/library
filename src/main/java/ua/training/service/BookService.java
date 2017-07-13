@@ -6,10 +6,12 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import ua.training.converter.BookDtoBookConverter;
 import ua.training.dao.AuthorDao;
 import ua.training.dao.BookDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
+import ua.training.dto.BookDto;
 import ua.training.entity.Book;
 
 public class BookService {
@@ -90,8 +92,9 @@ public class BookService {
 		}		
 	}
 
-	public void createBook(Book book) {
-		LOGGER.info("Create book with authors: " + book);
+	public void createBook(BookDto bookDto) {
+		LOGGER.info("Create book with authors: " + bookDto);
+		Book book = BookDtoBookConverter.toBook(bookDto);
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();
 			BookDao bookDao = daoFactory.createBookDao(connection);

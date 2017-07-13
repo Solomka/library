@@ -1,4 +1,4 @@
-package ua.training.controller.dto;
+package ua.training.dto;
 
 import ua.training.entity.IBuilder;
 import ua.training.entity.User;

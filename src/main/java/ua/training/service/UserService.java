@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import ua.training.controller.dto.ChangePasswordDto;
-import ua.training.controller.dto.CredentialsDto;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
 import ua.training.dao.UserDao;
+import ua.training.dto.ChangePasswordDto;
+import ua.training.dto.CredentialsDto;
 import ua.training.entity.Reader;
 import ua.training.entity.User;
 import ua.training.hashing.PasswordHashing;

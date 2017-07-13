@@ -114,7 +114,7 @@ enum CommandEnum {
 	POST_ADD_BOOK {
 		{
 			this.key = "POST:librarian/addBook";
-			this.command = new PostAddBookCommand(BookService.getInstance(), AuthorService.getInstance());
+			this.command = new PostAddBookCommand(BookService.getInstance());
 		}
 	},
 	SEARCH_BOOK_BY_TITLE {
