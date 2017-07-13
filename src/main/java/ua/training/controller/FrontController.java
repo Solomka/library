@@ -61,19 +61,29 @@ public class FrontController extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		String commandKey = CommandKeyGenerator.generateCommandKeyFromRequest(request);
-		Command command =  CommandFactory.getCommand(commandKey);		
-		try{
-			String resultRedirectResource = command.execute(request, response);
-			if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
-				request.getRequestDispatcher(resultRedirectResource).forward(request, response);
-			}			
-		}catch(ServiceException ex){
-			HttpWrapper httpWrapper = new HttpWrapper(request, response);
-			Map<String, String> urlParams = new HashMap<>();
-			urlParams.put(Attribute.ERROR, ex.getMessage());
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
+		Command command = CommandFactory.getCommand(commandKey);
+		try {
+			String commandResultedResource = command.execute(request, response);
+			forwardToCommandResultedPage(httpWrapper, commandResultedResource);
+		} catch (ServiceException ex) {
+			redirecToHomePageWithErrorMessage(httpWrapper, ex);
 		}
-		
+
+	}
+
+	private void forwardToCommandResultedPage(HttpWrapper httpWrapper, String resultRedirectResource)
+			throws ServletException, IOException {
+		if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
+			httpWrapper.getRequest().getRequestDispatcher(resultRedirectResource).forward(httpWrapper.getRequest(),
+					httpWrapper.getResponse());
+		}
+	}
+
+	private void redirecToHomePageWithErrorMessage(HttpWrapper httpWrapper, ServiceException ex) throws IOException {
+		Map<String, String> urlParams = new HashMap<>();
+		urlParams.put(Attribute.ERROR, ex.getMessage());
+		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
 	}
 }
