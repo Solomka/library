@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ua.training.exception.ServerException;
 import ua.training.locale.MessageUtils;
 
 public final class RedirectionManager {
@@ -20,15 +21,17 @@ public final class RedirectionManager {
 
 	public static void redirectWithParams(HttpWrapper httpWrapper, String redirectionPath,
 			Map<String, String> urlParameters) throws IOException {
-
 		String urlPathWithParams = RedirectionManager.generateUrlPath(httpWrapper.getRequest(), redirectionPath)
 				+ RedirectionManager.generateUrlParams(urlParameters);
-		httpWrapper.getResponse().sendRedirect(urlPathWithParams);
+		redirect(httpWrapper.getRequest(), httpWrapper.getResponse(), urlPathWithParams);
 	}
 
-	public static void redirect(HttpServletRequest request, HttpServletResponse response, String path)
-			throws IOException {
-		response.sendRedirect(RedirectionManager.generateUrlPath(request, path));
+	public static void redirect(HttpServletRequest request, HttpServletResponse response, String path) {
+		try {
+			response.sendRedirect(RedirectionManager.generateUrlPath(request, path));
+		} catch (IOException e) {
+			throw new ServerException(e);
+		}
 	}
 
 	private static String generateUrlPath(HttpServletRequest request, String path) {
