@@ -26,7 +26,5 @@ public final class Page {
 	
 	public static String CHANGE_PASSWORD_VIEW = PREFIX + "changePassword" + SUFFIX;
 	
-	public static String PAGE_NOT_FOUND = PREFIX + ERROR_PREFIX + "pageNotFound" + SUFFIX;
-	
-	
+	public static String PAGE_NOT_FOUND = PREFIX + ERROR_PREFIX + "pageNotFound" + SUFFIX;	
 }

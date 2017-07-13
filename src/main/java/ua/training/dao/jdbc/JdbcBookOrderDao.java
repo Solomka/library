@@ -89,7 +89,6 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	private static String ID_BOOK_INSTANCE = "id_book_instance";
 	private static String STATUS = "status";
 	private static String ID_READER = "id_reader";
-	private static String ID_LIBRARIAN = "id_librarian";
 
 	private static String INVENTORY_NUMBER = "inventory_number";
 	

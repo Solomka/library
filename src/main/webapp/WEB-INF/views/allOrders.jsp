@@ -11,19 +11,18 @@
 						bundle="${rb}" />
 				</button>
 				<button type="button" class="btn btn-default"
-					onclick="location.href='./orders/unfulfilled';">
+					onclick="location.href='${pageContext.request.contextPath}/controller/librarian/orders/unfulfilled';">
 					<fmt:message key="library.order.unfulfilled" bundle="${rb}" />
 				</button>
 				<button type="button" class="btn btn-default"
-					onclick="location.href='./orders/toRreadingRoom';">
-					<fmt:message key="library.order.toReadingRoom" bundle="${rb}" />
-				</button>
-				<button type="button" class="btn btn-default"
-					onclick="location.href='./orders/outstanding';">
+					onclick="location.href='${pageContext.request.contextPath}/controller/librarian/orders/outstanding';">
 					<fmt:message key="library.order.outstanding" bundle="${rb}" />
 				</button>
+				<button type="button" class="btn btn-default"
+					onclick="location.href='${pageContext.request.contextPath}/controller/librarian/orders/toRreadingRoom';">
+					<fmt:message key="library.order.toReadingRoom" bundle="${rb}" />
+				</button>				
 			</c:if>
-
 		</div>
 	</div>
 
@@ -43,7 +42,9 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<form action="./orders/readerCardNumber" method="GET" role="form">
+					<form
+						action="${pageContext.request.contextPath}/controller/librarian/orders/readerCardNumber"
+						method="GET" role="form">
 						<div class="form-group">
 							<label for="readerCardNumber"><fmt:message
 									key="library.readerCardNumber" bundle="${rb}" /></label> <input
@@ -114,9 +115,12 @@
 					<tr>
 						<td>${status.index + 1}</td>
 						<c:if test="${user.getRole().getValue() eq 'librarian' }">
-							<td><a href="./reader?id_reader=${order.getReader().getId()}">${order.getReader().getReaderCardNumber()}</a></td>
+							<td><a
+								href="${pageContext.request.contextPath}/controller/librarian/orders/reader?id_reader=${order.getReader().getId()}">${order.getReader().getReaderCardNumber()}</a></td>
 						</c:if>
-						<td><a href="${pageContext.request.contextPath}/controller/book?id_book_instance=${order.getBookInstance().getId()}"> ${order.getBookInstance().getInventoryNumber()}</a></td>
+						<td><a
+							href="${pageContext.request.contextPath}/controller/book?id_book_instance=${order.getBookInstance().getId()}">
+								${order.getBookInstance().getInventoryNumber()}</a></td>
 						<td>${order.getCreationDate()}</td>
 						<td>${order.getFulfilmentDate()}</td>
 						<c:if test="${user.getRole().getValue() eq 'librarian' }">
@@ -128,17 +132,21 @@
 
 							<td><c:choose>
 									<c:when test="${not empty back_to_reading_room }">
-										<a href="./orders/backToReadingRoom?id_order=${order.getId()}"><fmt:message
+										<a
+											href="${pageContext.request.contextPath}/controller/librarian/orders/backToReadingRoom?id_order=${order.getId()}"><fmt:message
 												key="library.backToReadingRoom" bundle="${rb}" /></a>
 									</c:when>
 									<c:otherwise>
-										<a href="./orders/fulfil?id_order=${order.getId()}"><fmt:message
+										<a
+											href="${pageContext.request.contextPath}/controller/librarian/orders/fulfil?id_order=${order.getId()}"><fmt:message
 												key="library.fulfilOrder" bundle="${rb}" /></a>
 										<br />
-										<a href="./orders/issue?id_order=${order.getId()}"><fmt:message
+										<a
+											href="${pageContext.request.contextPath}/controller/librarian/orders/issue?id_order=${order.getId()}"><fmt:message
 												key="library.issueOrder" bundle="${rb}" /></a>
 										<br />
-										<a href="./orders/return?id_order=${order.getId()}"><fmt:message
+										<a
+											href="${pageContext.request.contextPath}/controller/librarian/orders/return?id_order=${order.getId()}"><fmt:message
 												key="library.returnOrder" bundle="${rb}" /></a>
 									</c:otherwise>
 								</c:choose></td>
