@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.order;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,16 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Attribute;
 import ua.training.constants.ServletPath;
+import ua.training.controller.command.Command;
+import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
 
-public class ReturnOrderToReadingRoomCommand implements Command {
+public class FulfilOrderCommand implements Command {
 
 	private BookOrderService bookOrderService;
 
-	public ReturnOrderToReadingRoomCommand(BookOrderService bookOrderService) {
+	public FulfilOrderCommand(BookOrderService bookOrderService) {
 		this.bookOrderService = bookOrderService;
 
 	}
@@ -28,7 +30,8 @@ public class ReturnOrderToReadingRoomCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long orderId = Long.valueOf(request.getParameter(Attribute.ID_ORDER));
-		bookOrderService.backOrderToReadingRoom(orderId);
+		Long librarianId = SessionManager.getUserFromSession(request.getSession()).getId();
+		bookOrderService.fulfilOrder(orderId, librarianId);
 		redirectToAllOrdersPageWithSuccessMessage(request, response);
 		return RedirectionManager.REDIRECTION;
 	}
@@ -37,7 +40,8 @@ public class ReturnOrderToReadingRoomCommand implements Command {
 			throws IOException {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
-		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_RETURN_ORDER_TO_READING_ROOM);
+		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_ORDER_FULFILMENT);
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
 	}
+
 }

@@ -1,7 +1,8 @@
-package ua.training.controller.command;
+package ua.training.controller.command.order;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -9,35 +10,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Attribute;
+import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
+import ua.training.controller.command.Command;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.entity.BookOrder;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
 
-public class ReturnOrderCommand implements Command {
+public class UnfulfilledOrdersCommand implements Command {
 
 	private BookOrderService bookOrderService;
 
-	public ReturnOrderCommand(BookOrderService bookOrderService) {
+	public UnfulfilledOrdersCommand(BookOrderService bookOrderService) {
 		this.bookOrderService = bookOrderService;
-
 	}
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Long orderId = Long.valueOf(request.getParameter(Attribute.ID_ORDER));
-		bookOrderService.returnOrder(orderId);
-		redirectToAllOrdersPageWithSuccessMessage(request, response);
-		return RedirectionManager.REDIRECTION;
+		List<BookOrder> orders = bookOrderService.getUnfulfilledOrders();
+		if (orders.isEmpty()) {
+			redirectToAllOrdersPageWithErrorMessage(request, response);
+			return RedirectionManager.REDIRECTION;
+		}
+		request.setAttribute(Attribute.ORDERS, orders);
+		return Page.ALL_ORDERS_VIEW;
 	}
 
-	private void redirectToAllOrdersPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
+	private void redirectToAllOrdersPageWithErrorMessage(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
-		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_ORDER_RETURN);
+		urlParams.put(Attribute.ERROR, Message.ORDERS_ARE_NOT_FOUND);
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
 	}
+
 }

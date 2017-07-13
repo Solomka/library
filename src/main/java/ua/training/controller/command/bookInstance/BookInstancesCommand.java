@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.bookInstance;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
+import ua.training.controller.command.Command;
 import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;

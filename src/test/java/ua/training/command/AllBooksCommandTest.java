@@ -15,11 +15,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ua.training.constants.Page;
-import ua.training.controller.command.AllBooksCommand;
+import ua.training.controller.command.book.AllBooksCommand;
 import ua.training.entity.Availability;
 import ua.training.entity.Book;
 import ua.training.service.BookService;
@@ -27,7 +26,7 @@ import ua.training.service.BookService;
 public class AllBooksCommandTest {
 
 	@Test
-	//@Ignore
+	// @Ignore
 	public void testBookInstancesCommand() throws ServletException, IOException {
 
 		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);

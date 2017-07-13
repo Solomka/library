@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.order;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
+import ua.training.controller.command.Command;
 import ua.training.controller.session.SessionManager;
 import ua.training.entity.BookOrder;
 import ua.training.entity.Role;
@@ -27,7 +28,7 @@ public class AllOrdersCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<BookOrder> orders;
-		
+
 		User user = SessionManager.getUserFromSession(request.getSession());
 		if (user.getRole().equals(Role.LIBRARIAN)) {
 			orders = bookOrderService.getAllOrders();

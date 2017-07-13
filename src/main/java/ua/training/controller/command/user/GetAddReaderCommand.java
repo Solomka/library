@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.user;
 
 import java.io.IOException;
 
@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Page;
+import ua.training.controller.command.Command;
 
-public class GetAddAuthorCommand implements Command {
+public class GetAddReaderCommand implements Command {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		return Page.ADD_AUTHOR_VIEW;
+		return Page.ADD_READER_VIEW;
 	}
 }

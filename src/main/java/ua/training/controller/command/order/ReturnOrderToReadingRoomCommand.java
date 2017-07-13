@@ -1,8 +1,7 @@
-package ua.training.controller.command;
+package ua.training.controller.command.order;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,43 +9,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Attribute;
-import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
-import ua.training.controller.session.SessionManager;
+import ua.training.controller.command.Command;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
-import ua.training.entity.BookOrder;
-import ua.training.entity.Role;
-import ua.training.entity.User;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
 
-public class OutstandingOrdersCommand implements Command {
-	
+public class ReturnOrderToReadingRoomCommand implements Command {
+
 	private BookOrderService bookOrderService;
-	
-	public OutstandingOrdersCommand(BookOrderService bookOrderService){
+
+	public ReturnOrderToReadingRoomCommand(BookOrderService bookOrderService) {
 		this.bookOrderService = bookOrderService;
+
 	}
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<BookOrder> orders = bookOrderService.getOutstandingOrders();		
-		if(orders.isEmpty()){
-			redirectToAllOrdersPageWithErrorMessage(request, response);
-			return RedirectionManager.REDIRECTION;
-		}
-		request.setAttribute(Attribute.ORDERS, orders);
-		return Page.ALL_ORDERS_VIEW;
+		Long orderId = Long.valueOf(request.getParameter(Attribute.ID_ORDER));
+		bookOrderService.backOrderToReadingRoom(orderId);
+		redirectToAllOrdersPageWithSuccessMessage(request, response);
+		return RedirectionManager.REDIRECTION;
 	}
 
-	private void redirectToAllOrdersPageWithErrorMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void redirectToAllOrdersPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
-		urlParams.put(Attribute.ERROR, Message.ORDERS_ARE_NOT_FOUND);
+		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_RETURN_ORDER_TO_READING_ROOM);
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
-		
 	}
-
 }

@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.order;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,16 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Attribute;
 import ua.training.constants.ServletPath;
+import ua.training.controller.command.Command;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
 
-public class IssueOrderCommand implements Command {
+public class ReturnOrderCommand implements Command {
 
 	private BookOrderService bookOrderService;
 
-	public IssueOrderCommand(BookOrderService bookOrderService) {
+	public ReturnOrderCommand(BookOrderService bookOrderService) {
 		this.bookOrderService = bookOrderService;
 
 	}
@@ -28,7 +29,7 @@ public class IssueOrderCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long orderId = Long.valueOf(request.getParameter(Attribute.ID_ORDER));
-		bookOrderService.issueOrder(orderId);
+		bookOrderService.returnOrder(orderId);
 		redirectToAllOrdersPageWithSuccessMessage(request, response);
 		return RedirectionManager.REDIRECTION;
 	}
@@ -37,8 +38,7 @@ public class IssueOrderCommand implements Command {
 			throws IOException {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
-		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_ORDER_ISSUANCE);
+		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_ORDER_RETURN);
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
 	}
-
 }

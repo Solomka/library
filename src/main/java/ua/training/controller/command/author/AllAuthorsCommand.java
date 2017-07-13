@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.author;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,15 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
+import ua.training.controller.command.Command;
 import ua.training.entity.Author;
-import ua.training.entity.Availability;
 import ua.training.service.AuthorService;
 
-public class GetAddBookCommand implements Command {
+public class AllAuthorsCommand implements Command {
 
 	private AuthorService authorService;
 
-	public GetAddBookCommand(AuthorService authorService) {
+	public AllAuthorsCommand(AuthorService authorService) {
 		this.authorService = authorService;
 	}
 
@@ -25,10 +25,7 @@ public class GetAddBookCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<Author> authors = authorService.getAllAuthors();
-
-		request.setAttribute(Attribute.AVAILABILITIES, Availability.getValues());
 		request.setAttribute(Attribute.AUTHORS, authors);
-
-		return Page.ADD_BOOK_VIEW;
+		return Page.ALL_AUTHORS_VIEW;
 	}
 }

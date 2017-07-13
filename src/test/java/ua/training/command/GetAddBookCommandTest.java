@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 
 import ua.training.constants.Page;
-import ua.training.controller.command.GetAddBookCommand;
+import ua.training.controller.command.book.GetAddBookCommand;
 import ua.training.entity.Author;
 import ua.training.entity.Availability;
 import ua.training.service.AuthorService;

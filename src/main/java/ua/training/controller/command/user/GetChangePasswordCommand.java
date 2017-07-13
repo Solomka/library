@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.user;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Page;
+import ua.training.controller.command.Command;
 
 public class GetChangePasswordCommand implements Command {
 

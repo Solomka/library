@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.book;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
+import ua.training.controller.command.Command;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.entity.Book;
@@ -22,11 +23,11 @@ import ua.training.validator.field.FieldValidator;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
-public class SearchBookByAuthorCommand implements Command {
+public class SearchBookByTitleCommand implements Command {
 
 	private BookService bookService;
 
-	public SearchBookByAuthorCommand(BookService bookService) {
+	public SearchBookByTitleCommand(BookService bookService) {
 		this.bookService = bookService;
 	}
 
@@ -34,8 +35,8 @@ public class SearchBookByAuthorCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String author = request.getParameter(Attribute.AUTHOR);
-		List<String> errors = validateUserInput(author);
+		String title = request.getParameter(Attribute.TITLE);
+		List<String> errors = validateUserInput(title);
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams;
 
@@ -46,7 +47,7 @@ public class SearchBookByAuthorCommand implements Command {
 			return RedirectionManager.REDIRECTION;
 		}
 
-		List<Book> books = bookService.searchBookWithAuthorsByAuthor(author);
+		List<Book> books = bookService.searchBookWithAuthorsByTitle(title);
 
 		if (books.isEmpty()) {
 			urlParams = new HashMap<>();
@@ -60,11 +61,11 @@ public class SearchBookByAuthorCommand implements Command {
 
 	}
 
-	private List<String> validateUserInput(String author) {
+	private List<String> validateUserInput(String title) {
 		List<String> errors = new ArrayList<>();
 
 		FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
-		fieldValidator.validateField(FieldValidatorKey.NAME, author, errors);
+		fieldValidator.validateField(FieldValidatorKey.TITLE, title, errors);
 		return errors;
 	}
 }

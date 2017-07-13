@@ -1,39 +1,39 @@
 package ua.training.controller;
 
-import ua.training.controller.command.AllAuthorsCommand;
-import ua.training.controller.command.AllBooksCommand;
-import ua.training.controller.command.AllOrdersCommand;
-import ua.training.controller.command.AllReadersCommand;
-import ua.training.controller.command.ReturnOrderToReadingRoomCommand;
-import ua.training.controller.command.ToReadingRoomOrdersCommand;
-import ua.training.controller.command.BookInstancesCommand;
 import ua.training.controller.command.Command;
-import ua.training.controller.command.CreateOrderCommand;
-import ua.training.controller.command.FulfilOrderCommand;
-import ua.training.controller.command.GetAddAuthorCommand;
-import ua.training.controller.command.GetAddBookCommand;
-import ua.training.controller.command.GetAddReaderCommand;
-import ua.training.controller.command.GetBookByInstnaceIdCommand;
-import ua.training.controller.command.GetChangePasswordCommand;
-import ua.training.controller.command.GetReaderByIdCommand;
 import ua.training.controller.command.HomeCommand;
-import ua.training.controller.command.IssueOrderCommand;
-import ua.training.controller.command.OutstandingOrdersCommand;
 import ua.training.controller.command.PageNotFoundCommand;
-import ua.training.controller.command.PostAddAuthorCommand;
-import ua.training.controller.command.PostAddBookCommand;
-import ua.training.controller.command.PostAddBookInstanceCommand;
-import ua.training.controller.command.PostAddReaderCommand;
-import ua.training.controller.command.PostChangePasswordCommand;
-import ua.training.controller.command.ReturnOrderCommand;
-import ua.training.controller.command.SearchBookByAuthorCommand;
-import ua.training.controller.command.SearchBookByTitleCommand;
-import ua.training.controller.command.SearchOrderByReaderCardNumberCommand;
-import ua.training.controller.command.UnfulfilledOrdersCommand;
 import ua.training.controller.command.auth.GetLoginCommand;
 import ua.training.controller.command.auth.LogoutCommand;
 import ua.training.controller.command.auth.PostLoginCommand;
+import ua.training.controller.command.author.AllAuthorsCommand;
+import ua.training.controller.command.author.GetAddAuthorCommand;
+import ua.training.controller.command.author.PostAddAuthorCommand;
+import ua.training.controller.command.book.AllBooksCommand;
+import ua.training.controller.command.book.GetAddBookCommand;
+import ua.training.controller.command.book.GetBookByInstnaceIdCommand;
+import ua.training.controller.command.book.PostAddBookCommand;
+import ua.training.controller.command.book.SearchBookByAuthorCommand;
+import ua.training.controller.command.book.SearchBookByTitleCommand;
+import ua.training.controller.command.bookInstance.BookInstancesCommand;
+import ua.training.controller.command.bookInstance.PostAddBookInstanceCommand;
 import ua.training.controller.command.i18n.ChangeLocaleCommand;
+import ua.training.controller.command.order.AllOrdersCommand;
+import ua.training.controller.command.order.CreateOrderCommand;
+import ua.training.controller.command.order.FulfilOrderCommand;
+import ua.training.controller.command.order.IssueOrderCommand;
+import ua.training.controller.command.order.OutstandingOrdersCommand;
+import ua.training.controller.command.order.ReturnOrderCommand;
+import ua.training.controller.command.order.ReturnOrderToReadingRoomCommand;
+import ua.training.controller.command.order.SearchOrderByReaderCardNumberCommand;
+import ua.training.controller.command.order.ToReadingRoomOrdersCommand;
+import ua.training.controller.command.order.UnfulfilledOrdersCommand;
+import ua.training.controller.command.user.AllReadersCommand;
+import ua.training.controller.command.user.GetAddReaderCommand;
+import ua.training.controller.command.user.GetChangePasswordCommand;
+import ua.training.controller.command.user.GetReaderByIdCommand;
+import ua.training.controller.command.user.PostAddReaderCommand;
+import ua.training.controller.command.user.PostChangePasswordCommand;
 import ua.training.service.AuthorService;
 import ua.training.service.BookInstanceService;
 import ua.training.service.BookOrderService;
@@ -87,7 +87,7 @@ enum CommandEnum {
 		}
 
 	},
-	GET_BOOK_BY_INSTANCE_ID{
+	GET_BOOK_BY_INSTANCE_ID {
 		{
 			this.key = "GET:book";
 			this.command = new GetBookByInstnaceIdCommand(BookService.getInstance());
@@ -153,7 +153,7 @@ enum CommandEnum {
 			this.command = new AllReadersCommand(UserService.getInstance());
 		}
 	},
-	GET_READER_BY_ID{
+	GET_READER_BY_ID {
 		{
 			this.key = "GET:librarian/reader";
 			this.command = new GetReaderByIdCommand(UserService.getInstance());
@@ -202,10 +202,10 @@ enum CommandEnum {
 
 		}
 	},
-	UNFULFILLED_ORDERS{
+	UNFULFILLED_ORDERS {
 		{
 			this.key = "GET:librarian/orders/unfulfilled";
-			this.command = new UnfulfilledOrdersCommand(BookOrderService.getInstance());			
+			this.command = new UnfulfilledOrdersCommand(BookOrderService.getInstance());
 		}
 	},
 	OUTSTANDING_ORDERS {
@@ -215,40 +215,40 @@ enum CommandEnum {
 
 		}
 	},
-	TO_READING_ROOM_ORDERS{
+	TO_READING_ROOM_ORDERS {
 		{
 			this.key = "GET:librarian/orders/toRreadingRoom";
-			this.command = new ToReadingRoomOrdersCommand(BookOrderService.getInstance());			
+			this.command = new ToReadingRoomOrdersCommand(BookOrderService.getInstance());
 		}
 	},
-	BACK_ORDER_TO_READING_ROOM{
+	BACK_ORDER_TO_READING_ROOM {
 		{
 			this.key = "GET:librarian/orders/backToReadingRoom";
-			this.command = new ReturnOrderToReadingRoomCommand(BookOrderService.getInstance());			
+			this.command = new ReturnOrderToReadingRoomCommand(BookOrderService.getInstance());
 		}
 	},
-	SEARCH_ORDER_BY_READER_CARD_NUMBER{
+	SEARCH_ORDER_BY_READER_CARD_NUMBER {
 		{
 			this.key = "GET:librarian/orders/readerCardNumber";
 			this.command = new SearchOrderByReaderCardNumberCommand(BookOrderService.getInstance());
 		}
 	},
-	FULFIL_ORDER{
+	FULFIL_ORDER {
 		{
 			this.key = "GET:librarian/orders/fulfil";
-			this.command = new FulfilOrderCommand(BookOrderService.getInstance());			
+			this.command = new FulfilOrderCommand(BookOrderService.getInstance());
 		}
 	},
-	ISSUE_ORDER{
+	ISSUE_ORDER {
 		{
 			this.key = "GET:librarian/orders/issue";
-			this.command = new IssueOrderCommand(BookOrderService.getInstance());			
+			this.command = new IssueOrderCommand(BookOrderService.getInstance());
 		}
 	},
-	RETURN_ORDER{
+	RETURN_ORDER {
 		{
 			this.key = "GET:librarian/orders/return";
-			this.command = new ReturnOrderCommand(BookOrderService.getInstance());			
+			this.command = new ReturnOrderCommand(BookOrderService.getInstance());
 		}
 	};
 

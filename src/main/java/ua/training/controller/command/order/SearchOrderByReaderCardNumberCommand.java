@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.command.order;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
+import ua.training.controller.command.Command;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
-import ua.training.entity.Book;
 import ua.training.entity.BookOrder;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
@@ -34,7 +34,7 @@ public class SearchOrderByReaderCardNumberCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String readerCardNumber = request.getParameter(Attribute.READER_CARD_NUMBER);
-		
+
 		List<String> errors = validateUserInput(readerCardNumber);
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams;
@@ -56,9 +56,9 @@ public class SearchOrderByReaderCardNumberCommand implements Command {
 		}
 
 		request.setAttribute(Attribute.ORDERS, orders);
-		return Page.ALL_ORDERS_VIEW;		
+		return Page.ALL_ORDERS_VIEW;
 	}
-	
+
 	private List<String> validateUserInput(String readerCardNumber) {
 		List<String> errors = new ArrayList<>();
 
