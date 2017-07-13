@@ -114,9 +114,9 @@
 					<tr>
 						<td>${status.index + 1}</td>
 						<c:if test="${user.getRole().getValue() eq 'librarian' }">
-							<td>${order.getReader().getReaderCardNumber()}</td>
+							<td><a href="./reader?id_reader=${order.getReader().getId()}">${order.getReader().getReaderCardNumber()}</a></td>
 						</c:if>
-						<td>${order.getBookInstance().getInventoryNumber()}</td>
+						<td><a href="${pageContext.request.contextPath}/controller/book?id_book_instance=${order.getBookInstance().getId()}"> ${order.getBookInstance().getInventoryNumber()}</a></td>
 						<td>${order.getCreationDate()}</td>
 						<td>${order.getFulfilmentDate()}</td>
 						<c:if test="${user.getRole().getValue() eq 'librarian' }">

@@ -41,6 +41,12 @@ public class UserService {
 			return userDao.getAllReaders();
 		}
 	}
+	public Optional<Reader> getReaderById(Long readerId){
+		LOGGER.info("Get reader by id");
+		try (UserDao userDao = daoFactory.createUserDao()) {
+			return userDao.getUserById(readerId);
+		}		
+	}
 
 	public Optional<User> getUserByEmail(CredentialsDto credentials) {
 		LOGGER.info("Get user by emil: " + credentials.getEmail() + MessageUtils.COMMA + credentials.getPassword());

@@ -44,9 +44,9 @@ public class JdbcBookDao implements BookDao {
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
 			+ " WHERE LOWER(author.surname) LIKE CONCAT('%', LOWER(?), '%') OR LOWER(author.name) LIKE CONCAT('%', LOWER(?), '%')"
 			+ " OR CONCAT(LOWER(author.name), ' ', LOWER(author.surname)) LIKE CONCAT('%', LOWER(?), '%')";
-	private static String SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country,"
+	private static String SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
-			+ " WHERE inventory_number=?";
+			+ " WHERE id_book_instance=?";
 
 	// book fields
 	private static String ID_BOOK = "id_book";
@@ -244,16 +244,16 @@ public class JdbcBookDao implements BookDao {
 	}
 	
 	@Override
-	public Optional<Book> searchByBookInstanceInventoryNumber(String instanceInventoryNumber) {
+	public Optional<Book> searchByBookInstanceId(Long instanceId) {
 		Optional<Book> book = Optional.empty();
 		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER)) {
-			query.setString(1, instanceInventoryNumber);
+			query.setLong(1, instanceId);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
 				book = Optional.of(extractBookWithAuthors(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao getBookByInstanceInventoryNumber SQL error: " + instanceInventoryNumber, e);
+			LOGGER.error("JdbcBookDao searchByBookInstanceId SQL error: " + instanceId, e);
 			throw new ServerException(e);
 		}
 		return book;

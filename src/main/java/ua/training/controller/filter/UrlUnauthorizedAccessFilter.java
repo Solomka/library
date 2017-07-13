@@ -25,13 +25,12 @@ import ua.training.entity.Role;
 import ua.training.entity.User;
 import ua.training.locale.Message;
 
-@WebFilter(urlPatterns = { "/controller/orders/*", "/controller/librarian/*", "/controller/reader/*" })
-public class UrlUnAuthorizedAccessFilter implements Filter {
+@WebFilter(urlPatterns = { "/controller/librarian/*", "/controller/reader/*" })
+public class UrlUnauthorizedAccessFilter implements Filter {
 
-	private final static Logger LOGGER = Logger.getLogger(UrlUnAuthorizedAccessFilter.class);
+	private final static Logger LOGGER = Logger.getLogger(UrlUnauthorizedAccessFilter.class);
 	private static final String UNAUTHORIZED_ACCESS = "Unauthorized access to the resource: ";
-	private static final String ORDERS_PAGE = "orders";
-
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 

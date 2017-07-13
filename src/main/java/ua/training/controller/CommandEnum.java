@@ -13,7 +13,9 @@ import ua.training.controller.command.FulfilOrderCommand;
 import ua.training.controller.command.GetAddAuthorCommand;
 import ua.training.controller.command.GetAddBookCommand;
 import ua.training.controller.command.GetAddReaderCommand;
+import ua.training.controller.command.GetBookByInstnaceIdCommand;
 import ua.training.controller.command.GetChangePasswordCommand;
+import ua.training.controller.command.GetReaderByIdCommand;
 import ua.training.controller.command.HomeCommand;
 import ua.training.controller.command.IssueOrderCommand;
 import ua.training.controller.command.OutstandingOrdersCommand;
@@ -85,6 +87,12 @@ enum CommandEnum {
 		}
 
 	},
+	GET_BOOK_BY_INSTANCE_ID{
+		{
+			this.key = "GET:book";
+			this.command = new GetBookByInstnaceIdCommand(BookService.getInstance());
+		}
+	},
 	BOOK_INSTANCES {
 		{
 			this.key = "GET:bookInstances";
@@ -143,6 +151,12 @@ enum CommandEnum {
 		{
 			this.key = "GET:librarian/readers";
 			this.command = new AllReadersCommand(UserService.getInstance());
+		}
+	},
+	GET_READER_BY_ID{
+		{
+			this.key = "GET:librarian/reader";
+			this.command = new GetReaderByIdCommand(UserService.getInstance());
 		}
 	},
 	GET_ADD_READER {

@@ -12,6 +12,7 @@ public final class Message {
 	public static String UNAUTHORIZED_ACCESS_ERROR = "library.error.authorizedAccessError";
 	public static String SUCCESS_BOOK_ADDITION = "library.success.addBook";
 	public static String BOOK_IS_NOT_FOUND = "library.error.bookIsNotFound";
+	public static String READER_IS_NOT_FOUND = "library.error.readerIsNotFound";
 	public static String NO_AVAILABLE_BOOK_INSTANCES = "library.error.noAvailableBookIntstances";
 	public static String ORDERS_ARE_NOT_FOUND = "library.error.ordersAreNotFound";
 	
@@ -67,6 +68,7 @@ public final class Message {
 	
 	public static String ROLE_READER = "library.user.role.reader";
 	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
+	
 	
 	
 	
