@@ -34,8 +34,11 @@ public class CreateOrderCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		BookOrder bookOrder = getUserInput(request);
-		bookOrderService.createOrder(bookOrder);
+		Long readerId = Long.valueOf(SessionManager.getUserFromSession(request.getSession()).getId());
+		Long bookInsatnceId = Long.valueOf(request.getParameter(Attribute.ID_BOOK_INSTANCE));
+		bookOrderService.createOrder(readerId, bookInsatnceId);
+		//BookOrder bookOrder = getUserInput(request);
+		//bookOrderService.createOrder(bookOrder);
 		redirectToAllOrdersPageWithSuccessMessage(request, response);
 		return RedirectionManager.REDIRECTION;
 	}	

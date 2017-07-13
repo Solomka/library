@@ -98,7 +98,7 @@ public class JdbcBookDao implements BookDao {
 				books.add(extractBookWithAuthors(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao getAll SQL error", e);
+			LOGGER.error("JdbcBookDao getAll SQL exception", e);
 			throw new ServerException(e);
 		}
 		return books;
@@ -115,7 +115,7 @@ public class JdbcBookDao implements BookDao {
 				book = Optional.of(extractBookWithInstancesAndAuthors(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao getById SQL error: " + id, e);
+			LOGGER.error("JdbcBookDao getById SQL exception: " + id, e);
 			throw new ServerException(e);
 		}
 		return book;
@@ -136,7 +136,7 @@ public class JdbcBookDao implements BookDao {
 				book.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao create SQL error: " + book.toString(), e);
+			LOGGER.error("JdbcBookDao create SQL exception: " + book.toString(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -154,7 +154,7 @@ public class JdbcBookDao implements BookDao {
 			query.executeBatch();
 
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao saveBookAuthors SQL error: " + book.getId(), e);
+			LOGGER.error("JdbcBookDao saveBookAuthors SQL exception: " + book.getId(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -169,7 +169,7 @@ public class JdbcBookDao implements BookDao {
 			query.setLong(5, book.getId());
 			query.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao update SQL error: " + book.toString(), e);
+			LOGGER.error("JdbcBookDao update SQL exception: " + book.getId(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -180,7 +180,7 @@ public class JdbcBookDao implements BookDao {
 			query.setLong(1, id);
 			query.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao delete SQL error: " + id, e);
+			LOGGER.error("JdbcBookDao delete SQL exception: " + id, e);
 			throw new ServerException(e);
 		}
 	}
@@ -197,7 +197,7 @@ public class JdbcBookDao implements BookDao {
 				book = Optional.of(extractBookWithInstancesAndAuthors(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao getBookWithAvailableInstances SQL error: " + id, e);
+			LOGGER.error("JdbcBookDao getBookWithAvailableInstances SQL exception: " + id, e);
 			throw new ServerException(e);
 		}
 		return book;
@@ -214,7 +214,7 @@ public class JdbcBookDao implements BookDao {
 				books.add(extractBookWithAuthors(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchByTsearchBookWithAuthorsByTitleitle SQL error: " + title, e);
+			LOGGER.error("JdbcBookDao searchByTsearchBookWithAuthorsByTitleitle SQL exception: " + title, e);
 			throw new ServerException(e);
 		}
 		return books;
@@ -233,7 +233,7 @@ public class JdbcBookDao implements BookDao {
 				books.add(extractBookWithAuthors(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchBookWithAuthorsByAuthor SQL error: " + author, e);
+			LOGGER.error("JdbcBookDao searchBookWithAuthorsByAuthor SQL exception: " + author, e);
 			throw new ServerException(e);
 		}
 		return books;
@@ -250,7 +250,7 @@ public class JdbcBookDao implements BookDao {
 				book = Optional.of(extractBookWithAuthors(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchByBookInstanceId SQL error: " + instanceId, e);
+			LOGGER.error("JdbcBookDao searchByBookInstanceId SQL exception: " + instanceId, e);
 			throw new ServerException(e);
 		}
 		return book;

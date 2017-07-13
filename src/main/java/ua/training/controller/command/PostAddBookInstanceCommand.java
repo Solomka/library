@@ -38,7 +38,7 @@ public class PostAddBookInstanceCommand implements Command {
 		Map<String, String> urlParams = generateUrlParams(bookInstance.getBook().getId().toString());
 
 		if (errors.isEmpty()) {
-			bookInstancesService.addBookInstance(bookInstance);
+			bookInstancesService.createBookInstance(bookInstance);
 			urlParams.put(Attribute.SUCCESS, Message.SUCCESS_BOOK_INSTANCE_ADDITION);
 			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.BOOK_INSTANCES, urlParams);
 			return RedirectionManager.REDIRECTION;

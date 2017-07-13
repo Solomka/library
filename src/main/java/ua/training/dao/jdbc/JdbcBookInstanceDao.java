@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +22,11 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookInstanceDao.class);
 
 	// queries
-	private static String ADD_BOOK_INSTANCE = "INSERT INTO book_instance (inventory_number, status, id_book) VALUES (?, ?, ?)";
 	private static String GET_BOOK_INSTANCE_BY_ID = "SELECT * FROM book_instance WHERE id_book_instance=?";
-	private static String GET_BOOK_INSTANCES = "SELECT * FROM book_instance WHERE id_book=?";
-	private static String UPDATE_BOOK_INSTANCE = "UPDATE book_instance SET status=? WHERE id_book_instance=?";
+	private static String CREATE_BOOK_INSTANCE = "INSERT INTO book_instance (inventory_number, status, id_book) VALUES (?, ?, ?)";
+	private static String UPDATE_BOOK_INSTANCE = "UPDATE book_instance SET status=?, inventory_number=? WHERE id_book_instance=?";
+	private static String DELETE_BOOK_INSTANCE = "DELETE FROM book_instance WHERE id_book_instance=?";
 
-	// fields
 	private static String ID_BOOK_INSTANCE = "id_book_instance";
 	private static String STATUS = "status";
 	private static String INVENTORY_NUMBER = "inventory_number";
@@ -53,8 +51,7 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 
 	@Override
 	public List<BookInstance> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -67,56 +64,15 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 				bookInstance = Optional.of(extractBookInstanceFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookInstanceDao getById SQL error: " + id, e);
+			LOGGER.error("JdbcBookInstanceDao getById SQL exception: " + id, e);
 			throw new ServerException(e);
 		}
 		return bookInstance;
 	}
 
 	@Override
-	public void create(BookInstance e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void update(BookInstance bookInstance) {
-		try (PreparedStatement query = connection.prepareStatement(UPDATE_BOOK_INSTANCE)) {
-			query.setString(1, bookInstance.getStatus().getValue());
-			query.setLong(2, bookInstance.getId());
-			query.executeUpdate();
-
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookInstanceDao update SQL error: " + bookInstance.toString(), e);
-			throw new ServerException(e);
-		}
-	}
-
-	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<BookInstance> getBookInstances(Long bookId) {
-		List<BookInstance> bookInstances = new ArrayList<>();
-
-		try (PreparedStatement query = connection.prepareStatement(GET_BOOK_INSTANCES)) {
-			query.setLong(1, bookId);
-			ResultSet resultSet = query.executeQuery();
-			while (resultSet.next()) {
-				bookInstances.add(extractBookInstanceFromResultSet(resultSet));
-			}
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookInstanceDao getBookInstances SQL error: " + bookId, e);
-			throw new ServerException(e);
-		}
-		return bookInstances;
-	}
-
-	@Override
-	public void addBookInstance(BookInstance bookInstance) {
-		try (PreparedStatement query = connection.prepareStatement(ADD_BOOK_INSTANCE,
+	public void create(BookInstance bookInstance) {
+		try (PreparedStatement query = connection.prepareStatement(CREATE_BOOK_INSTANCE,
 				Statement.RETURN_GENERATED_KEYS)) {
 			query.setString(1, bookInstance.getInventoryNumber());
 			query.setString(2, bookInstance.getStatus().getValue());
@@ -128,10 +84,34 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 				bookInstance.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookInstanceDao create SQL error: " + bookInstance.toString(), e);
+			LOGGER.error("JdbcBookInstanceDao create SQL exception: " + bookInstance.toString(), e);
 			throw new ServerException(e);
 		}
+	}
 
+	@Override
+	public void update(BookInstance bookInstance) {
+		try (PreparedStatement query = connection.prepareStatement(UPDATE_BOOK_INSTANCE)) {
+			query.setString(1, bookInstance.getStatus().getValue());
+			query.setString(2, bookInstance.getInventoryNumber());
+			query.setLong(3, bookInstance.getId());
+			query.executeUpdate();
+
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookInstanceDao update SQL exception: " + bookInstance.toString(), e);
+			throw new ServerException(e);
+		}
+	}
+
+	@Override
+	public void delete(Long id) {
+		try (PreparedStatement query = connection.prepareStatement(DELETE_BOOK_INSTANCE)) {
+			query.setLong(1, id);
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookInstanceDao delete SQL exception: " + id, e);
+			throw new ServerException(e);
+		}
 	}
 
 	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {

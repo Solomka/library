@@ -8,6 +8,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.constants.AppConstants;
+import ua.training.controller.session.SessionManager;
 import ua.training.dao.BookInstanceDao;
 import ua.training.dao.BookOrderDao;
 import ua.training.dao.DaoConnection;
@@ -15,6 +16,7 @@ import ua.training.dao.DaoFactory;
 import ua.training.entity.BookInstance;
 import ua.training.entity.BookOrder;
 import ua.training.entity.Librarian;
+import ua.training.entity.Reader;
 import ua.training.entity.Status;
 import ua.training.exception.ServiceException;
 import ua.training.locale.Message;
@@ -97,14 +99,21 @@ public class BookOrderService {
 	 * (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) { return
 	 * bookOrderDao.getOutstandingReaderOrders(readerId); } }
 	 */
-	public void createOrder(BookOrder order) {
-		LOGGER.info("Create order: " + order.toString());
+	public void createOrder(Long readerId,Long bookInsatnceId) {
+		LOGGER.info("Create order for book instance: " + bookInsatnceId);
+		BookOrder order = new BookOrder.Builder().setCreationDate(getCurrentLocalDate()).setReader(new Reader.Builder().setId(readerId).build()).setBookInstance(new BookInstance.Builder()
+				.setId(bookInsatnceId).build()).build();
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();
 			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
-			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
+			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);	
+			
+			Optional<BookInstance> optionalBookInsatnce = bookInstanceDao.getById(bookInsatnceId);
+			BookInstance bookInsatnce = optionalBookInsatnce.get();
+			bookInsatnce.setStatus(Status.UNAVAILABLE);			
+			
 			bookOrderDao.create(order);
-			bookInstanceDao.update(order.getBookInstance());
+			bookInstanceDao.update(bookInsatnce);
 			connection.commit();
 		}
 	}

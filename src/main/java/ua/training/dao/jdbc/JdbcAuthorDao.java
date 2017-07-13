@@ -20,13 +20,12 @@ public class JdbcAuthorDao implements AuthorDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcAuthorDao.class);
 
-	// sql
-	private static String CRAETE_AUTHOR = "INSERT INTO author (name, surname, country) VALUES (?, ?, ?)";
 	private static String GET_ALL_AUTHORS = "SELECT * FROM author";
-	private static String GET_BOOK_AUTHORS = "SELECT id_author, name, surname, country"
-			+ " FROM author JOIN book_author USING (id_author)" + " WHERE id_book=?";
+	private static String GET_AUTHOR_BY_ID = "SELECT * FROM author WHERE id_author=?";
+	private static String CRAETE_AUTHOR = "INSERT INTO author (name, surname, country) VALUES (?, ?, ?)";
+	private static String UPDATE_AUTHOR = "UPDATE author SET name=?, surname=?, country=? WHERE id_author=?";
+	private static String DELETE_AUTHOR = "DELETE FROM author WHERE id_author=?";
 
-	// fields
 	private static String ID_AUTHOR = "id_author";
 	private static String NAME = "name";
 	private static String SURNAME = "surname";
@@ -59,17 +58,27 @@ public class JdbcAuthorDao implements AuthorDao {
 				authors.add(extractAuthorFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcAuthorkDao getAll SQL error", e);
+			LOGGER.error("JdbcAuthorDao getAll SQL exception", e);
 			throw new ServerException(e);
 		}
 		return authors;
-
 	}
 
 	@Override
 	public Optional<Author> getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Author> author = Optional.empty();
+		try (PreparedStatement query = connection.prepareStatement(GET_AUTHOR_BY_ID)) {
+			query.setLong(1, id);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				author = Optional.of(extractAuthorFromResultSet(resultSet));
+			}
+
+		} catch (SQLException e) {
+			LOGGER.error("JdbcAuthorDao getById SQL exception: " + id, e);
+			throw new ServerException(e);
+		}
+		return author;
 	}
 
 	@Override
@@ -85,45 +94,40 @@ public class JdbcAuthorDao implements AuthorDao {
 				author.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcAuthorkDao create SQL error: " + author.toString(), e);
+			LOGGER.error("JdbcAuthorDao create SQL exception: " + author.toString(), e);
 			throw new ServerException(e);
 		}
-
 	}
 
 	@Override
-	public void update(Author e) {
-		// TODO Auto-generated method stub
+	public void update(Author author) {
+		try (PreparedStatement query = connection.prepareStatement(UPDATE_AUTHOR)) {
+			query.setString(1, author.getName());
+			query.setString(2, author.getSurname());
+			query.setString(3, author.getCountry());
+			query.setLong(4, author.getId());
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcAuthorDao update SQL exception: " + author.getId(), e);
+			throw new ServerException(e);
+		}
 
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<Author> getBookAuthors(Long bookId) {
-		List<Author> authors = new ArrayList<>();
-
-		try (PreparedStatement query = connection.prepareStatement(GET_BOOK_AUTHORS)) {
-			query.setLong(1, bookId);
-			ResultSet resultSet = query.executeQuery();
-			while (resultSet.next()) {
-				authors.add(extractAuthorFromResultSet(resultSet));
-			}
+		try (PreparedStatement query = connection.prepareStatement(DELETE_AUTHOR)) {
+			query.setLong(1, id);
+			query.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.error("JdbcAuthorDao getBookAuthors SQL error: " + bookId, e);
+			LOGGER.error("JdbcAuthorDao delete SQL exception: " + id, e);
 			throw new ServerException(e);
 		}
-		return authors;
 	}
 
 	public Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
 		return new Author.Builder().setId(resultSet.getLong(ID_AUTHOR)).setName(resultSet.getString(NAME))
 				.setSurname(resultSet.getString(SURNAME)).setCountry(resultSet.getString(COUNTRY)).build();
-
 	}
 
 	@Override
