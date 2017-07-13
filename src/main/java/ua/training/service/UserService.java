@@ -12,6 +12,7 @@ import ua.training.dao.UserDao;
 import ua.training.dto.ChangePasswordDto;
 import ua.training.dto.CredentialsDto;
 import ua.training.entity.Reader;
+import ua.training.entity.Role;
 import ua.training.entity.User;
 import ua.training.hashing.PasswordHashing;
 import ua.training.locale.MessageUtils;
@@ -38,14 +39,15 @@ public class UserService {
 	public List<Reader> getAllReaders() {
 		LOGGER.info("Get all readers");
 		try (UserDao userDao = daoFactory.createUserDao()) {
-			return userDao.getAllReaders();
+			return userDao.getAllUsers(Role.READER);
 		}
 	}
-	public Optional<Reader> getReaderById(Long readerId){
+
+	public Optional<Reader> getReaderById(Long readerId) {
 		LOGGER.info("Get reader by id");
 		try (UserDao userDao = daoFactory.createUserDao()) {
 			return userDao.getUserById(readerId);
-		}		
+		}
 	}
 
 	public Optional<User> getUserByEmail(CredentialsDto credentials) {
@@ -83,12 +85,6 @@ public class UserService {
 			}
 		}
 		return false;
-	}
-
-	public Optional<Reader> searchReaderByReaderCardNumber(String readerCardNumber) {
-		try (UserDao userDao = daoFactory.createUserDao()) {
-			return userDao.searchByReaderCardNumber(readerCardNumber);
-		}
 	}
 
 	private void hashUserPassword(User user) {

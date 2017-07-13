@@ -116,7 +116,7 @@
 						<td>${status.index + 1}</td>
 						<c:if test="${user.getRole().getValue() eq 'librarian' }">
 							<td><a
-								href="${pageContext.request.contextPath}/controller/librarian/orders/reader?id_reader=${order.getReader().getId()}">${order.getReader().getReaderCardNumber()}</a></td>
+								href="${pageContext.request.contextPath}/controller/librarian/reader?id_reader=${order.getReader().getId()}">${order.getReader().getReaderCardNumber()}</a></td>
 						</c:if>
 						<td><a
 							href="${pageContext.request.contextPath}/controller/book?id_book_instance=${order.getBookInstance().getId()}">
