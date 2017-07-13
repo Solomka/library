@@ -55,7 +55,7 @@ public class BookServiceTest {
 
 		BookService bookService = new BookService(daoFactory);
 
-		List<Book> actualBooks = bookService.getBooksWithAuthors();
+		List<Book> actualBooks = bookService.getAllBooksWithAuthors();
 		assertEquals(books, actualBooks);
 		verify(daoFactory).getConnection();
 		verify(daoFactory).createBookDao(daoConnection);
@@ -87,7 +87,7 @@ public class BookServiceTest {
 		BookService bookService = new BookService(daoFactory);
 		//TODO:?
 		//Optional<Book> actualBook = bookService.getBookById(anyLong());
-		Optional<Book> actualBook = bookService.getBookWithAuthorsAndInstances(new Long("2"));
+		Optional<Book> actualBook = bookService.getBookWithAuthorsAndInstancesById(new Long("2"));
 		assertEquals(book.get(), actualBook.get());
 		
 		verify(daoFactory).getConnection();
@@ -146,18 +146,18 @@ public class BookServiceTest {
 		when(daoFactory.getConnection()).thenReturn(daoConnection);
 		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
 		when(daoFactory.createAuthorDao(daoConnection)).thenReturn(authorDao);
-		when(bookDao.searchByTitle(anyString())).thenReturn(books);
+		when(bookDao.searchBookWithAuthorsByTitle(anyString())).thenReturn(books);
 
 		BookService bookService = new BookService(daoFactory);
 
 		//List<Book> actualBooks = bookService.searchBookByTitle(anyString());
-		List<Book> actualBooks = bookService.searchBookByTitle("Test Title");
+		List<Book> actualBooks = bookService.searchBookWithAuthorsByTitle("Test Title");
 		assertEquals(books, actualBooks);
 		verify(daoFactory).getConnection();
 		verify(daoFactory).createBookDao(daoConnection);
 		verify(daoFactory).createAuthorDao(daoConnection);
 		verify(daoConnection).begin();
-		verify(bookDao).searchByTitle(anyString());
+		verify(bookDao).searchBookWithAuthorsByTitle(anyString());
 		verify(authorDao, times(3)).getBookAuthors(anyLong());
 		verify(daoConnection).commit();
 	}
@@ -182,18 +182,18 @@ public class BookServiceTest {
 		when(daoFactory.getConnection()).thenReturn(daoConnection);
 		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
 		when(daoFactory.createAuthorDao(daoConnection)).thenReturn(authorDao);
-		when(bookDao.searchByAuthor(anyString())).thenReturn(books);
+		when(bookDao.searchBookWithAuthorsByAuthor(anyString())).thenReturn(books);
 
 		BookService bookService = new BookService(daoFactory);
 
 		//List<Book> actualBooks = bookService.searchBookByAuthor(anyString());
-		List<Book> actualBooks = bookService.searchBookByAuthor("NameTest SurnameTest");
+		List<Book> actualBooks = bookService.searchBookWithAuthorsByAuthor("NameTest SurnameTest");
 		assertEquals(books, actualBooks);
 		verify(daoFactory).getConnection();
 		verify(daoFactory).createBookDao(daoConnection);
 		verify(daoFactory).createAuthorDao(daoConnection);
 		verify(daoConnection).begin();
-		verify(bookDao).searchByAuthor(anyString());
+		verify(bookDao).searchBookWithAuthorsByAuthor(anyString());
 		verify(authorDao, times(3)).getBookAuthors(anyLong());
 		verify(daoConnection).commit();
 	}

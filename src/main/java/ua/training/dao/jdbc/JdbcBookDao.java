@@ -24,29 +24,32 @@ public class JdbcBookDao implements BookDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookDao.class);
 
-	// SQL queries
-	private static String CREATE_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
-	private static String GET_ALL_BOOKS = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country"
+	private static String GET_ALL_BOOKS_WITH_AUTHORS = "SELECT book.id_book, isbn, title, publisher, availability,"
+			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) ORDER BY title";
-	private static String GET_BOOK_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country,"
-			+ " id_book_instance, status, inventory_number"
+	private static String GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability,"
+			+ " author.id_author, name, surname, country," + " id_book_instance, status, inventory_number"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) LEFT JOIN book_instance USING (id_book)"
 			+ " WHERE id_book=?";
-	private static String GET_BOOK_WITH_AVAILABLE_INSTANCES = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country,"
-			+ " id_book_instance, status, inventory_number"
-			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
-			+ " WHERE status='available' AND id_book=?";
+	private static String CREATE_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
 	private static String SAVE_BOOK_AUTHORS = "INSERT INTO book_author (id_book, id_author) VALUES ( ?, ?)";
 	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, availability=? WHERE id_book=?";
 	private static String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
-	private static String SEARCH_BOOK_BY_TITLE = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country"
+	private static String GET_BOOK_WITH_AUTHORS_AND_AVAILABLE_INSTANCES_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability,"
+			+ " author.id_author, name, surname, country," + " id_book_instance, status, inventory_number"
+			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
+			+ " WHERE status='available' AND id_book=?";
+	private static String SEARCH_BOOK_WITH_AUTHORS_BY_TITLE = "SELECT book.id_book, isbn, title, publisher, availability,"
+			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
 			+ " WHERE LOWER(title) LIKE CONCAT('%', LOWER(?), '%')";
-	private static String SEARCH_BOOK_BY_AUTHOR = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country"
+	private static String SEARCH_BOOK_WITH_AUTHORS_BY_AUTHOR = "SELECT book.id_book, isbn, title, publisher, availability,"
+			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
 			+ " WHERE LOWER(author.surname) LIKE CONCAT('%', LOWER(?), '%') OR LOWER(author.name) LIKE CONCAT('%', LOWER(?), '%')"
 			+ " OR CONCAT(LOWER(author.name), ' ', LOWER(author.surname)) LIKE CONCAT('%', LOWER(?), '%')";
-	private static String SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER = "SELECT book.id_book, isbn, title, publisher, availability, author.id_author, name, surname, country"
+	private static String SEARCH_BOOK_WITH_AUTHORS_BY_INSTANCE_ID = "SELECT book.id_book, isbn, title, publisher, availability,"
+			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
 			+ " WHERE id_book_instance=?";
 
@@ -87,10 +90,10 @@ public class JdbcBookDao implements BookDao {
 
 	@Override
 	public List<Book> getAll() {
-
 		List<Book> books = new ArrayList<>();
 
-		try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL_BOOKS)) {
+		try (Statement query = connection.createStatement();
+				ResultSet resultSet = query.executeQuery(GET_ALL_BOOKS_WITH_AUTHORS)) {
 			while (resultSet.next()) {
 				books.add(extractBookWithAuthors(resultSet));
 			}
@@ -104,23 +107,8 @@ public class JdbcBookDao implements BookDao {
 	@Override
 	public Optional<Book> getById(Long id) {
 		Optional<Book> book = Optional.empty();
-		try (PreparedStatement query = connection.prepareStatement(GET_BOOK_BY_ID)) {
-			query.setLong(1, id);
-			ResultSet resultSet = query.executeQuery();
-			if (resultSet.next()) {
-				book = Optional.of(extractBookWithInstancesAndAuthors(resultSet));
-			}
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao getById SQL error: " + id, e);
-			throw new ServerException(e);
-		}
-		return book;
-	}
 
-	@Override
-	public Optional<Book> getBookWithAvailableInstances(Long id) {
-		Optional<Book> book = Optional.empty();
-		try (PreparedStatement query = connection.prepareStatement(GET_BOOK_WITH_AVAILABLE_INSTANCES)) {
+		try (PreparedStatement query = connection.prepareStatement(GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID)) {
 			query.setLong(1, id);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
@@ -135,7 +123,6 @@ public class JdbcBookDao implements BookDao {
 
 	@Override
 	public void create(Book book) {
-
 		try (PreparedStatement query = connection.prepareStatement(CREATE_BOOK, Statement.RETURN_GENERATED_KEYS)) {
 			query.setString(1, book.getIsbn());
 			query.setString(2, book.getTitle());
@@ -144,6 +131,7 @@ public class JdbcBookDao implements BookDao {
 			query.executeUpdate();
 
 			ResultSet keys = query.getGeneratedKeys();
+
 			if (keys.next()) {
 				book.setId(keys.getLong(1));
 			}
@@ -151,85 +139,6 @@ public class JdbcBookDao implements BookDao {
 			LOGGER.error("JdbcBookDao create SQL error: " + book.toString(), e);
 			throw new ServerException(e);
 		}
-	}
-
-	@Override
-	public void update(Book book) {
-
-		try (PreparedStatement query = connection.prepareStatement(UPDATE_BOOK)) {
-			query.setString(1, book.getTitle());
-			query.setString(2, book.getIsbn());
-			query.setString(3, book.getPublisher());
-			query.setString(4, book.getAvailability().getValue());
-			query.setLong(5, book.getId());
-			query.executeUpdate();
-
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao update SQL error: " + book.toString(), e);
-			throw new ServerException(e);
-		}
-	}
-
-	@Override
-	public void delete(Long id) {
-		try (PreparedStatement query = connection.prepareStatement(DELETE_BOOK)) {
-			query.setLong(1, id);
-			query.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao delete SQL error: " + id, e);
-			throw new ServerException(e);
-		}
-	}
-
-	@Override
-	public List<Book> searchByTitle(String title) {
-		List<Book> books = new ArrayList<>();
-		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_TITLE)) {
-			query.setString(1, title);
-			ResultSet resultSet = query.executeQuery();
-			while (resultSet.next()) {
-				books.add(extractBookWithAuthors(resultSet));
-			}
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchByTitle SQL error: " + title, e);
-			throw new ServerException(e);
-		}
-		return books;
-	}
-
-	@Override
-	public List<Book> searchByAuthor(String author) {
-		List<Book> books = new ArrayList<>();
-
-		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_AUTHOR)) {
-			query.setString(1, author);
-			query.setString(2, author);
-			query.setString(3, author);
-			ResultSet resultSet = query.executeQuery();
-			while (resultSet.next()) {
-				books.add(extractBookWithAuthors(resultSet));
-			}
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchByAuthorSurname SQL error: " + author, e);
-			throw new ServerException(e);
-		}
-		return books;
-	}
-
-	@Override
-	public Optional<Book> searchByBookInstanceId(Long instanceId) {
-		Optional<Book> book = Optional.empty();
-		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_BY_INSTANCE_INVENTORY_NUMBER)) {
-			query.setLong(1, instanceId);
-			ResultSet resultSet = query.executeQuery();
-			if (resultSet.next()) {
-				book = Optional.of(extractBookWithAuthors(resultSet));
-			}
-		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao searchByBookInstanceId SQL error: " + instanceId, e);
-			throw new ServerException(e);
-		}
-		return book;
 	}
 
 	@Override
@@ -248,6 +157,103 @@ public class JdbcBookDao implements BookDao {
 			LOGGER.error("JdbcBookDao saveBookAuthors SQL error: " + book.getId(), e);
 			throw new ServerException(e);
 		}
+	}
+
+	@Override
+	public void update(Book book) {
+		try (PreparedStatement query = connection.prepareStatement(UPDATE_BOOK)) {
+			query.setString(1, book.getTitle());
+			query.setString(2, book.getIsbn());
+			query.setString(3, book.getPublisher());
+			query.setString(4, book.getAvailability().getValue());
+			query.setLong(5, book.getId());
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao update SQL error: " + book.toString(), e);
+			throw new ServerException(e);
+		}
+	}
+
+	@Override
+	public void delete(Long id) {
+		try (PreparedStatement query = connection.prepareStatement(DELETE_BOOK)) {
+			query.setLong(1, id);
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao delete SQL error: " + id, e);
+			throw new ServerException(e);
+		}
+	}
+
+	@Override
+	public Optional<Book> getBookWithAvailableInstances(Long id) {
+		Optional<Book> book = Optional.empty();
+
+		try (PreparedStatement query = connection
+				.prepareStatement(GET_BOOK_WITH_AUTHORS_AND_AVAILABLE_INSTANCES_BY_ID)) {
+			query.setLong(1, id);
+			ResultSet resultSet = query.executeQuery();
+			if (resultSet.next()) {
+				book = Optional.of(extractBookWithInstancesAndAuthors(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao getBookWithAvailableInstances SQL error: " + id, e);
+			throw new ServerException(e);
+		}
+		return book;
+	}
+
+	@Override
+	public List<Book> searchBookWithAuthorsByTitle(String title) {
+		List<Book> books = new ArrayList<>();
+
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_WITH_AUTHORS_BY_TITLE)) {
+			query.setString(1, title);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				books.add(extractBookWithAuthors(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao searchByTsearchBookWithAuthorsByTitleitle SQL error: " + title, e);
+			throw new ServerException(e);
+		}
+		return books;
+	}
+
+	@Override
+	public List<Book> searchBookWithAuthorsByAuthor(String author) {
+		List<Book> books = new ArrayList<>();
+
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_WITH_AUTHORS_BY_AUTHOR)) {
+			query.setString(1, author);
+			query.setString(2, author);
+			query.setString(3, author);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				books.add(extractBookWithAuthors(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao searchBookWithAuthorsByAuthor SQL error: " + author, e);
+			throw new ServerException(e);
+		}
+		return books;
+	}
+
+	@Override
+	public Optional<Book> searchBookWithAuthorsByInstanceId(Long instanceId) {
+		Optional<Book> book = Optional.empty();
+
+		try (PreparedStatement query = connection.prepareStatement(SEARCH_BOOK_WITH_AUTHORS_BY_INSTANCE_ID)) {
+			query.setLong(1, instanceId);
+			ResultSet resultSet = query.executeQuery();
+			if (resultSet.next()) {
+				book = Optional.of(extractBookWithAuthors(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao searchByBookInstanceId SQL error: " + instanceId, e);
+			throw new ServerException(e);
+		}
+		return book;
 	}
 
 	private Book extractBookWithAuthors(ResultSet resultSet) throws SQLException {
@@ -293,12 +299,19 @@ public class JdbcBookDao implements BookDao {
 
 	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
 		return new BookInstance.Builder().setId(resultSet.getLong(ID_BOOK_INSTANCE))
-				.setStatus(checkResultSetStatusValue(resultSet))
+				.setStatus(checkResultSetBookInstanceStatusValue(resultSet))
 				.setInventoryNumber(resultSet.getString(INVENTORY_NUMBER))
 				.setBook(new Book.Builder().setId(resultSet.getLong(ID_BOOK)).build()).build();
 	}
 
-	private Status checkResultSetStatusValue(ResultSet resultSet) throws SQLException {
+	/**
+	 * Check if book_instance status is not null
+	 * <p>
+	 * In GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID request we need to get
+	 * book with authors even if it doesn't contain instances for providing
+	 * librarian with ability to add book instance
+	 */
+	private Status checkResultSetBookInstanceStatusValue(ResultSet resultSet) throws SQLException {
 		return (resultSet.getString(STATUS) == null) ? null : Status.forValue(resultSet.getString(STATUS));
 	}
 

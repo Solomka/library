@@ -7,7 +7,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.converter.BookDtoBookConverter;
-import ua.training.dao.AuthorDao;
 import ua.training.dao.BookDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
@@ -32,48 +31,48 @@ public class BookService {
 		return Holder.INSTANCE;
 	}
 
-	public List<Book> getBooksWithAuthors() {
+	public List<Book> getAllBooksWithAuthors() {
 		LOGGER.info("Get all books with authors");
 		try (BookDao bookDao = daoFactory.createBookDao()) {
 			return bookDao.getAll();
 		}
 	}
-	
-	public Optional<Book> getBookWithAuthorsAndInstances(Long bookId) {
-		LOGGER.info("Get book with authors and instances: " + bookId);
+
+	public Optional<Book> getBookWithAuthorsAndInstancesById(Long bookId) {
+		LOGGER.info("Get book with authors and instances by id: " + bookId);
 		try (BookDao bookDao = daoFactory.createBookDao()) {
 			Optional<Book> book = bookDao.getById(bookId);
 			return book;
 		}
 	}
 
-	public Optional<Book> getBookWithAuthorsAndAvailableInstances(Long bookId) {
-		LOGGER.info("Get book with authors and available instances: " + bookId);
+	public Optional<Book> getBookWithAuthorsAndAvailableInstancesById(Long bookId) {
+		LOGGER.info("Get book with authors and available instances by id: " + bookId);
 		try (BookDao bookDao = daoFactory.createBookDao()) {
 			Optional<Book> book = bookDao.getBookWithAvailableInstances(bookId);
 			return book;
 		}
 	}
 
-	public List<Book> searchBookByTitle(String title) {
-		LOGGER.info("Search book by title");
-		try (BookDao bookDao = daoFactory.createBookDao()) {			
-			return bookDao.searchByTitle(title);
+	public List<Book> searchBookWithAuthorsByTitle(String title) {
+		LOGGER.info("Search book with authors by title: " + title);
+		try (BookDao bookDao = daoFactory.createBookDao()) {
+			return bookDao.searchBookWithAuthorsByTitle(title);
 		}
 	}
 
-	public List<Book> searchBookByAuthor(String author) {
-		LOGGER.info("Search book by author surname");
-		try (BookDao bookDao = daoFactory.createBookDao()) {			
-			return bookDao.searchByAuthor(author);
+	public List<Book> searchBookWithAuthorsByAuthor(String author) {
+		LOGGER.info("Search book with authors by author: " + author);
+		try (BookDao bookDao = daoFactory.createBookDao()) {
+			return bookDao.searchBookWithAuthorsByAuthor(author);
 		}
 	}
-	
-	public Optional<Book> searchBookByInstanceId(Long instanceId){
-		LOGGER.info("Search book by instance id: " + instanceId);
+
+	public Optional<Book> searchBookWithAuthorsByInstanceId(Long instanceId) {
+		LOGGER.info("Search book with authors by instance id: " + instanceId);
 		try (BookDao bookDao = daoFactory.createBookDao()) {
-			return bookDao.searchByBookInstanceId(instanceId);
-		}		
+			return bookDao.searchBookWithAuthorsByInstanceId(instanceId);
+		}
 	}
 
 	public void createBook(BookDto bookDto) {
@@ -85,21 +84,6 @@ public class BookService {
 			bookDao.create(book);
 			bookDao.saveBookAuthors(book);
 			connection.commit();
-		}
-	}
-
-	public void updateBook(Book book) {
-		LOGGER.info("Update book: " + book);
-		try (BookDao bookDao = daoFactory.createBookDao()) {
-			bookDao.update(book);
-		}
-
-	}
-
-	public void deleteBook(Long id) {
-		LOGGER.info("Delete book: " + id);
-		try (BookDao bookDao = daoFactory.createBookDao()) {
-			bookDao.delete(id);
 		}
 	}
 }

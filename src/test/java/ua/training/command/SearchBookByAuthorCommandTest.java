@@ -43,7 +43,7 @@ public class SearchBookByAuthorCommandTest {
 				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title3").setPublisher("Test Publisher3")
 						.setAvailability(Availability.SUBSCRIPTION).build() });
 
-		when(bookService.searchBookByAuthor(anyString())).thenReturn(books);
+		when(bookService.searchBookWithAuthorsByAuthor(anyString())).thenReturn(books);
 		when(httpServletRequest.getParameter(Attribute.AUTHOR)).thenReturn("Test Author");
 
 		SearchBookByAuthorCommand searchBookByAuthorCommand = new SearchBookByAuthorCommand(bookService);
@@ -52,7 +52,7 @@ public class SearchBookByAuthorCommandTest {
 		String actualResultedResource = searchBookByAuthorCommand.execute(httpServletRequest, httpServletResponse);
 		assertEquals(expectedResultedResource, actualResultedResource);
 
-		verify(bookService).searchBookByAuthor(anyString());
+		verify(bookService).searchBookWithAuthorsByAuthor(anyString());
 		verify(httpServletRequest).getParameter(Attribute.AUTHOR);
 		verify(httpServletRequest).setAttribute(anyString(), eq(books));
 	}
@@ -73,7 +73,7 @@ public class SearchBookByAuthorCommandTest {
 				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title3").setPublisher("Test Publisher3")
 						.setAvailability(Availability.SUBSCRIPTION).build() });
 
-		when(bookService.searchBookByAuthor(anyString())).thenReturn(books);
+		when(bookService.searchBookWithAuthorsByAuthor(anyString())).thenReturn(books);
 		when(httpServletRequest.getContextPath()).thenReturn("\\library");
 		when(httpServletRequest.getServletPath()).thenReturn("\\controller");
 		when(httpServletRequest.getParameter(Attribute.AUTHOR)).thenReturn("<Test Author>");
@@ -84,6 +84,6 @@ public class SearchBookByAuthorCommandTest {
 		String actualResultedResource = searchBookByAuthorCommand.execute(httpServletRequest, httpServletResponse);
 		assertEquals(expectedResultedResource, actualResultedResource);
 
-		verify(bookService, never()).searchBookByAuthor(anyString());
+		verify(bookService, never()).searchBookWithAuthorsByAuthor(anyString());
 	}
 }

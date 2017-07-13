@@ -46,7 +46,7 @@ public class SearchBookByTitleCommand implements Command {
 			return RedirectionManager.REDIRECTION;
 		}
 
-		List<Book> books = bookService.searchBookByTitle(title);
+		List<Book> books = bookService.searchBookWithAuthorsByTitle(title);
 
 		if (books.isEmpty()) {
 			urlParams = new HashMap<>();

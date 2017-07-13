@@ -36,7 +36,7 @@ public class BookInstancesCommandTest {
 				.setPublisher("Test Publisher1").build());
 		String bookIdParam = Integer.toString(2);
 
-		when(bookService.getBookWithAuthorsAndInstances(anyLong())).thenReturn(book);
+		when(bookService.getBookWithAuthorsAndInstancesById(anyLong())).thenReturn(book);
 		when(httpServletRequest.getParameter(anyString())).thenReturn(bookIdParam);
 
 		BookInstancesCommand bookInstancesCommand = new BookInstancesCommand(bookService);
@@ -46,7 +46,7 @@ public class BookInstancesCommandTest {
 		assertEquals(expectedResultedResource, actualResultedResource);
 
 		verify(httpServletRequest).getParameter(anyString());
-		verify(bookService).getBookWithAuthorsAndInstances(anyLong());
+		verify(bookService).getBookWithAuthorsAndInstancesById(anyLong());
 		verify(httpServletRequest).setAttribute(anyString(), eq(book.get()));
 	}
 

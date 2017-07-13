@@ -7,15 +7,15 @@ import ua.training.entity.Book;
 
 public interface BookDao extends GenericDao<Book, Long>, AutoCloseable {
 
-	List<Book> searchByTitle(String title);
+	List<Book> searchBookWithAuthorsByTitle(String title);
 
-	List<Book> searchByAuthor(String authorSurname);
+	List<Book> searchBookWithAuthorsByAuthor(String authorSurname);
 
 	void saveBookAuthors(Book book);
 
 	Optional<Book> getBookWithAvailableInstances(Long id);
 	
-	Optional<Book> searchByBookInstanceId(Long instanceId);
+	Optional<Book> searchBookWithAuthorsByInstanceId(Long instanceId);
 
 	void close();
 }

@@ -30,7 +30,7 @@ public class GetBookByInstnaceIdCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long instanceId = Long.valueOf(request.getParameter(Attribute.ID_BOOK_INSTANCE));
-		Optional<Book> book = bookService.searchBookByInstanceId(instanceId);
+		Optional<Book> book = bookService.searchBookWithAuthorsByInstanceId(instanceId);
 
 		if (!book.isPresent()) {
 			redirectToAllOrdersPageWithErrorMessage(request, response);

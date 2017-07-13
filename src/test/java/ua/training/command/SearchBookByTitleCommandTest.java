@@ -44,7 +44,7 @@ public class SearchBookByTitleCommandTest {
 				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title").setPublisher("Test Publisher3")
 						.setAvailability(Availability.SUBSCRIPTION).build() });
 
-		when(bookService.searchBookByTitle(anyString())).thenReturn(books);
+		when(bookService.searchBookWithAuthorsByTitle(anyString())).thenReturn(books);
 		when(httpServletRequest.getParameter(Attribute.TITLE)).thenReturn("Test Title");
 
 		SearchBookByTitleCommand searchBookByTitleCommand = new SearchBookByTitleCommand(bookService);
@@ -53,7 +53,7 @@ public class SearchBookByTitleCommandTest {
 		String actualResultedResource = searchBookByTitleCommand.execute(httpServletRequest, httpServletResponse);
 		assertEquals(expectedResultedResource, actualResultedResource);
 
-		verify(bookService).searchBookByTitle(anyString());
+		verify(bookService).searchBookWithAuthorsByTitle(anyString());
 		verify(httpServletRequest).getParameter(Attribute.TITLE);
 		verify(httpServletRequest).setAttribute(anyString(), eq(books));
 	}
@@ -74,7 +74,7 @@ public class SearchBookByTitleCommandTest {
 				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title").setPublisher("Test Publisher3")
 						.setAvailability(Availability.SUBSCRIPTION).build() });
 
-		when(bookService.searchBookByTitle(anyString())).thenReturn(books);
+		when(bookService.searchBookWithAuthorsByTitle(anyString())).thenReturn(books);
 		when(httpServletRequest.getContextPath()).thenReturn("\\library");
 		when(httpServletRequest.getServletPath()).thenReturn("\\controller");
 		when(httpServletRequest.getParameter(Attribute.TITLE)).thenReturn("<Test Title>");
@@ -85,6 +85,6 @@ public class SearchBookByTitleCommandTest {
 		String actualResultedResource = searchBookByTitleCommand.execute(httpServletRequest, httpServletResponse);
 		assertEquals(expectedResultedResource, actualResultedResource);
 
-		verify(bookService, never()).searchBookByTitle(anyString());
+		verify(bookService, never()).searchBookWithAuthorsByTitle(anyString());
 	}
 }

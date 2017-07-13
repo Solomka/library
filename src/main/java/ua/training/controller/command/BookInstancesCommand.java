@@ -47,9 +47,9 @@ public class BookInstancesCommand implements Command {
 
 	private Optional<Book> getBookDependingOnUserRole(HttpSession session, Long bookId) {
 		if (!SessionManager.isUserLoggedIn(session) || isUserLibrarian(session)) {
-			return bookService.getBookWithAuthorsAndInstances(bookId);
+			return bookService.getBookWithAuthorsAndInstancesById(bookId);
 		}
-		return bookService.getBookWithAuthorsAndAvailableInstances(bookId);
+		return bookService.getBookWithAuthorsAndAvailableInstancesById(bookId);
 	}
 
 	private boolean isUserLibrarian(HttpSession session) {
