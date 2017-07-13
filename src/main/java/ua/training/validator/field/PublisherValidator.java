@@ -8,7 +8,7 @@ public class PublisherValidator extends FieldValidator {
 
 	private static final String PUBLISHER_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s\\d’'-]{3,100}$";
 	
-	public PublisherValidator(FieldValidatorKey fieldValidatorKey) {
+	private PublisherValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
 	}	
 

@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.training.exception.ServerException;
 import ua.training.locale.MessageUtils;
 
 public final class RedirectionManager {
@@ -26,17 +25,13 @@ public final class RedirectionManager {
 		redirect(httpWrapper.getRequest(), httpWrapper.getResponse(), urlPathWithParams);
 	}
 
-	public static void redirect(HttpServletRequest request, HttpServletResponse response, String path) {
-		try {
-			response.sendRedirect(RedirectionManager.generateUrlPath(request, path));
-		} catch (IOException e) {
-			throw new ServerException(e);
-		}
+	public static void redirect(HttpServletRequest request, HttpServletResponse response, String path)
+			throws IOException {
+		response.sendRedirect(RedirectionManager.generateUrlPath(request, path));
 	}
 
 	private static String generateUrlPath(HttpServletRequest request, String path) {
 		return new StringBuffer(request.getContextPath()).append(request.getServletPath()).append(path).toString();
-
 	}
 
 	public static String generateUrlParams(Map<String, String> urlParameters) throws UnsupportedEncodingException {

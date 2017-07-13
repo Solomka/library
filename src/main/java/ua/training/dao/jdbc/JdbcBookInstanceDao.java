@@ -26,11 +26,6 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 	private static String UPDATE_BOOK_INSTANCE = "UPDATE book_instance SET status=?, inventory_number=? WHERE id_book_instance=?";
 	private static String DELETE_BOOK_INSTANCE = "DELETE FROM book_instance WHERE id_book_instance=?";
 
-	private static String ID_BOOK_INSTANCE = "id_book_instance";
-	private static String STATUS = "status";
-	private static String INVENTORY_NUMBER = "inventory_number";
-	private static String ID_BOOK = "id_book";
-
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
@@ -114,10 +109,10 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 	}
 
 	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
-		return new BookInstance.Builder().setId(resultSet.getLong(ID_BOOK_INSTANCE))
-				.setStatus(Status.forValue(resultSet.getString(STATUS)))
-				.setInventoryNumber(resultSet.getString(INVENTORY_NUMBER))
-				.setBook(new Book.Builder().setId(resultSet.getLong(ID_BOOK)).build()).build();
+		return new BookInstance.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID))
+				.setStatus(Status.forValue(resultSet.getString(Column.BOOK_INSTANCE_STATUS)))
+				.setInventoryNumber(resultSet.getString(Column.BOOK_INSTANCE_INVENTORY_NUMBER))
+				.setBook(new Book.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID_BOOK)).build()).build();
 	}
 
 	@Override

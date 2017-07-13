@@ -8,7 +8,7 @@ public class SurnameValidator extends FieldValidator {
 
 	private static final String SURNAME_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
 	
-	public SurnameValidator(FieldValidatorKey fieldValidatorKey) {
+	private SurnameValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
 	}	
 

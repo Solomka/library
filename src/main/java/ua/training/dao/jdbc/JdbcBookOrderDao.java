@@ -64,22 +64,6 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
 			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room'";
 
-	// bookOrder fields
-	private static String ID_ORDER = "id_order";
-	private static String CREATION_DATE = "creation_date";
-	private static String FULFILMENT_DATE = "fulfilment_date";
-	private static String PICKUP_DATE = "pickup_date";
-	private static String RETURN_DATE = "return_date";
-	private static String ACTUAL_RETURN_DATE = "actual_return_date";
-	private static String ID_BOOK_INSTANCE = "id_book_instance";
-	private static String ID_READER = "id_reader";
-	private static String ID_LIBRARIAN = "id_librarian";
-
-	private static String STATUS = "status";	
-	private static String INVENTORY_NUMBER = "inventory_number";
-	private static String ID_BOOK = "id_book";
-	private static String READER_CARD_NUMBER = "reader_card_number";
-
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
@@ -257,25 +241,25 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	}
 
 	private BookOrder extractBookOrder(ResultSet resultSet) throws SQLException {
-		return new BookOrder.Builder().setId(resultSet.getLong(ID_ORDER))
-				.setCreationDate(resultSet.getDate(CREATION_DATE).toLocalDate())
-				.setFulfilmentDate(checkResultSetLocalDateValue(resultSet, FULFILMENT_DATE))
-				.setPickUpDate(checkResultSetLocalDateValue(resultSet, PICKUP_DATE))
-				.setReturnDate(checkResultSetLocalDateValue(resultSet, RETURN_DATE))
-				.setActualReturnDate(checkResultSetLocalDateValue(resultSet, ACTUAL_RETURN_DATE))
+		return new BookOrder.Builder().setId(resultSet.getLong(Column.ORDER_ID))
+				.setCreationDate(resultSet.getDate(Column.ORDER_CREATION_DATE).toLocalDate())
+				.setFulfilmentDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_FULFILMENT_DATE))
+				.setPickUpDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_PICKUP_DATE))
+				.setReturnDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_RETURN_DATE))
+				.setActualReturnDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_ACTUAL_RETURN_DATE))
 				.setBookInstance(extractBookInstanceFromResultSet(resultSet))
-				.setReader(new Reader.Builder().setId(resultSet.getLong(ID_READER))
-						.setReaderCardNumber(resultSet.getString(READER_CARD_NUMBER)).build())
-				.setLibrarian(new Librarian.Builder().setId(resultSet.getLong(ID_LIBRARIAN)).build()).build();
-	}
-	
-	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
-		return new BookInstance.Builder().setId(resultSet.getLong(ID_BOOK_INSTANCE))
-				.setStatus(Status.forValue(resultSet.getString(STATUS)))
-				.setInventoryNumber(resultSet.getString(INVENTORY_NUMBER))
-				.setBook(new Book.Builder().setId(resultSet.getLong(ID_BOOK)).build()).build();
+				.setReader(new Reader.Builder().setId(resultSet.getLong(Column.ORDER_ID_READER))
+						.setReaderCardNumber(resultSet.getString(Column.READER_READER_CARD_NUMBER)).build())
+				.setLibrarian(new Librarian.Builder().setId(resultSet.getLong(Column.ORDER_ID_LIBRARIAN)).build())
+				.build();
 	}
 
+	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
+		return new BookInstance.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID))
+				.setStatus(Status.forValue(resultSet.getString(Column.BOOK_INSTANCE_STATUS)))
+				.setInventoryNumber(resultSet.getString(Column.BOOK_INSTANCE_INVENTORY_NUMBER))
+				.setBook(new Book.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID_BOOK)).build()).build();
+	}
 
 	private LocalDate checkResultSetLocalDateValue(ResultSet resultSet, String dataFieldName) throws SQLException {
 		return (resultSet.getDate(dataFieldName) == null) ? null : resultSet.getDate(dataFieldName).toLocalDate();

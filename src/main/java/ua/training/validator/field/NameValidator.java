@@ -8,7 +8,7 @@ public class NameValidator extends FieldValidator {
 
 	private static final String NAME_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
 	
-	public NameValidator(FieldValidatorKey fieldValidatorKey) {
+	private NameValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
 	}	
 

@@ -26,11 +26,6 @@ public class JdbcAuthorDao implements AuthorDao {
 	private static String UPDATE_AUTHOR = "UPDATE author SET name=?, surname=?, country=? WHERE id_author=?";
 	private static String DELETE_AUTHOR = "DELETE FROM author WHERE id_author=?";
 
-	private static String ID_AUTHOR = "id_author";
-	private static String NAME = "name";
-	private static String SURNAME = "surname";
-	private static String COUNTRY = "country";
-
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
@@ -125,9 +120,10 @@ public class JdbcAuthorDao implements AuthorDao {
 		}
 	}
 
-	public Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Author.Builder().setId(resultSet.getLong(ID_AUTHOR)).setName(resultSet.getString(NAME))
-				.setSurname(resultSet.getString(SURNAME)).setCountry(resultSet.getString(COUNTRY)).build();
+	private Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Author.Builder().setId(resultSet.getLong(Column.AUTHOR_ID))
+				.setName(resultSet.getString(Column.AUTHOR_NAME)).setSurname(resultSet.getString(Column.AUTHOR_SURNAME))
+				.setCountry(resultSet.getString(Column.AUTHOR_COUNTRY)).build();
 	}
 
 	@Override

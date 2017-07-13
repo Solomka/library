@@ -64,21 +64,6 @@ public class JdbcUserDao implements UserDao {
 			+ " WHERE id_user=?";
 	private static String DELETE_USER = "DELETE FROM users WHERE id_user=?";
 
-	// user fields
-	private static String ID = "id_user";
-	private static String EMAIL = "email";
-	private static String PASSWORD = "password";
-	private static String ROLE = "role";
-	private static String SALT = "salt";
-
-	// reader fields
-	private static String READER_NAME = "name";
-	private static String READER_SURNAME = "surname";
-	private static String READER_PATRONYMIC = "patronymic";
-	private static String READER_PHONE = "phone";
-	private static String READER_ADDRESS = "address";
-	private static String READER_READER_CARD_NUMBER = "reader_card_number";
-
 	// librarian fields
 	private static String LIBRARIAN_NAME = "l_name";
 	private static String LIBRARIAN_SURNAME = "l_surname";
@@ -273,24 +258,28 @@ public class JdbcUserDao implements UserDao {
 	}
 
 	private Reader extractReaderFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Reader.Builder().setId(resultSet.getLong(ID)).setEmail(resultSet.getString(EMAIL))
-				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE)))
-				.setSalt(resultSet.getBytes(SALT)).setName(resultSet.getString(READER_NAME))
-				.setSurname(resultSet.getString(READER_SURNAME)).setPatronymic(resultSet.getString(READER_PATRONYMIC))
-				.setPhone(resultSet.getString(READER_PHONE)).setAddress(resultSet.getString(READER_ADDRESS))
-				.setReaderCardNumber(resultSet.getString(READER_READER_CARD_NUMBER)).build();
+		return new Reader.Builder().setId(resultSet.getLong(Column.USER_ID))
+				.setEmail(resultSet.getString(Column.USER_EMAIL)).setPassword(resultSet.getString(Column.USER_PASSWORD))
+				.setRole(Role.forValue(resultSet.getString(Column.USER_ROLE)))
+				.setSalt(resultSet.getBytes(Column.USER_SALT)).setName(resultSet.getString(Column.READER_NAME))
+				.setSurname(resultSet.getString(Column.READER_SURNAME))
+				.setPatronymic(resultSet.getString(Column.READER_PATRONYMIC))
+				.setPhone(resultSet.getString(Column.READER_PHONE))
+				.setAddress(resultSet.getString(Column.READER_ADDRESS))
+				.setReaderCardNumber(resultSet.getString(Column.READER_READER_CARD_NUMBER)).build();
 	}
 
 	private Librarian extractLibrarianFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Librarian.Builder().setId(resultSet.getLong(ID)).setEmail(resultSet.getString(EMAIL))
-				.setPassword(resultSet.getString(PASSWORD)).setRole(Role.forValue(resultSet.getString(ROLE)))
-				.setSalt(resultSet.getBytes(SALT)).setName(resultSet.getString(LIBRARIAN_NAME))
+		return new Librarian.Builder().setId(resultSet.getLong(Column.USER_ID))
+				.setEmail(resultSet.getString(Column.USER_EMAIL)).setPassword(resultSet.getString(Column.USER_PASSWORD))
+				.setRole(Role.forValue(resultSet.getString(Column.USER_ROLE)))
+				.setSalt(resultSet.getBytes(Column.USER_SALT)).setName(resultSet.getString(LIBRARIAN_NAME))
 				.setSurname(resultSet.getString(LIBRARIAN_SURNAME))
 				.setPatronymic(resultSet.getString(LIBRARIAN_PATRONYMIC)).build();
 	}
 
 	private boolean isLibrarian(ResultSet resultSet) throws SQLException {
-		return resultSet.getString(ROLE).equals(Role.LIBRARIAN.getValue());
+		return resultSet.getString(Column.USER_ROLE).equals(Role.LIBRARIAN.getValue());
 	}
 
 	private boolean isLibrarian(User user) {

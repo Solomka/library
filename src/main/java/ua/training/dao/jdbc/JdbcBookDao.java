@@ -53,24 +53,6 @@ public class JdbcBookDao implements BookDao {
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
 			+ " WHERE id_book_instance=?";
 
-	// book fields
-	private static String ID_BOOK = "id_book";
-	private static String ISBN = "isbn";
-	private static String TITLE = "title";
-	private static String PUBLISHER = "publisher";
-	private static String AVAILABILITY = "availability";
-
-	// bookInsatnce fields
-	private static String ID_BOOK_INSTANCE = "id_book_instance";
-	private static String STATUS = "status";
-	private static String INVENTORY_NUMBER = "inventory_number";
-
-	// author fields
-	private static String ID_AUTHOR = "id_author";
-	private static String NAME = "name";
-	private static String SURNAME = "surname";
-	private static String COUNTRY = "country";
-
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
@@ -286,33 +268,35 @@ public class JdbcBookDao implements BookDao {
 	}
 
 	private Book extractBookFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Book.Builder().setId(resultSet.getLong(ID_BOOK)).setIsbn(resultSet.getString(ISBN))
-				.setTitle(resultSet.getString(TITLE)).setPublisher(resultSet.getString(PUBLISHER))
-				.setAvailability(Availability.forValue(resultSet.getString(AVAILABILITY))).build();
+		return new Book.Builder().setId(resultSet.getLong(Column.BOOK_ID))
+				.setIsbn(resultSet.getString(Column.BOOK_ISBN)).setTitle(resultSet.getString(Column.BOOK_TITLE))
+				.setPublisher(resultSet.getString(Column.BOOK_PUBLISHER))
+				.setAvailability(Availability.forValue(resultSet.getString(Column.BOOK_AVAILABILITY))).build();
 	}
 
-	public Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Author.Builder().setId(resultSet.getLong(ID_AUTHOR)).setName(resultSet.getString(NAME))
-				.setSurname(resultSet.getString(SURNAME)).setCountry(resultSet.getString(COUNTRY)).build();
-
+	private Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Author.Builder().setId(resultSet.getLong(Column.AUTHOR_ID))
+				.setName(resultSet.getString(Column.AUTHOR_NAME)).setSurname(resultSet.getString(Column.AUTHOR_SURNAME))
+				.setCountry(resultSet.getString(Column.AUTHOR_COUNTRY)).build();
 	}
 
 	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
-		return new BookInstance.Builder().setId(resultSet.getLong(ID_BOOK_INSTANCE))
+		return new BookInstance.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID))
 				.setStatus(checkResultSetBookInstanceStatusValue(resultSet))
-				.setInventoryNumber(resultSet.getString(INVENTORY_NUMBER))
-				.setBook(new Book.Builder().setId(resultSet.getLong(ID_BOOK)).build()).build();
+				.setInventoryNumber(resultSet.getString(Column.BOOK_INSTANCE_INVENTORY_NUMBER))
+				.setBook(new Book.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID_BOOK)).build()).build();
 	}
 
 	/**
 	 * Check if book_instance status is not null
 	 * <p>
-	 * In GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID request we need to get
-	 * book with authors even if it doesn't contain instances for providing
-	 * librarian with ability to add book instance
+	 * In GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID request we need to get book
+	 * with authors even if it doesn't contain instances for providing librarian
+	 * with ability to add book instance
 	 */
 	private Status checkResultSetBookInstanceStatusValue(ResultSet resultSet) throws SQLException {
-		return (resultSet.getString(STATUS) == null) ? null : Status.forValue(resultSet.getString(STATUS));
+		return (resultSet.getString(Column.BOOK_INSTANCE_STATUS) == null) ? null
+				: Status.forValue(resultSet.getString(Column.BOOK_INSTANCE_STATUS));
 	}
 
 	@Override

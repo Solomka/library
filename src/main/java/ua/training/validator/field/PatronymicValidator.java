@@ -8,7 +8,7 @@ public class PatronymicValidator extends FieldValidator {
 
 	private static final String PATRONYMIC_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
 	
-	public PatronymicValidator(FieldValidatorKey fieldValidatorKey) {
+	private PatronymicValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
 	}	
 

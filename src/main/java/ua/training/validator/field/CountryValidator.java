@@ -8,7 +8,7 @@ public class CountryValidator extends FieldValidator {
 
 	private static final String COUNTRY_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
 	
-	public CountryValidator(FieldValidatorKey fieldValidatorKey) {
+	private CountryValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
 	}	
 
