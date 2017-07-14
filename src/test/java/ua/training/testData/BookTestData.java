@@ -1,4 +1,4 @@
-package ua.training.service;
+package ua.training.testData;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,13 +11,13 @@ import ua.training.entity.Book;
 import ua.training.entity.BookInstance;
 import ua.training.entity.Status;
 
-final class BookServiceTestData {
+public final class BookTestData {
 
-	private BookServiceTestData() {
+	private BookTestData() {
 
 	}
 
-	static List<Book> generateBooksListWithAuthors() {
+	public static List<Book> generateBooksListWithAuthors() {
 		return Arrays.asList(new Book[] {
 				new Book.Builder().setId(new Long(1)).setIsbn("1111111111111").setTitle("Test Title")
 						.setPublisher("Test Publisher1").setAuthors(generateAuthorsList())
@@ -27,19 +27,19 @@ final class BookServiceTestData {
 						.setAvailability(Availability.SUBSCRIPTION).build() });
 	}
 
-	static Optional<Book> generateBookOptionalWithAuthorsAndInstances() {
+	public static Optional<Book> generateBookOptionalWithAuthorsAndInstances() {
 		return Optional.of(new Book.Builder().setId(new Long(1)).setIsbn("1111111111111").setTitle("Test Title1")
 				.setPublisher("Test Publisher1").setAvailability(Availability.SUBSCRIPTION)
 				.setAuthors(generateAuthorsList()).setBookInstances(generateAvailableBookInstancesList()).build());
 	}
-	
-	static Optional<Book> generateBookOptionalWithAuthors(){
+
+	public static Optional<Book> generateBookOptionalWithAuthors() {
 		return Optional.of(new Book.Builder().setId(new Long(1)).setIsbn("1111111111111").setTitle("Test Title1")
 				.setPublisher("Test Publisher1").setAvailability(Availability.SUBSCRIPTION)
 				.setAuthors(generateAuthorsList()).build());
 	}
 
-	static List<BookInstance> generateAvailableBookInstancesList() {
+	public static List<BookInstance> generateAvailableBookInstancesList() {
 		return Arrays.asList(
 				new BookInstance.Builder().setId(new Long(1)).setInventoryNumber("1234567898765")
 						.setStatus(Status.AVAILABLE).setBook(new Book.Builder().setId(new Long(1)).build()).build(),
@@ -47,7 +47,7 @@ final class BookServiceTestData {
 						.setStatus(Status.AVAILABLE).setBook(new Book.Builder().setId(new Long(2)).build()).build());
 	}
 
-	static List<Book> generateBooksListWithSameAuthor() {
+	public static List<Book> generateBooksListWithSameAuthor() {
 		return Arrays.asList(new Book[] {
 				new Book.Builder().setId(new Long(1)).setIsbn("1111111111111").setTitle("Test Title")
 						.setPublisher("Test Publisher1").setAuthors(generateAuthorAsList())
@@ -57,22 +57,22 @@ final class BookServiceTestData {
 						.setAvailability(Availability.SUBSCRIPTION).build() });
 	}
 
-	static List<Author> generateAuthorAsList() {
+	public static List<Author> generateAuthorAsList() {
 		return Arrays.asList(new Author[] { new Author.Builder().setId(new Long(1)).setName("Daniel")
 				.setSurname("Keyes").setCountry("America").build() });
 	}
 
-	static BookDto generateBookDtoWithAuthors() {
+	public static BookDto generateBookDtoWithAuthors() {
 		return new BookDto.Builder().setIsbn("1111111111111").setTitle("Test Title1").setPublisher("Test Publisher1")
 				.setAvailability(Availability.SUBSCRIPTION).setAuthorsIds(new String[] { "1", "2" }).build();
 	}
 
-	static Book generateBookForCreation() {
+	public static Book generateBookForCreation() {
 		return new Book.Builder().setIsbn("1111111111111").setTitle("Test Title1").setPublisher("Test Publisher1")
 				.setAvailability(Availability.SUBSCRIPTION).setAuthors(generateAuthorsList()).build();
 	}
 
-	static List<Author> generateAuthorsList() {
+	public static List<Author> generateAuthorsList() {
 		return Arrays.asList(new Author[] { new Author.Builder().setId(new Long(1)).build(),
 				new Author.Builder().setId(new Long(2)).build() });
 	}

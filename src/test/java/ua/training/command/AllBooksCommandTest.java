@@ -8,48 +8,46 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ua.training.constants.Page;
 import ua.training.controller.command.book.AllBooksCommand;
-import ua.training.entity.Availability;
 import ua.training.entity.Book;
 import ua.training.service.BookService;
+import ua.training.testData.BookTestData;
 
 public class AllBooksCommandTest {
 
+	private HttpServletRequest httpServletRequest;
+	private HttpServletResponse httpServletResponse;
+	private BookService bookService;
+	private AllBooksCommand allBooksCommand;
+
+	private void initObjectsMocking() {
+		httpServletRequest = mock(HttpServletRequest.class);
+		httpServletResponse = mock(HttpServletResponse.class);
+		bookService = mock(BookService.class);
+		allBooksCommand = new AllBooksCommand(bookService);
+	}
+
 	@Test
-	 @Ignore
-	public void testBookInstancesCommand() throws ServletException, IOException {
+	// @Ignore
+	public void testAlBooksCommand() throws ServletException, IOException {
+		List<Book> books = BookTestData.generateBooksListWithAuthors();
 
-		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
-		HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
-		BookService bookService = mock(BookService.class);
-
-		List<Book> books = Arrays.asList(new Book[] {
-				new Book.Builder().setIsbn("1111111111111").setTitle("Test Title1").setPublisher("Test Publisher1")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("2222222222222").setTitle("Test Title2").setPublisher("Test Publisher2")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title3").setPublisher("Test Publisher3")
-						.setAvailability(Availability.SUBSCRIPTION).build() });
-
+		initObjectsMocking();
 		when(bookService.getAllBooksWithAuthors()).thenReturn(books);
-
-		AllBooksCommand allBooksCommand = new AllBooksCommand(bookService);
 
 		String expectedResultedResource = Page.ALL_BOOKS_VIEW;
 		String actualResultedResource = allBooksCommand.execute(httpServletRequest, httpServletResponse);
-		assertEquals(expectedResultedResource, actualResultedResource);
 
+		assertEquals(expectedResultedResource, actualResultedResource);
 		verify(bookService).getAllBooksWithAuthors();
 		verify(httpServletRequest).setAttribute(anyString(), eq(books));
 	}

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +16,8 @@ import ua.training.dao.BookDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
 import ua.training.dto.BookDto;
-import ua.training.entity.Author;
-import ua.training.entity.Availability;
 import ua.training.entity.Book;
-import ua.training.entity.BookInstance;
-import ua.training.entity.Status;
+import ua.training.testData.BookTestData;
 
 public class BookServiceTest {
 
@@ -29,8 +25,6 @@ public class BookServiceTest {
 	private BookDao bookDao;
 	private DaoConnection daoConnection;
 	private BookService bookService;
-
-	
 
 	private void initObjectsMocking() {
 		daoFactory = mock(DaoFactory.class);
@@ -51,7 +45,7 @@ public class BookServiceTest {
 	@Test
 	// @Ignore
 	public void testGetAllBooksWithAuthors() {
-		List<Book> books = BookServiceTestData.generateBooksListWithAuthors();
+		List<Book> books = BookTestData.generateBooksListWithAuthors();
 
 		initObjectsMocking();
 		initBookDaoCreationStubbing();
@@ -67,7 +61,7 @@ public class BookServiceTest {
 	@Test
 	// @Ignore
 	public void testGetBookWithAuthorsAndInstancesById() {
-		Optional<Book> book = BookServiceTestData.generateBookOptionalWithAuthorsAndInstances();
+		Optional<Book> book = BookTestData.generateBookOptionalWithAuthorsAndInstances();
 
 		initObjectsMocking();
 		initBookDaoCreationStubbing();
@@ -83,7 +77,7 @@ public class BookServiceTest {
 	@Test
 	// @Ignore
 	public void testGetBookWithAuthorsAndAvailableInstancesById() {
-		Optional<Book> book = BookServiceTestData.generateBookOptionalWithAuthorsAndInstances();
+		Optional<Book> book = BookTestData.generateBookOptionalWithAuthorsAndInstances();
 
 		initObjectsMocking();
 		initBookDaoCreationStubbing();
@@ -99,7 +93,7 @@ public class BookServiceTest {
 	@Test
 	// @Ignore
 	public void testSearchBookWithAuthorsByTitle() {
-		List<Book> books = BookServiceTestData.generateBooksListWithAuthors();
+		List<Book> books = BookTestData.generateBooksListWithAuthors();
 
 		initObjectsMocking();
 		initBookDaoCreationStubbing();
@@ -115,7 +109,7 @@ public class BookServiceTest {
 	@Test
 	// @Ignore
 	public void testSearchBookWithAuthorsByAuthor() {
-		List<Book> books = BookServiceTestData.generateBooksListWithSameAuthor();
+		List<Book> books = BookTestData.generateBooksListWithSameAuthor();
 
 		initObjectsMocking();
 		initBookDaoCreationStubbing();
@@ -127,11 +121,11 @@ public class BookServiceTest {
 		verify(daoFactory).createBookDao();
 		verify(bookDao).searchBookWithAuthorsByAuthor(anyString());
 	}
-	
+
 	@Test
 	// @Ignore
 	public void searchBookWithAuthorsByInstanceId() {
-		Optional<Book> book = BookServiceTestData.generateBookOptionalWithAuthors();
+		Optional<Book> book = BookTestData.generateBookOptionalWithAuthors();
 
 		initObjectsMocking();
 		initBookDaoCreationStubbing();
@@ -147,8 +141,8 @@ public class BookServiceTest {
 	@Test
 	// @Ignore
 	public void testCreateBook() {
-		BookDto bookDto = BookServiceTestData.generateBookDtoWithAuthors();
-		Book book = BookServiceTestData.generateBookForCreation();
+		BookDto bookDto = BookTestData.generateBookDtoWithAuthors();
+		Book book = BookTestData.generateBookForCreation();
 
 		initObjectsMocking();
 		initBookDaoCreationWithConnectionStubbing();
@@ -162,5 +156,4 @@ public class BookServiceTest {
 		verify(bookDao).saveBookAuthors(book);
 		verify(daoConnection).commit();
 	}
-
 }

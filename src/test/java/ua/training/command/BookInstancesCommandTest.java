@@ -26,7 +26,7 @@ import ua.training.service.BookService;
 public class BookInstancesCommandTest {
 
 	@Test
-	 @Ignore
+	// @Ignore
 	public void testAllBooksCommand() throws ServletException, IOException {
 
 		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
