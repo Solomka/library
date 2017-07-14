@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ua.training.constants.Page;
@@ -25,7 +26,7 @@ import ua.training.service.BookService;
 public class BookInstancesCommandTest {
 
 	@Test
-	// @Ignore
+	 @Ignore
 	public void testAllBooksCommand() throws ServletException, IOException {
 
 		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);

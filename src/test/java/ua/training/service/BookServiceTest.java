@@ -1,189 +1,165 @@
 package ua.training.service;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import ua.training.dao.AuthorDao;
 import ua.training.dao.BookDao;
-import ua.training.dao.BookInstanceDao;
 import ua.training.dao.DaoConnection;
 import ua.training.dao.DaoFactory;
+import ua.training.dto.BookDto;
 import ua.training.entity.Author;
 import ua.training.entity.Availability;
 import ua.training.entity.Book;
-import ua.training.service.BookService;
+import ua.training.entity.BookInstance;
+import ua.training.entity.Status;
 
 public class BookServiceTest {
 
-	@Test
-	//@Ignore
-	public void testGetAllBooks() {
-		DaoFactory daoFactory = mock(DaoFactory.class);
-		DaoConnection daoConnection = mock(DaoConnection.class);
-		BookDao bookDao = mock(BookDao.class);
-		
+	private DaoFactory daoFactory;
+	private BookDao bookDao;
+	private DaoConnection daoConnection;
+	private BookService bookService;
 
-		List<Book> books = Arrays.asList(new Book[] {
-				new Book.Builder().setIsbn("1111111111111").setTitle("Test Title1").setPublisher("Test Publisher")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("2222222222222").setTitle("Test Title2").setPublisher("Test Publisher")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title3").setPublisher("Test Publisher")
-						.setAvailability(Availability.SUBSCRIPTION).build() });
+	
 
+	private void initObjectsMocking() {
+		daoFactory = mock(DaoFactory.class);
+		bookDao = mock(BookDao.class);
+		daoConnection = mock(DaoConnection.class);
+		bookService = new BookService(daoFactory);
+	}
+
+	private void initBookDaoCreationStubbing() {
+		when(daoFactory.createBookDao()).thenReturn(bookDao);
+	}
+
+	private void initBookDaoCreationWithConnectionStubbing() {
 		when(daoFactory.getConnection()).thenReturn(daoConnection);
 		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
+	}
+
+	@Test
+	// @Ignore
+	public void testGetAllBooksWithAuthors() {
+		List<Book> books = BookServiceTestData.generateBooksListWithAuthors();
+
+		initObjectsMocking();
+		initBookDaoCreationStubbing();
 		when(bookDao.getAll()).thenReturn(books);
 
-		BookService bookService = new BookService(daoFactory);
-
 		List<Book> actualBooks = bookService.getAllBooksWithAuthors();
+
 		assertEquals(books, actualBooks);
-		verify(daoFactory).getConnection();
-		verify(daoFactory).createBookDao(daoConnection);
-		verify(daoFactory).createAuthorDao(daoConnection);
-		verify(daoConnection).begin();
+		verify(daoFactory).createBookDao();
 		verify(bookDao).getAll();
-		verify(daoConnection).commit();
 	}
 
 	@Test
-	@Ignore
-	public void testGetBookById() {
-		DaoFactory daoFactory = mock(DaoFactory.class);
-		DaoConnection daoConnection = mock(DaoConnection.class);
-		BookDao bookDao = mock(BookDao.class);
-		AuthorDao authorDao = mock(AuthorDao.class);
-		BookInstanceDao bookInstancesDao = mock(BookInstanceDao.class);
+	// @Ignore
+	public void testGetBookWithAuthorsAndInstancesById() {
+		Optional<Book> book = BookServiceTestData.generateBookOptionalWithAuthorsAndInstances();
 
-		Optional<Book> book = Optional.of(new Book.Builder().setIsbn("1111111111111").setTitle("Test Title1")
-				.setPublisher("Test Publisher1").setAvailability(Availability.SUBSCRIPTION).build());
-
-		when(daoFactory.getConnection()).thenReturn(daoConnection);
-		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
-		when(daoFactory.createAuthorDao(daoConnection)).thenReturn(authorDao);
-		when(daoFactory.createBookInstancesDao(daoConnection)).thenReturn(bookInstancesDao);
+		initObjectsMocking();
+		initBookDaoCreationStubbing();
 		when(bookDao.getById(anyLong())).thenReturn(book);
 
-		BookService bookService = new BookService(daoFactory);
-		//TODO:?
-		//Optional<Book> actualBook = bookService.getBookById(anyLong());
-		Optional<Book> actualBook = bookService.getBookWithAuthorsAndInstancesById(new Long("2"));
+		Optional<Book> actualBook = bookService.getBookWithAuthorsAndInstancesById(new Long(1));
+
 		assertEquals(book.get(), actualBook.get());
-		
-		verify(daoFactory).getConnection();
-		verify(daoFactory).createBookDao(daoConnection);
-		verify(daoFactory).createAuthorDao(daoConnection);
-		verify(daoFactory).createBookInstancesDao(daoConnection);
-		verify(daoConnection).begin();
+		verify(daoFactory).createBookDao();
 		verify(bookDao).getById(anyLong());
-		//verify(authorDao).getBookAuthors(anyLong());
-		//verify(bookInstancesDao).getBookInstances(anyLong());
-		verify(daoConnection).commit();
 	}
 
 	@Test
-	//@Ignore
+	// @Ignore
+	public void testGetBookWithAuthorsAndAvailableInstancesById() {
+		Optional<Book> book = BookServiceTestData.generateBookOptionalWithAuthorsAndInstances();
+
+		initObjectsMocking();
+		initBookDaoCreationStubbing();
+		when(bookDao.getBookWithAvailableInstances(anyLong())).thenReturn(book);
+
+		Optional<Book> actualBook = bookService.getBookWithAuthorsAndAvailableInstancesById(new Long(1));
+
+		assertEquals(book.get(), actualBook.get());
+		verify(daoFactory).createBookDao();
+		verify(bookDao).getBookWithAvailableInstances(anyLong());
+	}
+
+	@Test
+	// @Ignore
+	public void testSearchBookWithAuthorsByTitle() {
+		List<Book> books = BookServiceTestData.generateBooksListWithAuthors();
+
+		initObjectsMocking();
+		initBookDaoCreationStubbing();
+		when(bookDao.searchBookWithAuthorsByTitle(anyString())).thenReturn(books);
+
+		List<Book> actualBooks = bookService.searchBookWithAuthorsByTitle("Test Title");
+
+		assertEquals(books, actualBooks);
+		verify(daoFactory).createBookDao();
+		verify(bookDao).searchBookWithAuthorsByTitle(anyString());
+	}
+
+	@Test
+	// @Ignore
+	public void testSearchBookWithAuthorsByAuthor() {
+		List<Book> books = BookServiceTestData.generateBooksListWithSameAuthor();
+
+		initObjectsMocking();
+		initBookDaoCreationStubbing();
+		when(bookDao.searchBookWithAuthorsByAuthor(anyString())).thenReturn(books);
+
+		List<Book> actualBooks = bookService.searchBookWithAuthorsByAuthor("Daniel Keyes");
+
+		assertEquals(books, actualBooks);
+		verify(daoFactory).createBookDao();
+		verify(bookDao).searchBookWithAuthorsByAuthor(anyString());
+	}
+	
+	@Test
+	// @Ignore
+	public void searchBookWithAuthorsByInstanceId() {
+		Optional<Book> book = BookServiceTestData.generateBookOptionalWithAuthors();
+
+		initObjectsMocking();
+		initBookDaoCreationStubbing();
+		when(bookDao.searchBookWithAuthorsByInstanceId(anyLong())).thenReturn(book);
+
+		Optional<Book> actualBooks = bookService.searchBookWithAuthorsByInstanceId(new Long(1));
+
+		assertEquals(book.get(), actualBooks.get());
+		verify(daoFactory).createBookDao();
+		verify(bookDao).searchBookWithAuthorsByInstanceId(anyLong());
+	}
+
+	@Test
+	// @Ignore
 	public void testCreateBook() {
+		BookDto bookDto = BookServiceTestData.generateBookDtoWithAuthors();
+		Book book = BookServiceTestData.generateBookForCreation();
 
-		DaoFactory daoFactory = mock(DaoFactory.class);
-		DaoConnection daoConnection = mock(DaoConnection.class);
-		BookDao bookDao = mock(BookDao.class);
+		initObjectsMocking();
+		initBookDaoCreationWithConnectionStubbing();
 
-		Book book = new Book.Builder().setIsbn("1111111111111").setTitle("Test Title1").setPublisher("Test Publisher1")
-				.setAvailability(Availability.SUBSCRIPTION).build();
+		bookService.createBook(bookDto);
 
-		when(daoFactory.getConnection()).thenReturn(daoConnection);
-		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
-
-		BookService bookService = new BookService(daoFactory);
-		//bookService.createBook(book);
-
-		verify(daoFactory).getConnection();		
+		verify(daoFactory).getConnection();
 		verify(daoFactory).createBookDao(daoConnection);
 		verify(daoConnection).begin();
 		verify(bookDao).create(book);
 		verify(bookDao).saveBookAuthors(book);
-		verify(daoConnection).commit();
-	}
-	
-	@Test
-	//@Ignore
-	public void testSearchBookByTitle() {
-
-		DaoFactory daoFactory = mock(DaoFactory.class);
-		DaoConnection daoConnection = mock(DaoConnection.class);
-		BookDao bookDao = mock(BookDao.class);
-		AuthorDao authorDao = mock(AuthorDao.class);
-		
-		List<Book> books = Arrays.asList(new Book[] {
-				new Book.Builder().setIsbn("1111111111111").setTitle("Test Title").setPublisher("Test Publisher")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("2222222222222").setTitle("Test Title").setPublisher("Test Publisher")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title").setPublisher("Test Publisher")
-						.setAvailability(Availability.SUBSCRIPTION).build() });
-
-		when(daoFactory.getConnection()).thenReturn(daoConnection);
-		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
-		when(daoFactory.createAuthorDao(daoConnection)).thenReturn(authorDao);
-		when(bookDao.searchBookWithAuthorsByTitle(anyString())).thenReturn(books);
-
-		BookService bookService = new BookService(daoFactory);
-
-		//List<Book> actualBooks = bookService.searchBookByTitle(anyString());
-		List<Book> actualBooks = bookService.searchBookWithAuthorsByTitle("Test Title");
-		assertEquals(books, actualBooks);
-		verify(daoFactory).getConnection();
-		verify(daoFactory).createBookDao(daoConnection);
-		verify(daoFactory).createAuthorDao(daoConnection);
-		verify(daoConnection).begin();
-		verify(bookDao).searchBookWithAuthorsByTitle(anyString());
-		//verify(authorDao, times(3)).getBookAuthors(anyLong());
-		verify(daoConnection).commit();
-	}
-	
-	@Test
-//	@Ignore
-	public void testSearchBookByAuthor() {
-
-		DaoFactory daoFactory = mock(DaoFactory.class);
-		DaoConnection daoConnection = mock(DaoConnection.class);
-		BookDao bookDao = mock(BookDao.class);
-		AuthorDao authorDao = mock(AuthorDao.class);
-		
-		List<Book> books = Arrays.asList(new Book[] {
-				new Book.Builder().setIsbn("1111111111111").setTitle("Test Title").setPublisher("Test Publisher1")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("2222222222222").setTitle("Test Title").setPublisher("Test Publisher2")
-						.setAvailability(Availability.SUBSCRIPTION).build(),
-				new Book.Builder().setIsbn("3333333333333").setTitle("Test Title").setPublisher("Test Publisher3")
-						.setAvailability(Availability.SUBSCRIPTION).build() });
-
-		when(daoFactory.getConnection()).thenReturn(daoConnection);
-		when(daoFactory.createBookDao(daoConnection)).thenReturn(bookDao);
-		when(daoFactory.createAuthorDao(daoConnection)).thenReturn(authorDao);
-		when(bookDao.searchBookWithAuthorsByAuthor(anyString())).thenReturn(books);
-
-		BookService bookService = new BookService(daoFactory);
-
-		//List<Book> actualBooks = bookService.searchBookByAuthor(anyString());
-		List<Book> actualBooks = bookService.searchBookWithAuthorsByAuthor("NameTest SurnameTest");
-		assertEquals(books, actualBooks);
-		verify(daoFactory).getConnection();
-		verify(daoFactory).createBookDao(daoConnection);
-		verify(daoFactory).createAuthorDao(daoConnection);
-		verify(daoConnection).begin();
-		verify(bookDao).searchBookWithAuthorsByAuthor(anyString());
-		//verify(authorDao, times(3)).getBookAuthors(anyLong());
 		verify(daoConnection).commit();
 	}
 
