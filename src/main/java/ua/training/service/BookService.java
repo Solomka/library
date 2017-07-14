@@ -19,7 +19,7 @@ public class BookService {
 
 	private DaoFactory daoFactory;
 
-	BookService(DaoFactory daoFactory) {
+	public BookService(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 
