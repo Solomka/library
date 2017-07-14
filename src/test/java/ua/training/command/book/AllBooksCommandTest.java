@@ -1,4 +1,4 @@
-package ua.training.command;
+package ua.training.command.book;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;

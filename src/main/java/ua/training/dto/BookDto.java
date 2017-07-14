@@ -1,6 +1,9 @@
 package ua.training.dto;
 
+import java.util.Arrays;
+
 import ua.training.entity.Availability;
+import ua.training.entity.Book;
 import ua.training.entity.IBuilder;
 
 public class BookDto {
@@ -92,4 +95,34 @@ public class BookDto {
 		this.authorsIds = authorsIds;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
+			return false;
+		}
+
+		BookDto book = (BookDto) obj;
+
+		return ((isbn != null) ? isbn.equals(book.isbn) : book.isbn == null);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder2 = new StringBuilder();
+		builder2.append("BookDto [ [super: ").append(super.toString()).append("], isbn=").append(isbn)
+				.append(", title=").append(title).append(", publisher=").append(publisher).append(", availability=")
+				.append(availability).append(", authorsIds=").append(Arrays.toString(authorsIds)).append("] ");
+		return builder2.toString();
+	}
 }

@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.Attribute;
+import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.dto.BookDto;
+import ua.training.entity.Author;
 import ua.training.entity.Availability;
 import ua.training.locale.Message;
 import ua.training.service.AuthorService;
@@ -24,9 +26,11 @@ import ua.training.validator.entity.BookValidator;
 public class PostAddBookCommand implements Command {
 
 	private BookService bookService;
+	private AuthorService authorService;
 
-	public PostAddBookCommand(BookService bookService) {
+	public PostAddBookCommand(BookService bookService, AuthorService authorService) {
 		this.bookService = bookService;
+		this.authorService = authorService;
 	}
 
 	@Override
@@ -42,9 +46,8 @@ public class PostAddBookCommand implements Command {
 			return RedirectionManager.REDIRECTION;
 		}
 
-		request.setAttribute(Attribute.BOOK, book);
-		request.setAttribute(Attribute.ERRORS, errors);
-		return new GetAddBookCommand(AuthorService.getInstance()).execute(request, response);
+		addRequesAttributes(request, book, errors);
+		return Page.ADD_BOOK_VIEW;
 	}
 
 	private BookDto getUserInput(HttpServletRequest request) {
@@ -64,5 +67,14 @@ public class PostAddBookCommand implements Command {
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
 		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+	}
+
+	private void addRequesAttributes(HttpServletRequest request, BookDto book, List<String> errors) {
+		List<Author> authors = authorService.getAllAuthors();
+		request.setAttribute(Attribute.AUTHORS, authors);
+		request.setAttribute(Attribute.AVAILABILITIES, Availability.getValues());
+
+		request.setAttribute(Attribute.BOOK, book);
+		request.setAttribute(Attribute.ERRORS, errors);
 	}
 }
