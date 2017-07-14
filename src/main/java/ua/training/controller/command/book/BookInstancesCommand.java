@@ -1,4 +1,4 @@
-package ua.training.controller.command.bookInstance;
+package ua.training.controller.command.book;
 
 import java.io.IOException;
 import java.util.HashMap;

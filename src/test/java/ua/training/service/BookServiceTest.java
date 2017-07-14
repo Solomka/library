@@ -77,7 +77,7 @@ public class BookServiceTest {
 	@Test
 	// @Ignore
 	public void testGetBookWithAuthorsAndAvailableInstancesById() {
-		Optional<Book> book = BookTestData.generateBookOptionalWithAuthorsAndInstances();
+		Optional<Book> book = BookTestData.generateBookOptionalWithAuthorsAndAvailableInstances();
 
 		initObjectsMocking();
 		initBookDaoCreationStubbing();

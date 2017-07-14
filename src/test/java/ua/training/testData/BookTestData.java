@@ -30,13 +30,21 @@ public final class BookTestData {
 	public static Optional<Book> generateBookOptionalWithAuthorsAndInstances() {
 		return Optional.of(new Book.Builder().setId(new Long(1)).setIsbn("1111111111111").setTitle("Test Title1")
 				.setPublisher("Test Publisher1").setAvailability(Availability.SUBSCRIPTION)
-				.setAuthors(generateAuthorsList()).setBookInstances(generateAvailableBookInstancesList()).build());
+				.setAuthors(generateAuthorsList()).setBookInstances(generateBookInstancesList()).build());
 	}
 
-	public static Optional<Book> generateBookOptionalWithAuthors() {
+	public static List<BookInstance> generateBookInstancesList() {
+		return Arrays.asList(
+				new BookInstance.Builder().setId(new Long(1)).setInventoryNumber("1234567898765")
+						.setStatus(Status.AVAILABLE).setBook(new Book.Builder().setId(new Long(1)).build()).build(),
+				new BookInstance.Builder().setId(new Long(2)).setInventoryNumber("8767586987465")
+						.setStatus(Status.UNAVAILABLE).setBook(new Book.Builder().setId(new Long(2)).build()).build());
+	}
+
+	public static Optional<Book> generateBookOptionalWithAuthorsAndAvailableInstances() {
 		return Optional.of(new Book.Builder().setId(new Long(1)).setIsbn("1111111111111").setTitle("Test Title1")
 				.setPublisher("Test Publisher1").setAvailability(Availability.SUBSCRIPTION)
-				.setAuthors(generateAuthorsList()).build());
+				.setAuthors(generateAuthorsList()).setBookInstances(generateAvailableBookInstancesList()).build());
 	}
 
 	public static List<BookInstance> generateAvailableBookInstancesList() {
@@ -45,6 +53,12 @@ public final class BookTestData {
 						.setStatus(Status.AVAILABLE).setBook(new Book.Builder().setId(new Long(1)).build()).build(),
 				new BookInstance.Builder().setId(new Long(2)).setInventoryNumber("8767586987465")
 						.setStatus(Status.AVAILABLE).setBook(new Book.Builder().setId(new Long(2)).build()).build());
+	}
+
+	public static Optional<Book> generateBookOptionalWithAuthors() {
+		return Optional.of(new Book.Builder().setId(new Long(1)).setIsbn("1111111111111").setTitle("Test Title1")
+				.setPublisher("Test Publisher1").setAvailability(Availability.SUBSCRIPTION)
+				.setAuthors(generateAuthorsList()).build());
 	}
 
 	public static List<Book> generateBooksListWithSameAuthor() {

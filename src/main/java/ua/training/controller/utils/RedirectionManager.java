@@ -12,8 +12,8 @@ import ua.training.locale.MessageUtils;
 
 public final class RedirectionManager {
 
-	public static String REDIRECTION = "REDIRECTION";
-	private static String MESSAGE_ENCODING = "UTF-8";
+	public static final String REDIRECTION = "REDIRECTION";
+	private static final String MESSAGE_ENCODING = "UTF-8";
 
 	private RedirectionManager() {
 	}
