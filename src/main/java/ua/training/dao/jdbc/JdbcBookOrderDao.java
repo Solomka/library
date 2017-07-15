@@ -153,7 +153,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			query.setDate(2, checkBookOrderLocalDateValue(bookOrder.getPickUpDate()));
 			query.setDate(3, checkBookOrderLocalDateValue(bookOrder.getReturnDate()));
 			query.setDate(4, checkBookOrderLocalDateValue(bookOrder.getActualReturnDate()));
-			query.setObject(5, (bookOrder.getLibrarian() == null) ? null : bookOrder.getLibrarian().getId());
+			query.setObject(5, checkBookOrderLibrarian(bookOrder.getLibrarian()));
 			query.setLong(6, bookOrder.getId());
 			query.executeUpdate();
 		} catch (SQLException e) {
@@ -318,6 +318,10 @@ public class JdbcBookOrderDao implements BookOrderDao {
 
 	private Date checkBookOrderLocalDateValue(LocalDate localDate) {
 		return (localDate == null) ? null : Date.valueOf(localDate);
+	}
+
+	private Object checkBookOrderLibrarian(Librarian librarian) {
+		return (((librarian == null) || (librarian.getId().equals(new Long(0)))) ? null : librarian.getId());
 	}
 
 	@Override

@@ -133,7 +133,7 @@
 							<td><c:choose>
 									<c:when test="${not empty back_to_reading_room }">
 										<a
-											href="${pageContext.request.contextPath}/controller/librarian/orders/backToReadingRoom?id_order=${order.getId()}"><fmt:message
+											href="${pageContext.request.contextPath}/controller/librarian/orders/return?id_order=${order.getId()}"><fmt:message
 												key="library.backToReadingRoom" bundle="${rb}" /></a>
 									</c:when>
 									<c:otherwise>

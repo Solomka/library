@@ -89,18 +89,19 @@ public class BookOrderService {
 			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
 
 			int unreturnedBookInstancesNumber = bookOrderDao.countUnreturnedBookInstancesNumber(readerId);
-			int unreturnedSameBookInstancesNumber = bookOrderDao.countUnreturnedSameBookInstancesNumber(readerId, bookInsatnceId);
+			int unreturnedSameBookInstancesNumber = bookOrderDao.countUnreturnedSameBookInstancesNumber(readerId,
+					bookInsatnceId);
 			Optional<BookInstance> optionalBookInsatnce = bookInstanceDao.getById(bookInsatnceId);
 
 			if (!optionalBookInsatnce.isPresent()) {
 				throw new ServiceException(Message.BOOK_INSTANCE_IS_NOT_FOUND + bookInsatnceId);
 			}
-			
-			if(!isReaderAllowedToCreateBookOrder(unreturnedBookInstancesNumber)){
+
+			if (!isReaderAllowedToCreateBookOrder(unreturnedBookInstancesNumber)) {
 				throw new ServiceException(Message.BOOK_INSTANCES_MAX_NUMBER_ORDER_CREATION_RESTRICTION);
 			}
-			
-			if(!isReaderAllowedToCreateConcreteBookOrder(unreturnedSameBookInstancesNumber)){
+
+			if (!isReaderAllowedToCreateConcreteBookOrder(unreturnedSameBookInstancesNumber)) {
 				throw new ServiceException(Message.SAME_BOOK_INSTANCES_ORDER_CREATION_RESTRICTION);
 			}
 			BookInstance bookInsatnce = optionalBookInsatnce.get();
@@ -111,7 +112,7 @@ public class BookOrderService {
 			connection.commit();
 		}
 	}
-	
+
 	private BookOrder buildOrder(Long readerId, Long bookInsatnceId) {
 		BookOrder order = new BookOrder.Builder().setCreationDate(getCurrentLocalDate())
 				.setReader(new Reader.Builder().setId(readerId).build())
@@ -120,23 +121,28 @@ public class BookOrderService {
 	}
 
 	/**
-	 * check if reader hasn't already ordered max allowed number of book instances 
-	 * @param unreturnedReaderBookInstancesNumber number of reader's ordered book instances
-	 * @return true if reader hasn't already ordered max allowed number of book instances; false otherwise 
+	 * check if reader hasn't already ordered max allowed number of book
+	 * instances
+	 * 
+	 * @param unreturnedReaderBookInstancesNumber
+	 *            number of reader's ordered book instances
+	 * @return true if reader hasn't already ordered max allowed number of book
+	 *         instances; false otherwise
 	 */
 	private boolean isReaderAllowedToCreateBookOrder(int unreturnedReaderBookInstancesNumber) {
 		return unreturnedReaderBookInstancesNumber < AppConstants.UNRETURNED_READER_BOOK_INSTANCES_MAX_NUMBER;
 	}
-	
+
 	/**
 	 * check if reader has already ordered bookInstance of the same book
 	 * 
-	 * @param unreturnedSameBookInstancesNumber number of reader's unreturned same book instance's orders
+	 * @param unreturnedSameBookInstancesNumber
+	 *            number of reader's unreturned same book instance's orders
 	 * @return true if reader hasn't ordered same book instance; false otherwise
 	 */
 	private boolean isReaderAllowedToCreateConcreteBookOrder(int unreturnedSameBookInstancesNumber) {
 		return (unreturnedSameBookInstancesNumber == 0);
-	}	
+	}
 
 	public void fulfilOrder(Long orderId, Long librarianId) {
 		LOGGER.info("Fulfil order: " + orderId);
@@ -228,27 +234,6 @@ public class BookOrderService {
 		}
 	}
 
-	public void returnOrderToReadingRoom(Long orderId) {
-		LOGGER.info("Return order to reading room: " + orderId);
-		try (DaoConnection connection = daoFactory.getConnection()) {
-			connection.begin();
-			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
-			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
-
-			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
-
-			if (!optionalOrder.isPresent()) {
-				throw new ServiceException(Message.BOOK_ORDER_IS_NOT_FOUND + orderId);
-			}
-
-			BookOrder order = optionalOrder.get();
-			prepareOrderForReturning(order);
-			bookOrderDao.update(order);
-			bookInstanceDao.update(order.getBookInstance());
-			connection.commit();
-		}
-	}
-
 	private void prepareOrderForReturning(BookOrder order) {
 		order.setActualReturnDate(getCurrentLocalDate());
 		BookInstance bookInstance = order.getBookInstance();
@@ -274,5 +259,4 @@ public class BookOrderService {
 	private LocalDate getReturnOrderDate(LocalDate pickUpDate) {
 		return pickUpDate.plusMonths(AppConstants.RETURN_BOOK_MONTHS_PERIOD);
 	}
-
 }

@@ -23,7 +23,6 @@ import ua.training.controller.command.bookOrder.FulfilOrderCommand;
 import ua.training.controller.command.bookOrder.IssueOrderCommand;
 import ua.training.controller.command.bookOrder.OutstandingOrdersCommand;
 import ua.training.controller.command.bookOrder.ReturnOrderCommand;
-import ua.training.controller.command.bookOrder.ReturnOrderToReadingRoomCommand;
 import ua.training.controller.command.bookOrder.SearchOrderByReaderCardNumberCommand;
 import ua.training.controller.command.bookOrder.ToReadingRoomOrdersCommand;
 import ua.training.controller.command.bookOrder.UnfulfilledOrdersCommand;
@@ -219,12 +218,6 @@ enum CommandEnum {
 		{
 			this.key = "GET:librarian/orders/toRreadingRoom";
 			this.command = new ToReadingRoomOrdersCommand(BookOrderService.getInstance());
-		}
-	},
-	BACK_ORDER_TO_READING_ROOM {
-		{
-			this.key = "GET:librarian/orders/backToReadingRoom";
-			this.command = new ReturnOrderToReadingRoomCommand(BookOrderService.getInstance());
 		}
 	},
 	SEARCH_ORDER_BY_READER_CARD_NUMBER {
