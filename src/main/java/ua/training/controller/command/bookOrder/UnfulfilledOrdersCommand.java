@@ -1,4 +1,4 @@
-package ua.training.controller.command.order;
+package ua.training.controller.command.bookOrder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,22 +19,22 @@ import ua.training.entity.BookOrder;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
 
-public class ToReadingRoomOrdersCommand implements Command {
+public class UnfulfilledOrdersCommand implements Command {
+
 	private BookOrderService bookOrderService;
 
-	public ToReadingRoomOrdersCommand(BookOrderService bookOrderService) {
+	public UnfulfilledOrdersCommand(BookOrderService bookOrderService) {
 		this.bookOrderService = bookOrderService;
 	}
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<BookOrder> orders = bookOrderService.getOrdersForReadingRoomReturn();
+		List<BookOrder> orders = bookOrderService.getUnfulfilledOrders();
 		if (orders.isEmpty()) {
 			redirectToAllOrdersPageWithErrorMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
-		request.setAttribute(Attribute.BACK_TO_READING_ROOM, true);
 		request.setAttribute(Attribute.ORDERS, orders);
 		return Page.ALL_ORDERS_VIEW;
 	}

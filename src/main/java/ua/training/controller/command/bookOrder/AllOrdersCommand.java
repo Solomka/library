@@ -1,4 +1,4 @@
-package ua.training.controller.command.order;
+package ua.training.controller.command.bookOrder;
 
 import java.io.IOException;
 import java.util.List;
