@@ -55,7 +55,7 @@ public class BookOrderService {
 	public List<BookOrder> getUnfulfilledOrders() {
 		LOGGER.info("Get unfulfilled orders");
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
-			return bookOrderDao.getUnexecutedOrders();
+			return bookOrderDao.getUnfulfilledOrders();
 		}
 	}
 
@@ -110,7 +110,14 @@ public class BookOrderService {
 			bookInstanceDao.update(bookInsatnce);
 			connection.commit();
 		}
-	}	
+	}
+	
+	private BookOrder buildOrder(Long readerId, Long bookInsatnceId) {
+		BookOrder order = new BookOrder.Builder().setCreationDate(getCurrentLocalDate())
+				.setReader(new Reader.Builder().setId(readerId).build())
+				.setBookInstance(new BookInstance.Builder().setId(bookInsatnceId).build()).build();
+		return order;
+	}
 
 	/**
 	 * check if reader hasn't already ordered max allowed number of book instances 
@@ -129,14 +136,7 @@ public class BookOrderService {
 	 */
 	private boolean isReaderAllowedToCreateConcreteBookOrder(int unreturnedSameBookInstancesNumber) {
 		return (unreturnedSameBookInstancesNumber == 0);
-	}
-
-	private BookOrder buildOrder(Long readerId, Long bookInsatnceId) {
-		BookOrder order = new BookOrder.Builder().setCreationDate(getCurrentLocalDate())
-				.setReader(new Reader.Builder().setId(readerId).build())
-				.setBookInstance(new BookInstance.Builder().setId(bookInsatnceId).build()).build();
-		return order;
-	}
+	}	
 
 	public void fulfilOrder(Long orderId, Long librarianId) {
 		LOGGER.info("Fulfil order: " + orderId);
@@ -267,7 +267,7 @@ public class BookOrderService {
 		return order.getActualReturnDate() != null;
 	}
 
-	private LocalDate getCurrentLocalDate() {
+	LocalDate getCurrentLocalDate() {
 		return LocalDate.now();
 	}
 

@@ -12,7 +12,7 @@ public interface BookOrderDao extends GenericDao<BookOrder, Long>, AutoCloseable
 	
 	int countUnreturnedSameBookInstancesNumber(Long readerId, Long bookInstanceId);
 	
-	List<BookOrder> getUnexecutedOrders();
+	List<BookOrder> getUnfulfilledOrders();
 	
 	List<BookOrder> getOutstandingOrders();	
 

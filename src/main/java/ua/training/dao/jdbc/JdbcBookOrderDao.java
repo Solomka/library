@@ -228,7 +228,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	}
 
 	@Override
-	public List<BookOrder> getUnexecutedOrders() {
+	public List<BookOrder> getUnfulfilledOrders() {
 		List<BookOrder> bookOrders = new ArrayList<>();
 
 		try (Statement query = connection.createStatement();
