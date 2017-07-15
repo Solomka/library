@@ -40,6 +40,7 @@ public class PostChangePasswordCommand implements Command {
 			return Page.CHANGE_PASSWORD_VIEW;
 		}
 		if (userService.changePassword(changePasswordDto)) {
+			SessionManager.getInstance().addUserToSession(request.getSession(), userService.getReaderById(changePasswordDto.getUserId()).get());
 			redirectToHomePageWithSuccessMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
@@ -58,7 +59,7 @@ public class PostChangePasswordCommand implements Command {
 	}
 
 	private ChangePasswordDto getUserInput(HttpServletRequest request) {
-		return new ChangePasswordDto.Builder().setUser(SessionManager.getInstance().getUserFromSession(request.getSession()))
+		return new ChangePasswordDto.Builder().setUserId(SessionManager.getInstance().getUserFromSession(request.getSession()).getId())
 				.setOldPassword(request.getParameter(Attribute.OLD_PASSWORD))
 				.setNewPassword(request.getParameter(Attribute.NEW_PASSWORD))
 				.setConfirmPassword(request.getParameter(Attribute.CONFIRM_NEW_PASSWORD)).build();

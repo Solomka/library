@@ -1,11 +1,10 @@
 package ua.training.dto;
 
 import ua.training.entity.IBuilder;
-import ua.training.entity.User;
 
 public class ChangePasswordDto {
 
-	private User user;
+	private Long userId;
 	private String oldPassword;
 	private String newPassword;
 	private String confirmPassword;
@@ -18,8 +17,8 @@ public class ChangePasswordDto {
 
 		private ChangePasswordDto changePasswordDto = new ChangePasswordDto();
 
-		public Builder setUser(User user) {
-			changePasswordDto.user = user;
+		public Builder setUserId(Long userId) {
+			changePasswordDto.userId = userId;
 			return this;
 		}
 
@@ -44,12 +43,12 @@ public class ChangePasswordDto {
 		}
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getOldPassword() {
@@ -79,7 +78,7 @@ public class ChangePasswordDto {
 	@Override
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
-		builder2.append("ChangePasswordDto [ [super: ").append(super.toString()).append("], user=").append(user)
+		builder2.append("ChangePasswordDto [ [super: ").append(super.toString()).append("], userId=").append(userId)
 				.append(", oldPassword=").append(oldPassword).append(", newPassword=").append(newPassword)
 				.append(", confirmPassword=").append(confirmPassword).append("] ");
 		return builder2.toString();
