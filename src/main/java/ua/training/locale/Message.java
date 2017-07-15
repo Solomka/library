@@ -17,6 +17,8 @@ public final class Message {
 	public static String NO_AVAILABLE_BOOK_INSTANCES = "library.error.noAvailableBookIntstances";
 	public static String BOOK_ORDER_IS_NOT_FOUND = "library.error.bookOrderIsNorFound";
 	public static String ORDERS_ARE_NOT_FOUND = "library.error.ordersAreNotFound";
+	public static String BOOK_INSTANCES_MAX_NUMBER_ORDER_CREATION_RESTRICTION = "library.error.bookInstancesMaxNumOrderCreationRestr";
+	public static String SAME_BOOK_INSTANCES_ORDER_CREATION_RESTRICTION = "library.error.sameBookInstancesOrderCreationRestr";
 	
 	public static String SUCCESS_AUTHOR_ADDITION = "library.success.addAuthor";
 	public static String SUCCESS_READER_ADDITION = "library.success.addReader";
@@ -70,5 +72,7 @@ public final class Message {
 	
 	public static String ROLE_READER = "library.user.role.reader";
 	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
+	
+	
 		
 }

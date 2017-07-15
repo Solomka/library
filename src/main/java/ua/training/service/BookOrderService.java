@@ -88,10 +88,20 @@ public class BookOrderService {
 			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
 			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
 
+			int unreturnedBookInstancesNumber = bookOrderDao.countUnreturnedBookInstancesNumber(readerId);
+			int unreturnedSameBookInstancesNumber = bookOrderDao.countUnreturnedSameBookInstancesNumber(readerId, bookInsatnceId);
 			Optional<BookInstance> optionalBookInsatnce = bookInstanceDao.getById(bookInsatnceId);
 
 			if (!optionalBookInsatnce.isPresent()) {
 				throw new ServiceException(Message.BOOK_INSTANCE_IS_NOT_FOUND + bookInsatnceId);
+			}
+			
+			if(!isReaderAllowedToCreateBookOrder(unreturnedBookInstancesNumber)){
+				throw new ServiceException(Message.BOOK_INSTANCES_MAX_NUMBER_ORDER_CREATION_RESTRICTION);
+			}
+			
+			if(!isReaderAllowedToCreateConcreteBookOrder(unreturnedSameBookInstancesNumber)){
+				throw new ServiceException(Message.SAME_BOOK_INSTANCES_ORDER_CREATION_RESTRICTION);
 			}
 			BookInstance bookInsatnce = optionalBookInsatnce.get();
 			bookInsatnce.setStatus(Status.UNAVAILABLE);
@@ -100,6 +110,25 @@ public class BookOrderService {
 			bookInstanceDao.update(bookInsatnce);
 			connection.commit();
 		}
+	}	
+
+	/**
+	 * check if reader hasn't already ordered max allowed number of book instances 
+	 * @param unreturnedReaderBookInstancesNumber number of reader's ordered book instances
+	 * @return true if reader hasn't already ordered max allowed number of book instances; false otherwise 
+	 */
+	private boolean isReaderAllowedToCreateBookOrder(int unreturnedReaderBookInstancesNumber) {
+		return unreturnedReaderBookInstancesNumber < AppConstants.UNRETURNED_READER_BOOK_INSTANCES_MAX_NUMBER;
+	}
+	
+	/**
+	 * check if reader has already ordered bookInstance of the same book
+	 * 
+	 * @param unreturnedSameBookInstancesNumber number of reader's unreturned same book instance's orders
+	 * @return true if reader hasn't ordered same book instance; false otherwise
+	 */
+	private boolean isReaderAllowedToCreateConcreteBookOrder(int unreturnedSameBookInstancesNumber) {
+		return (unreturnedSameBookInstancesNumber == 0);
 	}
 
 	private BookOrder buildOrder(Long readerId, Long bookInsatnceId) {
