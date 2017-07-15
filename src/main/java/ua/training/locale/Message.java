@@ -49,6 +49,7 @@ public final class Message {
 	public static String INVALID_READER_CARD_NUMBER = "library.error.invalidReaderCardNumber";
 	
 	public static String INVALID_OLD_PASSWORD = "library.error.invalidOldPassword";
+	public static String INVALID_OLD_DB_USER_PASSWORD = "library.error.invalidOldDbUserPassword";
 	public static String INVALID_NEW_PASSWORD = "library.error.invalidNewPassword";
 	public static String IVALID_CONFIRM_PASSWORD = "library.error.invalidConfirmPassword";
 	public static String INVALID_NEW_CONFIRM_PASSWORD = "library.error.invalidNewConfirmPassword";
@@ -69,14 +70,5 @@ public final class Message {
 	
 	public static String ROLE_READER = "library.user.role.reader";
 	public static String ROLE_LIBRARIAN = "library.user.role.librarian";
-	
-	
-	
-	
-	
-	
-	
-	
-	
 		
 }

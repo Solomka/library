@@ -74,9 +74,8 @@ public class UserService {
 	}
 
 	public boolean changePassword(ChangePasswordDto changePasswordDto) {
-		LOGGER.info("Change user password");
-		boolean changingPassResult = false;
 		try (DaoConnection connection = daoFactory.getConnection()) {
+			boolean changingPasswordResult = false;
 			connection.begin();
 			UserDao userDao = daoFactory.createUserDao(connection);
 			Optional<User> userOptional = userDao.getUserById(changePasswordDto.getUserId());
@@ -85,10 +84,10 @@ public class UserService {
 				user.setPassword(changePasswordDto.getNewPassword());
 				hashUserPassword(user);
 				userDao.update(user);
-				changingPassResult = true;
+				connection.commit();
+				changingPasswordResult = true;
 			}
-			connection.commit();
-			return changingPassResult;
+			return changingPasswordResult;
 		}
 	}
 

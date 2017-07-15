@@ -40,12 +40,11 @@ public class PostChangePasswordCommand implements Command {
 			return Page.CHANGE_PASSWORD_VIEW;
 		}
 		if (userService.changePassword(changePasswordDto)) {
-			SessionManager.getInstance().addUserToSession(request.getSession(), userService.getReaderById(changePasswordDto.getUserId()).get());
 			redirectToHomePageWithSuccessMessage(request, response);
 			return RedirectionManager.REDIRECTION;
 		}
 
-		errors.add(Message.INVALID_OLD_PASSWORD);
+		errors.add(Message.INVALID_OLD_DB_USER_PASSWORD);
 		addRequestAttributes(request, errors);
 		return Page.CHANGE_PASSWORD_VIEW;
 	}

@@ -3,14 +3,15 @@ package ua.training.service;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ua.training.dao.DaoConnection;
@@ -21,6 +22,7 @@ import ua.training.dto.CredentialsDto;
 import ua.training.entity.Reader;
 import ua.training.entity.Role;
 import ua.training.entity.User;
+import ua.training.testData.UserTestData;
 
 public class UserServiceTest {
 
@@ -29,72 +31,14 @@ public class UserServiceTest {
 	private UserDao userDao;
 	private UserService userService;
 
-	private List<Reader> generateReadersList() {
-		return Arrays.asList(
-				new Reader[] {
-						new Reader.Builder().setId(new Long(1)).setEmail("anna@gmail.com")
-								.setPassword("1edef61aae8735e33727fb3df2e147cf1844a1efb25a1953c6e999e9b83837be")
-								.setSalt(new byte[] {47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33})
-								.setRole(Role.READER).setName("Анна").setSurname("Єршак").setPatronymic("Віталіївна")
-								.setPhone("+380948596886").setAddress("вул. Сковороди, 3")
-								.setReaderCardNumber("KB12456789876").build(),
-						new Reader.Builder().setId(new Long(2)).setEmail("petro@gmail.com")
-								.setPassword("222de87818bfebfdcb92f18d2e5e43b69e4f70783e0cd66c481bc75d0d686585")
-								.setSalt(new byte[] { 76, 7, 67, 4, 7, -45, 127, 17, -52, -39, -76, -29, -40, 76, 123,
-										46 })
-								.setRole(Role.READER).setName("Поліна").setSurname("Єршак").setPatronymic("Олегівна")
-								.setPhone("+38056784554").setAddress("вул. Сковороди, 4")
-								.setReaderCardNumber("KB89098700987").build() });
-	}
-
-	private Optional<Reader> generateReaderOptional() {
-		return Optional.of(new Reader.Builder().setId(new Long(1)).setEmail("anna@gmail.com")
-				.setPassword("1edef61aae8735e33727fb3df2e147cf1844a1efb25a1953c6e999e9b83837be")
-				.setSalt(new byte[] {47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33})
-				.setRole(Role.READER).setName("Анна").setSurname("Єршак").setPatronymic("Віталіївна")
-				.setPhone("+380948596886").setAddress("вул. Сковороди, 3").setReaderCardNumber("KB12456789876")
-				.build());
-	}
-	
-	private Optional<User> generateReaderAsUserOptional() {
-		return Optional.of(new Reader.Builder().setId(new Long(1)).setEmail("anna@gmail.com")
-				.setPassword("1edef61aae8735e33727fb3df2e147cf1844a1efb25a1953c6e999e9b83837be")
-				.setSalt(new byte[] {47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33})
-				.setRole(Role.READER).setName("Анна").setSurname("Єршак").setPatronymic("Віталіївна")
-				.setPhone("+380948596886").setAddress("вул. Сковороди, 3").setReaderCardNumber("KB12456789876")
-				.build());
-	}
-	
-	private Reader generateReaderForCreation(){
-		return new Reader.Builder().setEmail("anna@gmail.com")
-				.setPassword("1edef61aae8735e33727fb3df2e147cf1844a1efb25a1953c6e999e9b83837be")
-				.setSalt(new byte[] {47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33})
-				.setRole(Role.READER).setName("Анна").setSurname("Єршак").setPatronymic("Віталіївна")
-				.setPhone("+380948596886").setAddress("вул. Сковороди, 3").setReaderCardNumber("KB12456789876")
-				.build();
-		
-	}
-	
-	private CredentialsDto generateCredentialsDtoWithValidPass(){
-		return new CredentialsDto("anna@gmail.com", "library7");
-	}
-	
-	private CredentialsDto generateCredentialsDtoWithInvalidPass(){
-		return new CredentialsDto("anna@gmail.com", "sofiya14");
-	}
-	
-	private ChangePasswordDto generateChangePasswordDto(){
-		return null;		
-	}
-
 	private void initObjectsMocking() {
 		daoFactory = mock(DaoFactory.class);
 		daoConnection = mock(DaoConnection.class);
-		userDao = mock(UserDao.class);		
+		userDao = mock(UserDao.class);
 	}
-	
-	private void initUserService(){
-		userService = new UserService(daoFactory);		
+
+	private void initUserService() {
+		userService = new UserService(daoFactory);
 	}
 
 	private void initUserDaoCreationStubbing() {
@@ -107,9 +51,9 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	public void testGetAllReaders() {
-		List<Reader> readers = generateReadersList();
+		List<Reader> readers = UserTestData.generateReadersList();
 
 		initObjectsMocking();
 		initUserService();
@@ -124,9 +68,9 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	public void testGetReaderById() {
-		Optional<Reader> reader = generateReaderOptional();
+		Optional<Reader> reader = UserTestData.generateReaderOptional();
 
 		initObjectsMocking();
 		initUserService();
@@ -143,14 +87,14 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	public void testGetUserByEmailWithValidPassword() {
-		Optional<User> user = generateReaderAsUserOptional();
-		CredentialsDto credentialsDto = generateCredentialsDtoWithValidPass();
+		Optional<User> user = UserTestData.generateReaderAsUserOptional();
+		CredentialsDto credentialsDto = UserTestData.generateCredentialsDtoWithValidPass();
 
 		initObjectsMocking();
 		initUserService();
-		initUserDaoCreationStubbing();		
+		initUserDaoCreationStubbing();
 		when(userDao.getUserByEmail(anyString())).thenReturn(user);
 
 		Optional<User> actualUser = userService.getUserByEmail(credentialsDto);
@@ -159,16 +103,16 @@ public class UserServiceTest {
 		verify(daoFactory).createUserDao();
 		verify(userDao).getUserByEmail(credentialsDto.getEmail());
 	}
-	
+
 	@Test
-	@Ignore
+	// @Ignore
 	public void testGetUserByEmailWithInvalidPassword() {
-		Optional<User> user = generateReaderAsUserOptional();
-		CredentialsDto credentialsDto = generateCredentialsDtoWithInvalidPass();
+		Optional<User> user = UserTestData.generateReaderAsUserOptional();
+		CredentialsDto credentialsDto = UserTestData.generateCredentialsDtoWithInvalidPass();
 
 		initObjectsMocking();
 		initUserService();
-		initUserDaoCreationStubbing();		
+		initUserDaoCreationStubbing();
 		when(userDao.getUserByEmail(anyString())).thenReturn(user);
 
 		Optional<User> expectedUser = Optional.empty();
@@ -180,16 +124,16 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	public void testCreateReader() {
-		Reader reader = generateReaderForCreation();
-		
+		Reader reader = UserTestData.generateReaderForCreation();
+
 		initObjectsMocking();
 		initUserService();
 		initUserDaoCreationWithDaoConnectionStubbing();
-		
+
 		userService.createReader(reader);
-		
+
 		verify(daoFactory).getConnection();
 		verify(daoFactory).createUserDao(daoConnection);
 		verify(daoConnection).begin();
@@ -199,8 +143,47 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@Ignore
-	public void testChangePassword() {
+	// @Ignore
+	public void testChangePasswordWithValidOldPassword() {
+		ChangePasswordDto changePasswordDto = UserTestData.generateChangePasswordDtoWithValidPass();
+		Optional<User> userOptional = UserTestData.generateReaderAsUserOptional();
+		User user = userOptional.get();
 
+		initObjectsMocking();
+		initUserService();
+		initUserDaoCreationWithDaoConnectionStubbing();
+		when(userDao.getUserById(anyLong())).thenReturn(userOptional);
+
+		boolean expectedResult = true;
+		boolean actualResult = userService.changePassword(changePasswordDto);
+
+		assertEquals(expectedResult, actualResult);
+		verify(daoFactory).getConnection();
+		verify(daoFactory).createUserDao(daoConnection);
+		verify(daoConnection).begin();
+		verify(userDao).getUserById(changePasswordDto.getUserId());
+		verify(userDao).update(user);
+		verify(daoConnection).commit();
+	}
+
+	@Test
+	// @Ignore
+	public void testChangePasswordWithInvalidOldPassword() {
+		ChangePasswordDto changePasswordDto = UserTestData.generateChangePasswordDtoWithInvalidPass();
+		Optional<User> userOptional = UserTestData.generateReaderAsUserOptional();
+
+		initObjectsMocking();
+		initUserService();
+		initUserDaoCreationWithDaoConnectionStubbing();
+		when(userDao.getUserById(anyLong())).thenReturn(userOptional);
+
+		boolean expectedResult = false;
+		boolean actualResult = userService.changePassword(changePasswordDto);
+
+		assertEquals(expectedResult, actualResult);
+		verify(daoFactory).getConnection();
+		verify(daoFactory).createUserDao(daoConnection);
+		verify(daoConnection).begin();
+		verify(userDao).getUserById(changePasswordDto.getUserId());
 	}
 }
