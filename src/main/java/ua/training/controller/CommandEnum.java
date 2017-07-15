@@ -53,7 +53,6 @@ enum CommandEnum {
 			this.command = new HomeCommand();
 		}
 	},
-
 	CHANGE_LOCALE {
 		{
 			this.key = "GET:locale";
@@ -82,9 +81,31 @@ enum CommandEnum {
 		{
 			this.key = "GET:books";
 			this.command = new AllBooksCommand(BookService.getInstance());
-
 		}
-
+	},
+	GET_ADD_BOOK {
+		{
+			this.key = "GET:librarian/addBook";
+			this.command = new GetAddBookCommand(AuthorService.getInstance());
+		}
+	},
+	POST_ADD_BOOK {
+		{
+			this.key = "POST:librarian/addBook";
+			this.command = new PostAddBookCommand(BookService.getInstance(), AuthorService.getInstance());
+		}
+	},
+	SEARCH_BOOK_BY_TITLE {
+		{
+			this.key = "POST:books/title";
+			this.command = new SearchBookByTitleCommand(BookService.getInstance());
+		}
+	},
+	SEARCH_BOOK_BY_AUTHOR {
+		{
+			this.key = "POST:books/author";
+			this.command = new SearchBookByAuthorCommand(BookService.getInstance());
+		}
 	},
 	GET_BOOK_BY_INSTANCE_ID {
 		{
@@ -104,30 +125,7 @@ enum CommandEnum {
 			this.command = new PostAddBookInstanceCommand(BookInstanceService.getInstance());
 		}
 	},
-	GET_ADD_BOOK {
-		{
-			this.key = "GET:librarian/addBook";
-			this.command = new GetAddBookCommand(AuthorService.getInstance());
-		}
-	},
-	POST_ADD_BOOK {
-		{
-			this.key = "POST:librarian/addBook";
-			this.command = new PostAddBookCommand(BookService.getInstance(), AuthorService.getInstance());
-		}
-	},
-	SEARCH_BOOK_BY_TITLE {
-		{
-			this.key = "POST:searchBookByTitle";
-			this.command = new SearchBookByTitleCommand(BookService.getInstance());
-		}
-	},
-	SEARCH_BOOK_BY_AUTHOR {
-		{
-			this.key = "POST:searchBookByAuthor";
-			this.command = new SearchBookByAuthorCommand(BookService.getInstance());
-		}
-	},
+
 	ALL_AUTHORS {
 		{
 			this.key = "GET:librarian/authors";
@@ -152,12 +150,6 @@ enum CommandEnum {
 			this.command = new AllReadersCommand(UserService.getInstance());
 		}
 	},
-	GET_READER_BY_ID {
-		{
-			this.key = "GET:librarian/reader";
-			this.command = new GetReaderByIdCommand(UserService.getInstance());
-		}
-	},
 	GET_ADD_READER {
 		{
 			this.key = "GET:librarian/addReader";
@@ -168,6 +160,12 @@ enum CommandEnum {
 		{
 			this.key = "POST:librarian/addReader";
 			this.command = new PostAddReaderCommand(UserService.getInstance());
+		}
+	},
+	GET_READER_BY_ID {
+		{
+			this.key = "GET:librarian/reader";
+			this.command = new GetReaderByIdCommand(UserService.getInstance());
 		}
 	},
 	GET_CHANGE_PASSWORD {
@@ -182,15 +180,15 @@ enum CommandEnum {
 			this.command = new PostChangePasswordCommand(UserService.getInstance());
 		}
 	},
-	ALL_READER_ORDERS {
-		{
-			this.key = "GET:reader/orders";
-			this.command = new AllOrdersCommand(BookOrderService.getInstance());
-		}
-	},
 	ALL_ORDERS {
 		{
 			this.key = "GET:librarian/orders";
+			this.command = new AllOrdersCommand(BookOrderService.getInstance());
+		}
+	},
+	ALL_READER_ORDERS {
+		{
+			this.key = "GET:reader/orders";
 			this.command = new AllOrdersCommand(BookOrderService.getInstance());
 		}
 	},
@@ -216,7 +214,7 @@ enum CommandEnum {
 	},
 	TO_READING_ROOM_ORDERS {
 		{
-			this.key = "GET:librarian/orders/toRreadingRoom";
+			this.key = "GET:librarian/orders/toReadingRoom";
 			this.command = new ToReadingRoomOrdersCommand(BookOrderService.getInstance());
 		}
 	},

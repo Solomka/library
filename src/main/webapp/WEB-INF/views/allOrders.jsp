@@ -19,7 +19,7 @@
 					<fmt:message key="library.order.outstanding" bundle="${rb}" />
 				</button>
 				<button type="button" class="btn btn-default"
-					onclick="location.href='${pageContext.request.contextPath}/controller/librarian/orders/toRreadingRoom';">
+					onclick="location.href='${pageContext.request.contextPath}/controller/librarian/orders/toReadingRoom';">
 					<fmt:message key="library.order.toReadingRoom" bundle="${rb}" />
 				</button>				
 			</c:if>

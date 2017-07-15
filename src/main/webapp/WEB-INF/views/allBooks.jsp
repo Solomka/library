@@ -36,7 +36,7 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<form action="./searchBookByTitle" method="POST" role="form">
+					<form action="${pageContext.request.contextPath}/controller/books/title" method="POST" role="form">
 
 						<div class="form-group">
 							<label for="title"><fmt:message key="library.title"
@@ -68,7 +68,7 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<form action="./searchBookByAuthor" method="POST" role="form">
+					<form action="${pageContext.request.contextPath}/controller/books/author" method="POST" role="form">
 
 						<div class="form-group">
 							<label for="author"><fmt:message key="library.author"
