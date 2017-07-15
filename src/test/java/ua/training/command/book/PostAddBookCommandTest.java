@@ -42,6 +42,9 @@ public class PostAddBookCommandTest {
 		httpServletResponse = mock(HttpServletResponse.class);
 		bookService = mock(BookService.class);
 		authorService = mock(AuthorService.class);
+	}
+
+	private void initPostAddBookCommand() {
 		postAddBookCommand = new PostAddBookCommand(bookService, authorService);
 	}
 
@@ -67,6 +70,7 @@ public class PostAddBookCommandTest {
 	// @Ignore
 	public void testPostAddBookValidInputCommand() throws ServletException, IOException {
 		initObjectsMocking();
+		initPostAddBookCommand();
 		initObjectsMethodsStubbingForValidInput();
 
 		BookDto bookDto = BookTestData.generateBookDtoWithAuthors();
@@ -83,11 +87,12 @@ public class PostAddBookCommandTest {
 	// @Ignore
 	public void testPostAddBookInvalidInputCommand() throws ServletException, IOException {
 		initObjectsMocking();
+		initPostAddBookCommand();
 		initObjectsMethodsStubbingForInvalidEmptyInput();
 
 		List<Author> authors = BookTestData.generateAuthorsList();
 		when(authorService.getAllAuthors()).thenReturn(authors);
-		
+
 		String commandExecutionResult = postAddBookCommand.execute(httpServletRequest, httpServletResponse);
 		String expectedResultedResource = Page.ADD_BOOK_VIEW;
 		String actualResultedResource = commandExecutionResult;

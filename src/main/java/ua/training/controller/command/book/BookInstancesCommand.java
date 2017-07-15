@@ -14,9 +14,9 @@ import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
-import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.controller.utils.SessionManager;
 import ua.training.entity.Book;
 import ua.training.entity.Role;
 import ua.training.locale.Message;
@@ -47,15 +47,15 @@ public class BookInstancesCommand implements Command {
 	}
 
 	private Optional<Book> getBookDependingOnUserRole(HttpSession session, Long bookId) {
-		if (!SessionManager.isUserLoggedIn(session) || isUserLibrarian(session)) {
+		if (!SessionManager.getInstance().isUserLoggedIn(session) || isUserLibrarian(session)) {
 			return bookService.getBookWithAuthorsAndInstancesById(bookId);
 		}
 		return bookService.getBookWithAuthorsAndAvailableInstancesById(bookId);
 	}
 
 	private boolean isUserLibrarian(HttpSession session) {
-		return SessionManager.isUserLoggedIn(session)
-				&& SessionManager.getUserFromSession(session).getRole().equals(Role.LIBRARIAN);
+		return SessionManager.getInstance().isUserLoggedIn(session)
+				&& SessionManager.getInstance().getUserFromSession(session).getRole().equals(Role.LIBRARIAN);
 	}
 
 	private void redirectToAllBooksPageWithErrorMessage(HttpServletRequest request, HttpServletResponse response)
@@ -63,6 +63,6 @@ public class BookInstancesCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.ERROR, Message.NO_AVAILABLE_BOOK_INSTANCES);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 	}
 }

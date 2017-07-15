@@ -43,7 +43,7 @@ public class SearchBookByTitleCommand implements Command {
 		if (!errors.isEmpty()) {
 			urlParams = new HashMap<>();
 			urlParams.put(Attribute.ERROR, errors.get(0));
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+			RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 			return RedirectionManager.REDIRECTION;
 		}
 
@@ -52,7 +52,7 @@ public class SearchBookByTitleCommand implements Command {
 		if (books.isEmpty()) {
 			urlParams = new HashMap<>();
 			urlParams.put(Attribute.ERROR, Message.BOOK_IS_NOT_FOUND);
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+			RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 			return RedirectionManager.REDIRECTION;
 		}
 

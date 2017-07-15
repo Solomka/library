@@ -41,12 +41,12 @@ public class PostAddBookInstanceCommand implements Command {
 		if (errors.isEmpty()) {
 			bookInstancesService.createBookInstance(bookInstance);
 			urlParams.put(Attribute.SUCCESS, Message.SUCCESS_BOOK_INSTANCE_ADDITION);
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.BOOK_INSTANCES, urlParams);
+			RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.BOOK_INSTANCES, urlParams);
 			return RedirectionManager.REDIRECTION;
 		}
 
 		urlParams.put(Attribute.ERROR, errors.get(0));
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.BOOK_INSTANCES, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.BOOK_INSTANCES, urlParams);
 		return RedirectionManager.REDIRECTION;
 	}
 

@@ -8,33 +8,45 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ua.training.exception.ServerException;
 import ua.training.locale.MessageUtils;
 
-public final class RedirectionManager {
+public class RedirectionManager {
 
-	public static final String REDIRECTION = "REDIRECTION";
-	private static final String MESSAGE_ENCODING = "UTF-8";
+	public static String REDIRECTION = "REDIRECTION";
+	private static String MESSAGE_ENCODING = "UTF-8";
 
 	private RedirectionManager() {
 	}
 
-	public static void redirectWithParams(HttpWrapper httpWrapper, String redirectionPath,
-			Map<String, String> urlParameters) throws IOException {
-		String urlPathWithParams = RedirectionManager.generateUrlPath(httpWrapper.getRequest(), redirectionPath)
-				+ RedirectionManager.generateUrlParams(urlParameters);
+	private static final class Holder {
+		static final RedirectionManager INSTANCE = new RedirectionManager();
+	}
+
+	public static RedirectionManager getInstance() {
+		return Holder.INSTANCE;
+	}
+
+	public void redirectWithParams(HttpWrapper httpWrapper, String redirectionPath, Map<String, String> urlParameters)
+			throws IOException {
+		String urlPathWithParams = generateUrlPath(httpWrapper.getRequest(), redirectionPath)
+				+ generateUrlParams(urlParameters);
 		redirect(httpWrapper.getRequest(), httpWrapper.getResponse(), urlPathWithParams);
 	}
 
-	public static void redirect(HttpServletRequest request, HttpServletResponse response, String path)
-			throws IOException {
-		response.sendRedirect(RedirectionManager.generateUrlPath(request, path));
+	public void redirect(HttpServletRequest request, HttpServletResponse response, String path) {
+		try {
+			response.sendRedirect(generateUrlPath(request, path));
+		} catch (IOException e) {
+			throw new ServerException(e);
+		}
 	}
 
-	private static String generateUrlPath(HttpServletRequest request, String path) {
+	private String generateUrlPath(HttpServletRequest request, String path) {
 		return new StringBuffer(request.getContextPath()).append(request.getServletPath()).append(path).toString();
 	}
 
-	public static String generateUrlParams(Map<String, String> urlParameters) throws UnsupportedEncodingException {
+	public String generateUrlParams(Map<String, String> urlParameters) throws UnsupportedEncodingException {
 		StringBuffer stringBuffer = new StringBuffer(MessageUtils.INTERROGATION_MARK);
 		for (String urlParamName : urlParameters.keySet()) {
 			stringBuffer.append(urlParamName).append(MessageUtils.EQUALITY_SIGN)
@@ -45,7 +57,7 @@ public final class RedirectionManager {
 		return stringBuffer.toString();
 	}
 
-	private static void deleteLastAmpersand(StringBuffer stringBuffer) {
+	private void deleteLastAmpersand(StringBuffer stringBuffer) {
 		stringBuffer.deleteCharAt(stringBuffer.length() - 1);
 	}
 }

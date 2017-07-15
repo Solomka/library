@@ -65,7 +65,7 @@ public class PostAddReaderCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_READER_ADDITION);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_READERS, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_READERS, urlParams);
 	}
 
 	private void addRequestAtrributes(HttpServletRequest request, Reader reader, List<String> errors) {

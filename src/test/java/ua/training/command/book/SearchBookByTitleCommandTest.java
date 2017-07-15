@@ -38,6 +38,9 @@ public class SearchBookByTitleCommandTest {
 		httpServletRequest = mock(HttpServletRequest.class);
 		httpServletResponse = mock(HttpServletResponse.class);
 		bookService = mock(BookService.class);
+	}
+
+	private void initSearchBookByTitleCommand() {
 		searchBookByTitleCommand = new SearchBookByTitleCommand(bookService);
 	}
 
@@ -59,6 +62,7 @@ public class SearchBookByTitleCommandTest {
 	// @Ignore
 	public void testSearchBookByTitleValidInputCommand() throws ServletException, IOException {
 		initObjectsMocking();
+		initSearchBookByTitleCommand();
 		initSearchBookWithAuthorsByTitleMethodStubbing();
 		initObjectsMethodsStubbingForValidInput();
 
@@ -75,6 +79,7 @@ public class SearchBookByTitleCommandTest {
 	// @Ignore
 	public void testSearchBookByTitleInValidInputCommand() throws ServletException, IOException {
 		initObjectsMocking();
+		initSearchBookByTitleCommand();
 		initSearchBookWithAuthorsByTitleMethodStubbing();
 		initObjectsMethodsStubbingForInValidInput();
 

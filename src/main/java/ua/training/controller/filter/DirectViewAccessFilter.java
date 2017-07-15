@@ -48,7 +48,7 @@ public class DirectViewAccessFilter implements Filter {
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.ERROR, Message.DIRECT_VIEW_ACCESS_ERROR);
 		return new StringBuffer(contextPath).append(ServletPath.HOME)
-				.append(RedirectionManager.generateUrlParams(urlParams)).toString();
+				.append(RedirectionManager.getInstance().generateUrlParams(urlParams)).toString();
 	}
 
 	private void logInfoAboutUnauthorizedAccess(String uri) {

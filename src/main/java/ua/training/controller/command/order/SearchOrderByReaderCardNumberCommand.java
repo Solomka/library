@@ -42,7 +42,7 @@ public class SearchOrderByReaderCardNumberCommand implements Command {
 		if (!errors.isEmpty()) {
 			urlParams = new HashMap<>();
 			urlParams.put(Attribute.ERROR, errors.get(0));
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
+			RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
 			return RedirectionManager.REDIRECTION;
 		}
 
@@ -51,7 +51,7 @@ public class SearchOrderByReaderCardNumberCommand implements Command {
 		if (orders.isEmpty()) {
 			urlParams = new HashMap<>();
 			urlParams.put(Attribute.ERROR, Message.ORDERS_ARE_NOT_FOUND);
-			RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
+			RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
 			return RedirectionManager.REDIRECTION;
 		}
 

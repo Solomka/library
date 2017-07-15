@@ -39,6 +39,6 @@ public class ReturnOrderCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_ORDER_RETURN);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
 	}
 }

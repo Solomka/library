@@ -60,7 +60,7 @@ public class PostAddAuthorCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_AUTHOR_ADDITION);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_AUTHORS, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_AUTHORS, urlParams);
 	}
 
 	private void addRequestAtrributes(HttpServletRequest request, Author author, List<String> errors) {

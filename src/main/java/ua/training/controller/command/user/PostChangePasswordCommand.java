@@ -13,9 +13,9 @@ import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
-import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.controller.utils.SessionManager;
 import ua.training.dto.ChangePasswordDto;
 import ua.training.locale.Message;
 import ua.training.service.UserService;
@@ -54,11 +54,11 @@ public class PostChangePasswordCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_PASSWORD_CHANGE);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
 	}
 
 	private ChangePasswordDto getUserInput(HttpServletRequest request) {
-		return new ChangePasswordDto.Builder().setUser(SessionManager.getUserFromSession(request.getSession()))
+		return new ChangePasswordDto.Builder().setUser(SessionManager.getInstance().getUserFromSession(request.getSession()))
 				.setOldPassword(request.getParameter(Attribute.OLD_PASSWORD))
 				.setNewPassword(request.getParameter(Attribute.NEW_PASSWORD))
 				.setConfirmPassword(request.getParameter(Attribute.CONFIRM_NEW_PASSWORD)).build();

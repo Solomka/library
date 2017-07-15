@@ -32,8 +32,11 @@ public class AllBooksCommandTest {
 	private void initObjectsMocking() {
 		httpServletRequest = mock(HttpServletRequest.class);
 		httpServletResponse = mock(HttpServletResponse.class);
-		bookService = mock(BookService.class);
-		allBooksCommand = new AllBooksCommand(bookService);
+		bookService = mock(BookService.class);		
+	}
+	
+	private void initAllBooksCommand(){
+		allBooksCommand = new AllBooksCommand(bookService);		
 	}
 
 	@Test
@@ -42,6 +45,7 @@ public class AllBooksCommandTest {
 		List<Book> books = BookTestData.generateBooksListWithAuthors();
 
 		initObjectsMocking();
+		initAllBooksCommand();
 		when(bookService.getAllBooksWithAuthors()).thenReturn(books);
 
 		String expectedResultedResource = Page.ALL_BOOKS_VIEW;

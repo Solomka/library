@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.constants.Attribute;
 import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
-import ua.training.controller.session.SessionManager;
 import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
+import ua.training.controller.utils.SessionManager;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
 
@@ -23,14 +23,13 @@ public class FulfilOrderCommand implements Command {
 
 	public FulfilOrderCommand(BookOrderService bookOrderService) {
 		this.bookOrderService = bookOrderService;
-
 	}
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long orderId = Long.valueOf(request.getParameter(Attribute.ID_ORDER));
-		Long librarianId = SessionManager.getUserFromSession(request.getSession()).getId();
+		Long librarianId = SessionManager.getInstance().getUserFromSession(request.getSession()).getId();
 		bookOrderService.fulfilOrder(orderId, librarianId);
 		redirectToAllOrdersPageWithSuccessMessage(request, response);
 		return RedirectionManager.REDIRECTION;
@@ -41,7 +40,6 @@ public class FulfilOrderCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_ORDER_FULFILMENT);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_ORDERS, urlParams);
 	}
-
 }

@@ -66,7 +66,7 @@ public class PostAddBookCommand implements Command {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.SUCCESS, Message.SUCCESS_BOOK_ADDITION);
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.ALL_BOOKS, urlParams);
 	}
 
 	private void addRequesAttributes(HttpServletRequest request, BookDto book, List<String> errors) {

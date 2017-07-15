@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.controller.command.Command;
-import ua.training.controller.session.SessionManager;
+import ua.training.controller.utils.SessionManager;
 import ua.training.entity.BookOrder;
 import ua.training.entity.Role;
 import ua.training.entity.User;
@@ -29,7 +29,7 @@ public class AllOrdersCommand implements Command {
 			throws ServletException, IOException {
 		List<BookOrder> orders;
 
-		User user = SessionManager.getUserFromSession(request.getSession());
+		User user = SessionManager.getInstance().getUserFromSession(request.getSession());
 		if (user.getRole().equals(Role.LIBRARIAN)) {
 			orders = bookOrderService.getAllOrders();
 		} else {
@@ -38,5 +38,4 @@ public class AllOrdersCommand implements Command {
 		request.setAttribute(Attribute.ORDERS, orders);
 		return Page.ALL_ORDERS_VIEW;
 	}
-
 }

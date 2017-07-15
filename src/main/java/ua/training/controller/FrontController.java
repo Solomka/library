@@ -84,6 +84,6 @@ public class FrontController extends HttpServlet {
 	private void redirecToHomePageWithErrorMessage(HttpWrapper httpWrapper, ServiceException ex) throws IOException {
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.ERROR, ex.getMessage());
-		RedirectionManager.redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
+		RedirectionManager.getInstance().redirectWithParams(httpWrapper, ServletPath.HOME, urlParams);
 	}
 }
