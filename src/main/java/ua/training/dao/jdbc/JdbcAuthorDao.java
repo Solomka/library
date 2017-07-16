@@ -20,11 +20,17 @@ public class JdbcAuthorDao implements AuthorDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcAuthorDao.class);
 
-	private static String GET_ALL_AUTHORS = "SELECT * FROM author";
-	private static String GET_AUTHOR_BY_ID = "SELECT * FROM author WHERE id_author=?";
+	private static String GET_ALL_AUTHORS = "SELECT id_author, name, surname, country FROM author";
+	private static String GET_AUTHOR_BY_ID = "SELECT id_author, name, surname, country FROM author WHERE id_author=?";
 	private static String CRAETE_AUTHOR = "INSERT INTO author (name, surname, country) VALUES (?, ?, ?)";
 	private static String UPDATE_AUTHOR = "UPDATE author SET name=?, surname=?, country=? WHERE id_author=?";
 	private static String DELETE_AUTHOR = "DELETE FROM author WHERE id_author=?";
+
+	// author table columns' names
+	private static String AUTHOR_ID = "id_author";
+	private static String AUTHOR_NAME = "name";
+	private static String AUTHOR_SURNAME = "surname";
+	private static String AUTHOR_COUNTRY = "country";
 
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
@@ -89,7 +95,7 @@ public class JdbcAuthorDao implements AuthorDao {
 				author.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcAuthorDao create SQL exception: " + author.toString(), e);
+			LOGGER.error("JdbcAuthorDao create SQL exception", e);
 			throw new ServerException(e);
 		}
 	}
@@ -120,10 +126,10 @@ public class JdbcAuthorDao implements AuthorDao {
 		}
 	}
 
-	private Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Author.Builder().setId(resultSet.getLong(Column.AUTHOR_ID))
-				.setName(resultSet.getString(Column.AUTHOR_NAME)).setSurname(resultSet.getString(Column.AUTHOR_SURNAME))
-				.setCountry(resultSet.getString(Column.AUTHOR_COUNTRY)).build();
+	protected static Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Author.Builder().setId(resultSet.getLong(AUTHOR_ID)).setName(resultSet.getString(AUTHOR_NAME))
+				.setSurname(resultSet.getString(AUTHOR_SURNAME)).setCountry(resultSet.getString(AUTHOR_COUNTRY))
+				.build();
 	}
 
 	@Override

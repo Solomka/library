@@ -64,7 +64,22 @@ public class JdbcUserDao implements UserDao {
 			+ " WHERE id_user=?";
 	private static String DELETE_USER = "DELETE FROM users WHERE id_user=?";
 
-	// librarian fields
+	// user table columns' names
+	private static String USER_ID = "id_user";
+	private static String USER_EMAIL = "email";
+	private static String USER_PASSWORD = "password";
+	private static String USER_ROLE = "role";
+	private static String USER_SALT = "salt";
+
+	// reader table columns' names
+	private static String READER_NAME = "name";
+	private static String READER_SURNAME = "surname";
+	private static String READER_PATRONYMIC = "patronymic";
+	private static String READER_PHONE = "phone";
+	private static String READER_ADDRESS = "address";
+	private static String READER_READER_CARD_NUMBER = "reader_card_number";
+
+	// librarian table columns' names
 	private static String LIBRARIAN_NAME = "l_name";
 	private static String LIBRARIAN_SURNAME = "l_surname";
 	private static String LIBRARIAN_PATRONYMIC = "l_patronymic";
@@ -159,7 +174,7 @@ public class JdbcUserDao implements UserDao {
 				user.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcUserDao create SQL exception: " + user.toString(), e);
+			LOGGER.error("JdbcUserDao create SQL exception: " + user.getEmail(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -176,7 +191,7 @@ public class JdbcUserDao implements UserDao {
 			query.setString(7, reader.getReaderCardNumber());
 			query.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.error("JdbcUserDao create reader SQL exception: " + reader.toString(), e);
+			LOGGER.error("JdbcUserDao create reader SQL exception: " + reader.getEmail(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -190,7 +205,7 @@ public class JdbcUserDao implements UserDao {
 			query.setString(4, librarian.getPatronymic());
 			query.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.error("JdbcUserDao create librarian SQL exception: " + librarian.toString(), e);
+			LOGGER.error("JdbcUserDao create librarian SQL exception: " + librarian.getEmail(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -262,29 +277,25 @@ public class JdbcUserDao implements UserDao {
 		}
 	}
 
-	private Reader extractReaderFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Reader.Builder().setId(resultSet.getLong(Column.USER_ID))
-				.setEmail(resultSet.getString(Column.USER_EMAIL)).setPassword(resultSet.getString(Column.USER_PASSWORD))
-				.setRole(Role.forValue(resultSet.getString(Column.USER_ROLE)))
-				.setSalt(resultSet.getBytes(Column.USER_SALT)).setName(resultSet.getString(Column.READER_NAME))
-				.setSurname(resultSet.getString(Column.READER_SURNAME))
-				.setPatronymic(resultSet.getString(Column.READER_PATRONYMIC))
-				.setPhone(resultSet.getString(Column.READER_PHONE))
-				.setAddress(resultSet.getString(Column.READER_ADDRESS))
-				.setReaderCardNumber(resultSet.getString(Column.READER_READER_CARD_NUMBER)).build();
+	protected static Reader extractReaderFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Reader.Builder().setId(resultSet.getLong(USER_ID)).setEmail(resultSet.getString(USER_EMAIL))
+				.setPassword(resultSet.getString(USER_PASSWORD)).setRole(Role.forValue(resultSet.getString(USER_ROLE)))
+				.setSalt(resultSet.getBytes(USER_SALT)).setName(resultSet.getString(READER_NAME))
+				.setSurname(resultSet.getString(READER_SURNAME)).setPatronymic(resultSet.getString(READER_PATRONYMIC))
+				.setPhone(resultSet.getString(READER_PHONE)).setAddress(resultSet.getString(READER_ADDRESS))
+				.setReaderCardNumber(resultSet.getString(READER_READER_CARD_NUMBER)).build();
 	}
 
-	private Librarian extractLibrarianFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Librarian.Builder().setId(resultSet.getLong(Column.USER_ID))
-				.setEmail(resultSet.getString(Column.USER_EMAIL)).setPassword(resultSet.getString(Column.USER_PASSWORD))
-				.setRole(Role.forValue(resultSet.getString(Column.USER_ROLE)))
-				.setSalt(resultSet.getBytes(Column.USER_SALT)).setName(resultSet.getString(LIBRARIAN_NAME))
+	protected static Librarian extractLibrarianFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Librarian.Builder().setId(resultSet.getLong(USER_ID)).setEmail(resultSet.getString(USER_EMAIL))
+				.setPassword(resultSet.getString(USER_PASSWORD)).setRole(Role.forValue(resultSet.getString(USER_ROLE)))
+				.setSalt(resultSet.getBytes(USER_SALT)).setName(resultSet.getString(LIBRARIAN_NAME))
 				.setSurname(resultSet.getString(LIBRARIAN_SURNAME))
 				.setPatronymic(resultSet.getString(LIBRARIAN_PATRONYMIC)).build();
 	}
 
 	private boolean isLibrarian(ResultSet resultSet) throws SQLException {
-		return resultSet.getString(Column.USER_ROLE).equals(Role.LIBRARIAN.getValue());
+		return resultSet.getString(USER_ROLE).equals(Role.LIBRARIAN.getValue());
 	}
 
 	private boolean isLibrarian(User user) {

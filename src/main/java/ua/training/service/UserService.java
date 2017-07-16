@@ -51,7 +51,7 @@ public class UserService {
 	}
 
 	public Optional<User> getUserByEmail(CredentialsDto credentials) {
-		LOGGER.info("Get user by emil: " + credentials.getEmail() + MessageUtils.COMMA + credentials.getPassword());
+		LOGGER.info("Get user by emil: " + credentials.getEmail());
 		try (UserDao userDao = daoFactory.createUserDao()) {
 			Optional<User> user = userDao.getUserByEmail(credentials.getEmail());
 			if (user.isPresent() && isPasswordValid(credentials.getPassword(), user.get())) {
@@ -62,7 +62,7 @@ public class UserService {
 	}
 
 	public void createReader(Reader reader) {
-		LOGGER.info("Create reader: " + reader);
+		LOGGER.info("Create reader: " + reader.getReaderCardNumber());
 		hashUserPassword(reader);
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();

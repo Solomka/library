@@ -25,7 +25,7 @@ public class BookInstanceService {
 	}
 
 	public void createBookInstance(BookInstance bookInstance) {
-		LOGGER.info("Create book instance: " + bookInstance);
+		LOGGER.info("Create book instance: " + bookInstance.getInventoryNumber());
 		try (BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao()) {
 			bookInstanceDao.create(bookInstance);
 		}

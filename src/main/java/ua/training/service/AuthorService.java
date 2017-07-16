@@ -28,7 +28,7 @@ public class AuthorService {
 	}
 
 	public void createAuthor(Author author) {
-		LOGGER.info("Create author: " + author);
+		LOGGER.info("Create author: " + author.getSurname());
 		try (AuthorDao authorDao = daoFactory.createAuthorDao()) {
 			authorDao.create(author);
 		}

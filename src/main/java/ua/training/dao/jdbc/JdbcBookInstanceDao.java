@@ -12,7 +12,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.dao.BookInstanceDao;
-import ua.training.entity.Book;
 import ua.training.entity.BookInstance;
 import ua.training.entity.Status;
 import ua.training.exception.ServerException;
@@ -21,11 +20,16 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookInstanceDao.class);
 
-	private static String GET_BOOK_INSTANCE_BY_ID = "SELECT * FROM book_instance WHERE id_book_instance=?";
+	private static String GET_BOOK_INSTANCE_BY_ID = "SELECT id_book_instance, status, inventory_number FROM book_instance WHERE id_book_instance=?";
 	private static String CREATE_BOOK_INSTANCE = "INSERT INTO book_instance (inventory_number, status, id_book) VALUES (?, ?, ?)";
 	private static String UPDATE_BOOK_INSTANCE = "UPDATE book_instance SET status=?, inventory_number=? WHERE id_book_instance=?";
 	private static String DELETE_BOOK_INSTANCE = "DELETE FROM book_instance WHERE id_book_instance=?";
 
+	// book_instance table columns' names
+	private static String BOOK_INSTANCE_ID = "id_book_instance";
+	private static String BOOK_INSTANCE_STATUS = "status";
+	private static String BOOK_INSTANCE_INVENTORY_NUMBER = "inventory_number";
+	
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
@@ -78,7 +82,7 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 				bookInstance.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookInstanceDao create SQL exception: " + bookInstance.toString(), e);
+			LOGGER.error("JdbcBookInstanceDao create SQL exception: " + bookInstance.getInventoryNumber(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -92,7 +96,7 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 			query.executeUpdate();
 
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookInstanceDao update SQL exception: " + bookInstance.toString(), e);
+			LOGGER.error("JdbcBookInstanceDao update SQL exception: " + bookInstance.getId(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -108,11 +112,22 @@ public class JdbcBookInstanceDao implements BookInstanceDao {
 		}
 	}
 
-	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
-		return new BookInstance.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID))
-				.setStatus(Status.forValue(resultSet.getString(Column.BOOK_INSTANCE_STATUS)))
-				.setInventoryNumber(resultSet.getString(Column.BOOK_INSTANCE_INVENTORY_NUMBER))
-				.setBook(new Book.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID_BOOK)).build()).build();
+	protected static BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
+		return new BookInstance.Builder().setId(resultSet.getLong(BOOK_INSTANCE_ID))
+				.setStatus(checkResultSetBookInstanceStatusValue(resultSet))
+				.setInventoryNumber(resultSet.getString(BOOK_INSTANCE_INVENTORY_NUMBER)).build();
+	}
+	
+	protected static BookInstance extractBookInstanceWithBookFromResultSet(ResultSet resultSet) throws SQLException {
+		return new BookInstance.Builder().setId(resultSet.getLong(BOOK_INSTANCE_ID))
+				.setStatus(checkResultSetBookInstanceStatusValue(resultSet))
+				.setInventoryNumber(resultSet.getString(BOOK_INSTANCE_INVENTORY_NUMBER))
+				.setBook(JdbcBookDao.extractBookFromResultSet(resultSet)).build();
+	}
+	
+	private static Status checkResultSetBookInstanceStatusValue(ResultSet resultSet) throws SQLException {
+		return (resultSet.getString(BOOK_INSTANCE_STATUS) == null) ? null
+				: Status.forValue(resultSet.getString(BOOK_INSTANCE_STATUS));
 	}
 
 	@Override

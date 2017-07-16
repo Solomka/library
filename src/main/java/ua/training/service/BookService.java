@@ -76,7 +76,7 @@ public class BookService {
 	}
 
 	public void createBook(BookDto bookDto) {
-		LOGGER.info("Create book with authors: " + bookDto);
+		LOGGER.info("Create book with authors: " + bookDto.getIsbn());
 		Book book = BookDtoBookConverter.toBook(bookDto);
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();

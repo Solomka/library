@@ -53,6 +53,14 @@ public class JdbcBookDao implements BookDao {
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
 			+ " WHERE id_book_instance=?";
 
+	// book table columns' names
+	private static String BOOK_ID = "id_book";
+	private static String BOOK_ISBN = "isbn";
+	private static String BOOK_TITLE = "title";
+	private static String BOOK_PUBLISHER = "publisher";
+	private static String BOOK_AVAILABILITY = "availability";
+
+		
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
@@ -77,7 +85,7 @@ public class JdbcBookDao implements BookDao {
 		try (Statement query = connection.createStatement();
 				ResultSet resultSet = query.executeQuery(GET_ALL_BOOKS_WITH_AUTHORS)) {
 			while (resultSet.next()) {
-				books.add(extractBookWithAuthors(resultSet));
+				books.add(extractBookWithAuthorsFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao getAll SQL exception", e);
@@ -94,7 +102,7 @@ public class JdbcBookDao implements BookDao {
 			query.setLong(1, id);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
-				book = Optional.of(extractBookWithInstancesAndAuthors(resultSet));
+				book = Optional.of(extractBookWithInstancesAndAuthorsFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao getById SQL exception: " + id, e);
@@ -118,7 +126,7 @@ public class JdbcBookDao implements BookDao {
 				book.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookDao create SQL exception: " + book.toString(), e);
+			LOGGER.error("JdbcBookDao create SQL exception: " + book.getIsbn(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -176,7 +184,7 @@ public class JdbcBookDao implements BookDao {
 			query.setLong(1, id);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
-				book = Optional.of(extractBookWithInstancesAndAuthors(resultSet));
+				book = Optional.of(extractBookWithInstancesAndAuthorsFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao getBookWithAvailableInstances SQL exception: " + id, e);
@@ -193,7 +201,7 @@ public class JdbcBookDao implements BookDao {
 			query.setString(1, title);
 			ResultSet resultSet = query.executeQuery();
 			while (resultSet.next()) {
-				books.add(extractBookWithAuthors(resultSet));
+				books.add(extractBookWithAuthorsFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao searchByTsearchBookWithAuthorsByTitleitle SQL exception: " + title, e);
@@ -212,7 +220,7 @@ public class JdbcBookDao implements BookDao {
 			query.setString(3, author);
 			ResultSet resultSet = query.executeQuery();
 			while (resultSet.next()) {
-				books.add(extractBookWithAuthors(resultSet));
+				books.add(extractBookWithAuthorsFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao searchBookWithAuthorsByAuthor SQL exception: " + author, e);
@@ -229,7 +237,7 @@ public class JdbcBookDao implements BookDao {
 			query.setLong(1, instanceId);
 			ResultSet resultSet = query.executeQuery();
 			if (resultSet.next()) {
-				book = Optional.of(extractBookWithAuthors(resultSet));
+				book = Optional.of(extractBookWithAuthorsFromResultSet(resultSet));
 			}
 		} catch (SQLException e) {
 			LOGGER.error("JdbcBookDao searchByBookInstanceId SQL exception: " + instanceId, e);
@@ -238,25 +246,25 @@ public class JdbcBookDao implements BookDao {
 		return book;
 	}
 
-	private Book extractBookWithAuthors(ResultSet resultSet) throws SQLException {
+	protected static Book extractBookWithAuthorsFromResultSet(ResultSet resultSet) throws SQLException {
 		Book book = extractBookFromResultSet(resultSet);
-		book.addAuthor(extractAuthorFromResultSet(resultSet));
+		book.addAuthor(JdbcAuthorDao.extractAuthorFromResultSet(resultSet));
 		while (resultSet.next() && book.equals(extractBookFromResultSet(resultSet))) {
-			book.addAuthor(extractAuthorFromResultSet(resultSet));
+			book.addAuthor(JdbcAuthorDao.extractAuthorFromResultSet(resultSet));
 		}
 		resultSet.previous();
 		return book;
 	}
 
-	private Book extractBookWithInstancesAndAuthors(ResultSet resultSet) throws SQLException {
+	protected static Book extractBookWithInstancesAndAuthorsFromResultSet(ResultSet resultSet) throws SQLException {
 		Book book = extractBookFromResultSet(resultSet);
-		Author author = extractAuthorFromResultSet(resultSet);
-		BookInstance bookInstance = extractBookInstanceFromResultSet(resultSet);
+		Author author =JdbcAuthorDao.extractAuthorFromResultSet(resultSet);
+		BookInstance bookInstance = JdbcBookInstanceDao.extractBookInstanceFromResultSet(resultSet);
 		book.addAuthor(author);
 		book.addBookInstance(bookInstance);
 		while (resultSet.next()) {
-			author = extractAuthorFromResultSet(resultSet);
-			bookInstance = extractBookInstanceFromResultSet(resultSet);
+			author = JdbcAuthorDao.extractAuthorFromResultSet(resultSet);
+			bookInstance = JdbcBookInstanceDao.extractBookInstanceFromResultSet(resultSet);
 			if (!book.getAuthors().contains(author)) {
 				book.addAuthor(author);
 			}
@@ -267,37 +275,12 @@ public class JdbcBookDao implements BookDao {
 		return book;
 	}
 
-	private Book extractBookFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Book.Builder().setId(resultSet.getLong(Column.BOOK_ID))
-				.setIsbn(resultSet.getString(Column.BOOK_ISBN)).setTitle(resultSet.getString(Column.BOOK_TITLE))
-				.setPublisher(resultSet.getString(Column.BOOK_PUBLISHER))
-				.setAvailability(Availability.forValue(resultSet.getString(Column.BOOK_AVAILABILITY))).build();
-	}
-
-	private Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Author.Builder().setId(resultSet.getLong(Column.AUTHOR_ID))
-				.setName(resultSet.getString(Column.AUTHOR_NAME)).setSurname(resultSet.getString(Column.AUTHOR_SURNAME))
-				.setCountry(resultSet.getString(Column.AUTHOR_COUNTRY)).build();
-	}
-
-	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
-		return new BookInstance.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID))
-				.setStatus(checkResultSetBookInstanceStatusValue(resultSet))
-				.setInventoryNumber(resultSet.getString(Column.BOOK_INSTANCE_INVENTORY_NUMBER))
-				.setBook(new Book.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID_BOOK)).build()).build();
-	}
-
-	/**
-	 * Check if book_instance status is not null
-	 * <p>
-	 * In GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID request we need to get book
-	 * with authors even if it doesn't contain instances for providing librarian
-	 * with ability to add book instance
-	 */
-	private Status checkResultSetBookInstanceStatusValue(ResultSet resultSet) throws SQLException {
-		return (resultSet.getString(Column.BOOK_INSTANCE_STATUS) == null) ? null
-				: Status.forValue(resultSet.getString(Column.BOOK_INSTANCE_STATUS));
-	}
+	protected static Book extractBookFromResultSet(ResultSet resultSet) throws SQLException {
+		return new Book.Builder().setId(resultSet.getLong(BOOK_ID))
+				.setIsbn(resultSet.getString(BOOK_ISBN)).setTitle(resultSet.getString(BOOK_TITLE))
+				.setPublisher(resultSet.getString(BOOK_PUBLISHER))
+				.setAvailability(Availability.forValue(resultSet.getString(BOOK_AVAILABILITY))).build();
+	}	
 
 	@Override
 	public void close() {

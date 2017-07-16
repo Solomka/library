@@ -28,11 +28,11 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcBookOrderDao.class);
 
 	private static String GET_ALL_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " ORDER BY creation_date DESC";
 	private static String GET_ORDER_BY_ID = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE id_order=?";
 	private static String CREATE_ORDER = "INSERT INTO book_order (creation_date, id_book_instance, id_reader) VALUES (?, ?, ?)";
@@ -40,7 +40,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			+ " WHERE id_order=?";
 	private static String DELETE_ORDER = "DELETE FROM book_order WHERE id_order=?";
 	private static String GET_NOT_RETURNED_READER_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE actual_return_date IS NULL  AND id_reader=? AND id_order NOT IN (SELECT id_order"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
@@ -48,7 +48,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			+ " ORDER BY creation_date DESC";
 	private static String COUNT_UNRETURNED_BOOK_INSTANCES_NUMBER = "SELECT COUNT(*) AS unreturned_book_instances"
 			+ " FROM (SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE actual_return_date IS NULL AND id_reader=? AND id_order NOT IN (SELECT id_order"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
@@ -60,28 +60,41 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
 			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room' AND id_reader=?)";
 	private static String GET_UNEXECUTED_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE fulfilment_date IS NULL" + " ORDER BY creation_date ASC";
 	private static String GET_OUTSTANDING_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING(id_reader) JOIN book_instance USING(id_book_instance) JOIN book USING (id_book)"
 			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='subscription'"
 			+ " ORDER BY return_date ASC";
 	private static String SEARCH_NOT_RETURNED_ORDERS_BY_READER_CARD_NUMBER = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE actual_return_date IS NULL AND reader_card_number=?" + " ORDER BY creation_date DESC";
 	private static String GET_ORDERS_FOR_READING_ROOM_RETURN = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_book, id_reader, reader_card_number, id_librarian"
+			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
 			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room'";
 
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
+	// book_order table columns' names
+	private	static String ORDER_ID = "id_order";
+	private	static String ORDER_CREATION_DATE = "creation_date";
+	private	static String ORDER_FULFILMENT_DATE = "fulfilment_date";
+	private	static String ORDER_PICKUP_DATE = "pickup_date";
+	private	static String ORDER_RETURN_DATE = "return_date";
+	private	static String ORDER_ACTUAL_RETURN_DATE = "actual_return_date";
+	private	static String ORDER_ID_BOOK_INSTANCE = "id_book_instance";
+	private	static String ORDER_ID_READER = "id_reader";
+	private	static String ORDER_ID_LIBRARIAN = "id_librarian";
+	
 	private static String UNRETURNED_BOOK_INSTANCES = "unreturned_book_instances";
 	private static String UNRETURNED_SAME_BOOK_INSTANCES = "unreturned_same_book_instances";
+	
+	private static String READER_READER_CARD_NUMBER = "reader_card_number";
 
 	public JdbcBookOrderDao(Connection connection) {
 		this.connection = connection;
@@ -141,7 +154,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 				bookOrder.setId(keys.getLong(1));
 			}
 		} catch (SQLException e) {
-			LOGGER.error("JdbcBookOrderDao create SQL exception: " + bookOrder.toString(), e);
+			LOGGER.error("JdbcBookOrderDao create SQL exception: " + bookOrder.getCreationDate(), e);
 			throw new ServerException(e);
 		}
 	}
@@ -291,24 +304,17 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	}
 
 	private BookOrder extractBookOrder(ResultSet resultSet) throws SQLException {
-		return new BookOrder.Builder().setId(resultSet.getLong(Column.ORDER_ID))
-				.setCreationDate(resultSet.getDate(Column.ORDER_CREATION_DATE).toLocalDate())
-				.setFulfilmentDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_FULFILMENT_DATE))
-				.setPickUpDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_PICKUP_DATE))
-				.setReturnDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_RETURN_DATE))
-				.setActualReturnDate(checkResultSetLocalDateValue(resultSet, Column.ORDER_ACTUAL_RETURN_DATE))
-				.setBookInstance(extractBookInstanceFromResultSet(resultSet))
-				.setReader(new Reader.Builder().setId(resultSet.getLong(Column.ORDER_ID_READER))
-						.setReaderCardNumber(resultSet.getString(Column.READER_READER_CARD_NUMBER)).build())
-				.setLibrarian(new Librarian.Builder().setId(resultSet.getLong(Column.ORDER_ID_LIBRARIAN)).build())
+		return new BookOrder.Builder().setId(resultSet.getLong(ORDER_ID))
+				.setCreationDate(resultSet.getDate(ORDER_CREATION_DATE).toLocalDate())
+				.setFulfilmentDate(checkResultSetLocalDateValue(resultSet, ORDER_FULFILMENT_DATE))
+				.setPickUpDate(checkResultSetLocalDateValue(resultSet, ORDER_PICKUP_DATE))
+				.setReturnDate(checkResultSetLocalDateValue(resultSet, ORDER_RETURN_DATE))
+				.setActualReturnDate(checkResultSetLocalDateValue(resultSet, ORDER_ACTUAL_RETURN_DATE))
+				.setBookInstance(JdbcBookInstanceDao.extractBookInstanceFromResultSet(resultSet))
+				.setReader(new Reader.Builder().setId(resultSet.getLong(ORDER_ID_READER))
+						.setReaderCardNumber(resultSet.getString(READER_READER_CARD_NUMBER)).build())
+				.setLibrarian(new Librarian.Builder().setId(resultSet.getLong(ORDER_ID_LIBRARIAN)).build())
 				.build();
-	}
-
-	private BookInstance extractBookInstanceFromResultSet(ResultSet resultSet) throws SQLException {
-		return new BookInstance.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID))
-				.setStatus(Status.forValue(resultSet.getString(Column.BOOK_INSTANCE_STATUS)))
-				.setInventoryNumber(resultSet.getString(Column.BOOK_INSTANCE_INVENTORY_NUMBER))
-				.setBook(new Book.Builder().setId(resultSet.getLong(Column.BOOK_INSTANCE_ID_BOOK)).build()).build();
 	}
 
 	private LocalDate checkResultSetLocalDateValue(ResultSet resultSet, String dataFieldName) throws SQLException {
