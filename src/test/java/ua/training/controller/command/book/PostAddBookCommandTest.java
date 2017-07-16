@@ -1,4 +1,4 @@
-package ua.training.command.book;
+package ua.training.controller.command.book;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyListOf;
@@ -68,16 +68,15 @@ public class PostAddBookCommandTest {
 
 	@Test
 	// @Ignore
-	public void testPostAddBookValidInputCommand() throws ServletException, IOException {
+	public void testAddBookValidInput() throws ServletException, IOException {
+		BookDto bookDto = BookTestData.generateBookDtoWithAuthors();
+		
 		initObjectsMocking();
 		initPostAddBookCommand();
-		initObjectsMethodsStubbingForValidInput();
+		initObjectsMethodsStubbingForValidInput();		
 
-		BookDto bookDto = BookTestData.generateBookDtoWithAuthors();
-
-		String commandExecutionResult = postAddBookCommand.execute(httpServletRequest, httpServletResponse);
 		String expectedResultedResource = RedirectionManager.REDIRECTION;
-		String actualResultedResource = commandExecutionResult;
+		String actualResultedResource = postAddBookCommand.execute(httpServletRequest, httpServletResponse);
 
 		assertEquals(expectedResultedResource, actualResultedResource);
 		verify(bookService).createBook(bookDto);
@@ -85,18 +84,18 @@ public class PostAddBookCommandTest {
 
 	@Test
 	// @Ignore
-	public void testPostAddBookInvalidInputCommand() throws ServletException, IOException {
+	public void testAddBookInvalidInput() throws ServletException, IOException {
+		List<Author> authors = BookTestData.generateAuthorsList();
+		
 		initObjectsMocking();
 		initPostAddBookCommand();
 		initObjectsMethodsStubbingForInvalidEmptyInput();
-
-		List<Author> authors = BookTestData.generateAuthorsList();
+		
 		when(authorService.getAllAuthors()).thenReturn(authors);
 
-		String commandExecutionResult = postAddBookCommand.execute(httpServletRequest, httpServletResponse);
 		String expectedResultedResource = Page.ADD_BOOK_VIEW;
-		String actualResultedResource = commandExecutionResult;
-
+		String actualResultedResource = postAddBookCommand.execute(httpServletRequest, httpServletResponse);
+		
 		assertEquals(expectedResultedResource, actualResultedResource);
 		verify(httpServletRequest).setAttribute(eq(Attribute.AUTHORS), eq(authors));
 		verify(httpServletRequest).setAttribute(eq(Attribute.AVAILABILITIES), eq(Availability.getValues()));

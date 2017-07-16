@@ -46,7 +46,6 @@ public class Librarian extends User {
 		public Librarian build() {
 			return librarian;
 		}
-
 	}
 
 	public String getName() {
@@ -111,5 +110,4 @@ public class Librarian extends User {
 				.append(", surname=").append(surname).append(", patronymic=").append(patronymic).append("] ");
 		return builder2.toString();
 	}
-
 }

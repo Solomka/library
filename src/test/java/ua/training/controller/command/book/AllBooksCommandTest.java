@@ -1,4 +1,4 @@
-package ua.training.command.book;
+package ua.training.controller.command.book;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
@@ -41,7 +41,7 @@ public class AllBooksCommandTest {
 
 	@Test
 	// @Ignore
-	public void testAlBooksCommand() throws ServletException, IOException {
+	public void testGetAllBooks() throws ServletException, IOException {
 		List<Book> books = BookTestData.generateBooksListWithAuthors();
 
 		initObjectsMocking();

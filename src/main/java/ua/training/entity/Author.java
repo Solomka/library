@@ -45,7 +45,6 @@ public class Author implements Serializable {
 		public Author build() {
 			return author;
 		}
-
 	}
 
 	public Long getId() {
@@ -118,5 +117,4 @@ public class Author implements Serializable {
 				.append(", country=").append(country).append("]");
 		return builder2.toString();
 	}
-
 }

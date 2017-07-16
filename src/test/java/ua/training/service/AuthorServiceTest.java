@@ -5,15 +5,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ua.training.dao.AuthorDao;
 import ua.training.dao.DaoFactory;
 import ua.training.entity.Author;
+import ua.training.testData.AuthorTestData;
 
 public class AuthorServiceTest {
 
@@ -21,25 +20,13 @@ public class AuthorServiceTest {
 	private AuthorDao authorDao;
 	private AuthorService authorService;
 
-	private Author generateAuthor() {
-		return new Author.Builder().setName("Daniel").setSurname("Keyes").setCountry("America").build();
-	}
-
-	private List<Author> generateAuthorsList() {
-		return Arrays.asList(new Author[] {
-				new Author.Builder().setId(new Long(1)).setName("Daniel").setSurname("Keyes").setCountry("America")
-						.build(),
-				new Author.Builder().setId(new Long(2)).setName("Stephen").setSurname("King").setCountry("America")
-						.build() });
-	}
-
 	private void initObjectsMocking() {
 		daoFactory = mock(DaoFactory.class);
-		authorDao = mock(AuthorDao.class);		
+		authorDao = mock(AuthorDao.class);
 	}
-	
-	private void initAuthorService(){
-		authorService = new AuthorService(daoFactory);		
+
+	private void initAuthorService() {
+		authorService = new AuthorService(daoFactory);
 	}
 
 	private void initObjectsMethodsStubbing() {
@@ -47,9 +34,9 @@ public class AuthorServiceTest {
 	}
 
 	@Test
-	//@Ignore
+	// @Ignore
 	public void testCreateAuthor() {
-		Author author = generateAuthor();
+		Author author = AuthorTestData.generateAuthor();
 
 		initObjectsMocking();
 		initAuthorService();
@@ -62,9 +49,9 @@ public class AuthorServiceTest {
 	}
 
 	@Test
-	//@Ignore
+	// @Ignore
 	public void testGetAllAuthors() {
-		List<Author> authors = generateAuthorsList();
+		List<Author> authors = AuthorTestData.generateAuthorsList();
 
 		initObjectsMocking();
 		initAuthorService();

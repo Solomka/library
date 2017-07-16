@@ -198,41 +198,46 @@ public class JdbcUserDao implements UserDao {
 	@Override
 	public void update(User user) {
 		if (isLibrarian(user)) {
-			Librarian librarian = (Librarian) user;
-			try (PreparedStatement query = connection.prepareStatement(UPDATE_LIBRARIAN)) {
-				query.setString(1, librarian.getEmail());
-				query.setString(2, librarian.getPassword());
-				query.setBytes(3, librarian.getSalt());
-				query.setString(4, librarian.getName());
-				query.setString(5, librarian.getSurname());
-				query.setString(6, librarian.getPatronymic());
-				query.setLong(7, librarian.getId());
-				query.executeUpdate();
-
-			} catch (SQLException e) {
-				LOGGER.error("JdbcUserDao librarian update SQL exception: " + librarian.getId(), e);
-				throw new ServerException(e);
-			}
-
+			updateLibrarian(user);
 		} else {
-			Reader reader = (Reader) user;
-			try (PreparedStatement query = connection.prepareStatement(UPDATE_READER)) {
-				query.setString(1, reader.getEmail());
-				query.setString(2, reader.getPassword());
-				query.setBytes(3, reader.getSalt());
-				query.setString(4, reader.getName());
-				query.setString(5, reader.getSurname());
-				query.setString(6, reader.getPatronymic());
-				query.setString(7, reader.getPhone());
-				query.setString(8, reader.getAddress());
-				query.setString(9, reader.getReaderCardNumber());
-				query.setLong(10, reader.getId());
-				query.executeUpdate();
+			updateReader(user);
+		}
+	}
 
-			} catch (SQLException e) {
-				LOGGER.error("JdbcUserDao reader update SQL exception: " + reader.getId(), e);
-				throw new ServerException(e);
-			}
+	private void updateLibrarian(User user) {
+		Librarian librarian = (Librarian) user;
+		try (PreparedStatement query = connection.prepareStatement(UPDATE_LIBRARIAN)) {
+			query.setString(1, librarian.getEmail());
+			query.setString(2, librarian.getPassword());
+			query.setBytes(3, librarian.getSalt());
+			query.setString(4, librarian.getName());
+			query.setString(5, librarian.getSurname());
+			query.setString(6, librarian.getPatronymic());
+			query.setLong(7, librarian.getId());
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcUserDao librarian update SQL exception: " + librarian.getId(), e);
+			throw new ServerException(e);
+		}
+	}
+
+	private void updateReader(User user) {
+		Reader reader = (Reader) user;
+		try (PreparedStatement query = connection.prepareStatement(UPDATE_READER)) {
+			query.setString(1, reader.getEmail());
+			query.setString(2, reader.getPassword());
+			query.setBytes(3, reader.getSalt());
+			query.setString(4, reader.getName());
+			query.setString(5, reader.getSurname());
+			query.setString(6, reader.getPatronymic());
+			query.setString(7, reader.getPhone());
+			query.setString(8, reader.getAddress());
+			query.setString(9, reader.getReaderCardNumber());
+			query.setLong(10, reader.getId());
+			query.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.error("JdbcUserDao reader update SQL exception: " + reader.getId(), e);
+			throw new ServerException(e);
 		}
 	}
 

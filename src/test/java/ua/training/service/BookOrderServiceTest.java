@@ -58,7 +58,7 @@ public class BookOrderServiceTest {
 	@Test
 	// @Ignore
 	public void testGetAllOrders() {
-		List<BookOrder> bookOrders = BookOrderTestData.generateBookOrdersList();
+		List<BookOrder> bookOrders = BookOrderTestData.generateUnfulfilledBookOrdersList();
 
 		initObjectsMocking();
 		initBookOrderService();
@@ -75,7 +75,7 @@ public class BookOrderServiceTest {
 	@Test
 	// @Ignore
 	public void testGetNotReturnedReaderOrders() {
-		List<BookOrder> bookOrders = BookOrderTestData.generateBookOrdersList();
+		List<BookOrder> bookOrders = BookOrderTestData.generateUnfulfilledBookOrdersList();
 
 		initObjectsMocking();
 		initBookOrderService();
@@ -93,7 +93,7 @@ public class BookOrderServiceTest {
 	@Test
 	// @Ignore
 	public void testGetUnfulfilledOrders() {
-		List<BookOrder> bookOrders = BookOrderTestData.generateBookOrdersList();
+		List<BookOrder> bookOrders = BookOrderTestData.generateUnfulfilledBookOrdersList();
 
 		initObjectsMocking();
 		initBookOrderService();
@@ -127,7 +127,7 @@ public class BookOrderServiceTest {
 	@Test
 	// @Ignore
 	public void testSearchNotReturnedOrdersByReaderCardNumber() {
-		List<BookOrder> bookOrders = BookOrderTestData.generateBookOrdersList();
+		List<BookOrder> bookOrders = BookOrderTestData.generateUnfulfilledBookOrdersList();
 
 		initObjectsMocking();
 		initBookOrderService();

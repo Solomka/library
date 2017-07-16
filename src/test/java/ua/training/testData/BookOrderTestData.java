@@ -18,7 +18,7 @@ public final class BookOrderTestData {
 
 	}
 
-	public static List<BookOrder> generateBookOrdersList() {
+	public static List<BookOrder> generateUnfulfilledBookOrdersList() {
 		return Arrays.asList(new BookOrder[] {
 				new BookOrder.Builder().setId(new Long(1)).setCreationDate(LocalDate.of(2017, 06, 15))
 						.setBookInstance(new BookInstance.Builder().setId(new Long(1)).build())

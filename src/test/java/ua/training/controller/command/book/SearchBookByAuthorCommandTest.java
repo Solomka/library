@@ -1,4 +1,4 @@
-package ua.training.command.book;
+package ua.training.controller.command.book;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
@@ -19,75 +19,73 @@ import org.junit.Test;
 
 import ua.training.constants.Attribute;
 import ua.training.constants.Page;
-import ua.training.controller.command.book.SearchBookByTitleCommand;
+import ua.training.controller.command.book.SearchBookByAuthorCommand;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.entity.Book;
 import ua.training.service.BookService;
 import ua.training.testData.BookTestData;
 
-public class SearchBookByTitleCommandTest {
+public class SearchBookByAuthorCommandTest {
 
 	private HttpServletRequest httpServletRequest;
 	private HttpServletResponse httpServletResponse;
 	private BookService bookService;
-	private SearchBookByTitleCommand searchBookByTitleCommand;
+	private SearchBookByAuthorCommand searchBookByAuthorCommand;
 
-	private List<Book> books = BookTestData.generateBooksListWithAuthors();
+	private List<Book> books = BookTestData.generateBooksListWithSameAuthor();
 
 	private void initObjectsMocking() {
 		httpServletRequest = mock(HttpServletRequest.class);
 		httpServletResponse = mock(HttpServletResponse.class);
-		bookService = mock(BookService.class);
+		bookService = mock(BookService.class);		
+	}
+	
+	private void initSearchBookByAuthorCommand(){
+		searchBookByAuthorCommand = new SearchBookByAuthorCommand(bookService);		
 	}
 
-	private void initSearchBookByTitleCommand() {
-		searchBookByTitleCommand = new SearchBookByTitleCommand(bookService);
-	}
-
-	private void initSearchBookWithAuthorsByTitleMethodStubbing() {
-		when(bookService.searchBookWithAuthorsByTitle(anyString())).thenReturn(books);
+	private void initSearchBookWithAuthorsByAuthorMethodStubbing() {
+		when(bookService.searchBookWithAuthorsByAuthor(anyString())).thenReturn(books);
 	}
 
 	private void initObjectsMethodsStubbingForValidInput() {
-		when(httpServletRequest.getParameter(Attribute.TITLE)).thenReturn("Test Title");
+		when(httpServletRequest.getParameter(Attribute.AUTHOR)).thenReturn("Test Author");
 	}
 
 	private void initObjectsMethodsStubbingForInValidInput() {
 		when(httpServletRequest.getContextPath()).thenReturn("\\library");
 		when(httpServletRequest.getServletPath()).thenReturn("\\controller");
-		when(httpServletRequest.getParameter(Attribute.TITLE)).thenReturn("<Test Title>");
+		when(httpServletRequest.getParameter(Attribute.AUTHOR)).thenReturn("<Test Author>");
 	}
 
 	@Test
 	// @Ignore
-	public void testSearchBookByTitleValidInputCommand() throws ServletException, IOException {
+	public void testSearchBookByAuthorValidInput() throws ServletException, IOException {
 		initObjectsMocking();
-		initSearchBookByTitleCommand();
-		initSearchBookWithAuthorsByTitleMethodStubbing();
+		initSearchBookByAuthorCommand();
+		initSearchBookWithAuthorsByAuthorMethodStubbing();
 		initObjectsMethodsStubbingForValidInput();
 
-		String commandExecutionResult = searchBookByTitleCommand.execute(httpServletRequest, httpServletResponse);
 		String expectedResultedResource = Page.ALL_BOOKS_VIEW;
-		String actualResultedResource = commandExecutionResult;
+		String actualResultedResource = searchBookByAuthorCommand.execute(httpServletRequest, httpServletResponse);
 
 		assertEquals(expectedResultedResource, actualResultedResource);
-		verify(bookService).searchBookWithAuthorsByTitle(anyString());
+		verify(bookService).searchBookWithAuthorsByAuthor(anyString());
 		verify(httpServletRequest).setAttribute(anyString(), eq(books));
 	}
 
 	@Test
 	// @Ignore
-	public void testSearchBookByTitleInValidInputCommand() throws ServletException, IOException {
+	public void testSearchBookByAuthorInvalidInput() throws ServletException, IOException {
 		initObjectsMocking();
-		initSearchBookByTitleCommand();
-		initSearchBookWithAuthorsByTitleMethodStubbing();
+		initSearchBookByAuthorCommand();
+		initSearchBookWithAuthorsByAuthorMethodStubbing();
 		initObjectsMethodsStubbingForInValidInput();
 
-		String commandExecutionResult = searchBookByTitleCommand.execute(httpServletRequest, httpServletResponse);
 		String expectedResultedResource = RedirectionManager.REDIRECTION;
-		String actualResultedResource = commandExecutionResult;
+		String actualResultedResource = searchBookByAuthorCommand.execute(httpServletRequest, httpServletResponse);
 
 		assertEquals(expectedResultedResource, actualResultedResource);
-		verify(bookService, never()).searchBookWithAuthorsByTitle(anyString());
+		verify(bookService, never()).searchBookWithAuthorsByAuthor(anyString());
 	}
 }

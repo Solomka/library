@@ -3,7 +3,6 @@ package ua.training.dto;
 import java.util.Arrays;
 
 import ua.training.entity.Availability;
-import ua.training.entity.Book;
 import ua.training.entity.IBuilder;
 
 public class BookDto {
@@ -16,7 +15,6 @@ public class BookDto {
 	private String[] authorsIds;
 
 	public BookDto() {
-
 	}
 
 	public static class Builder implements IBuilder<BookDto> {
@@ -42,7 +40,7 @@ public class BookDto {
 			book.availability = availability;
 			return this;
 		}
-		
+
 		public Builder setAuthorsIds(String[] authorsIds) {
 			book.authorsIds = authorsIds;
 			return this;

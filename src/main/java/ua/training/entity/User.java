@@ -131,5 +131,4 @@ public abstract class User implements Serializable {
 				.append(", role=").append(role).append("]");
 		return builder.toString();
 	}
-
 }

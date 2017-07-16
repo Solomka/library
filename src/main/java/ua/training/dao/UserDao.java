@@ -21,6 +21,4 @@ public interface UserDao extends GenericDao<User, Long>, AutoCloseable {
 	void createLibrarian(Librarian librarian);
 
 	void close();
-
-	
 }

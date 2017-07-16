@@ -35,6 +35,14 @@ public final class UserTestData {
 								.setReaderCardNumber("KB89098700987").build() });
 	}
 
+	public static Reader generateReader() {
+		return new Reader.Builder().setId(new Long(1)).setEmail("anna@gmail.com")
+				.setPassword("1edef61aae8735e33727fb3df2e147cf1844a1efb25a1953c6e999e9b83837be")
+				.setSalt(new byte[] { 47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33 })
+				.setRole(Role.READER).setName("Анна").setSurname("Єршак").setPatronymic("Віталіївна")
+				.setPhone("+380948596886").setAddress("вул. Сковороди, 3").setReaderCardNumber("KB12456789876").build();
+	}
+
 	public static Optional<Reader> generateReaderOptional() {
 		return Optional.of(new Reader.Builder().setId(new Long(1)).setEmail("anna@gmail.com")
 				.setPassword("1edef61aae8735e33727fb3df2e147cf1844a1efb25a1953c6e999e9b83837be")
@@ -42,6 +50,14 @@ public final class UserTestData {
 				.setRole(Role.READER).setName("Анна").setSurname("Єршак").setPatronymic("Віталіївна")
 				.setPhone("+380948596886").setAddress("вул. Сковороди, 3").setReaderCardNumber("KB12456789876")
 				.build());
+	}
+
+	public static User generateReaderAsUser() {
+		return new Reader.Builder().setId(new Long(1)).setEmail("anna@gmail.com")
+				.setPassword("1edef61aae8735e33727fb3df2e147cf1844a1efb25a1953c6e999e9b83837be")
+				.setSalt(new byte[] { 47, 105, -75, 51, -9, 95, -109, 107, 58, 68, 39, -56, -18, -31, -85, 33 })
+				.setRole(Role.READER).setName("Анна").setSurname("Єршак").setPatronymic("Віталіївна")
+				.setPhone("+380948596886").setAddress("вул. Сковороди, 3").setReaderCardNumber("KB12456789876").build();
 	}
 
 	public static Optional<User> generateReaderAsUserOptional() {

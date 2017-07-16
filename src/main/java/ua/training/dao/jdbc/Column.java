@@ -9,7 +9,6 @@ package ua.training.dao.jdbc;
 public final class Column {
 
 	private Column() {
-
 	}
 
 	// user table columns' names

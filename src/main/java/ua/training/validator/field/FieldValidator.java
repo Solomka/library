@@ -2,6 +2,12 @@ package ua.training.validator.field;
 
 import java.util.List;
 
+/**
+ * abstract class that is basic class for all entity/dto fields validators
+ * 
+ * @author Solomka
+ *
+ */
 public abstract class FieldValidator {
 
 	private FieldValidatorKey fieldValidatorKey;

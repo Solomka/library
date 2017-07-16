@@ -94,14 +94,19 @@ public class BookOrderService {
 			Optional<BookInstance> optionalBookInsatnce = bookInstanceDao.getById(bookInsatnceId);
 
 			if (!optionalBookInsatnce.isPresent()) {
+				LOGGER.error("Such bookInstance doesn't exist: " + bookInsatnceId);
 				throw new ServiceException(Message.BOOK_INSTANCE_IS_NOT_FOUND + bookInsatnceId);
 			}
 
 			if (!isReaderAllowedToCreateBookOrder(unreturnedBookInstancesNumber)) {
+				LOGGER.error("Can't create order 'cause max number of allowed orders is exeeded for reader with id: "
+						+ readerId);
 				throw new ServiceException(Message.BOOK_INSTANCES_MAX_NUMBER_ORDER_CREATION_RESTRICTION);
 			}
 
 			if (!isReaderAllowedToCreateConcreteBookOrder(unreturnedSameBookInstancesNumber)) {
+				LOGGER.error("Can't create order 'cause reader with id: " + readerId
+						+ " has already ordered same book instance");
 				throw new ServiceException(Message.SAME_BOOK_INSTANCES_ORDER_CREATION_RESTRICTION);
 			}
 			BookInstance bookInsatnce = optionalBookInsatnce.get();
@@ -146,15 +151,13 @@ public class BookOrderService {
 
 	public void fulfilOrder(Long orderId, Long librarianId) {
 		LOGGER.info("Fulfil order: " + orderId);
-		// class level dao
-		// connection will be closed regardless of exception
-		// here transaction is closed but connection is not
 		try (DaoConnection connection = daoFactory.getConnection()) {
 			connection.begin();
 			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
 			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
 
 			if (!optionalOrder.isPresent()) {
+				LOGGER.error("Such order doesn't exist: " + orderId);
 				throw new ServiceException(Message.BOOK_ORDER_IS_NOT_FOUND + orderId);
 			}
 
@@ -179,6 +182,7 @@ public class BookOrderService {
 			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
 
 			if (!optionalOrder.isPresent()) {
+				LOGGER.error("Such order doesn't exist: " + orderId);
 				throw new ServiceException(Message.BOOK_ORDER_IS_NOT_FOUND + orderId);
 			}
 
@@ -210,6 +214,7 @@ public class BookOrderService {
 			Optional<BookOrder> optionalOrder = bookOrderDao.getById(orderId);
 
 			if (!optionalOrder.isPresent()) {
+				LOGGER.error("Such order doesn't exist: " + orderId);
 				throw new ServiceException(Message.BOOK_ORDER_IS_NOT_FOUND + orderId);
 			}
 

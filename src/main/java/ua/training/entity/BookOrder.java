@@ -2,7 +2,6 @@ package ua.training.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class BookOrder implements Serializable {
 
@@ -22,7 +21,6 @@ public class BookOrder implements Serializable {
 	private Librarian librarian;
 
 	public BookOrder() {
-
 	}
 
 	public static class Builder implements IBuilder<BookOrder> {
@@ -77,7 +75,6 @@ public class BookOrder implements Serializable {
 		public BookOrder build() {
 			return bookOrder;
 		}
-
 	}
 
 	public Long getId() {
@@ -180,7 +177,6 @@ public class BookOrder implements Serializable {
 			return false;
 		}
 		return ((reader != null) ? reader.equals(bookOrder.reader) : bookOrder.reader == null);
-
 	}
 
 	@Override

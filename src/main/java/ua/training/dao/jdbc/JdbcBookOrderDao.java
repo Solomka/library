@@ -160,7 +160,6 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			LOGGER.error("JdbcBookOrderDao update SQL exception: " + bookOrder.getId(), e);
 			throw new ServerException(e);
 		}
-
 	}
 
 	@Override
@@ -336,5 +335,4 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			}
 		}
 	}
-
 }

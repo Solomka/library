@@ -15,7 +15,6 @@ public final class CommandKeyGenerator {
 		String method = request.getMethod().toUpperCase();
 		String path = request.getRequestURI().replaceAll(CONTROLLER_PATH, REPLACEMENT);
 		String key = method + DELIMITER + path;
-		System.out.println("Key: " + key);
 		return key;
 	}
 }

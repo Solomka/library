@@ -85,7 +85,6 @@ public class Book implements Serializable {
 		public Book build() {
 			return book;
 		}
-
 	}
 
 	public Long getId() {
@@ -180,5 +179,4 @@ public class Book implements Serializable {
 				.append(", authors=").append(authors).append(", bookInstances=").append(bookInstances).append("]");
 		return builder2.toString();
 	}
-
 }

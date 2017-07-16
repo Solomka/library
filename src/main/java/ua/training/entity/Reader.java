@@ -149,5 +149,4 @@ public class Reader extends User {
 				.append(", readerCardNumber=").append(readerCardNumber).append("] ");
 		return builder2.toString();
 	}
-
 }

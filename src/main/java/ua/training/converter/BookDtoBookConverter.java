@@ -10,7 +10,6 @@ import ua.training.entity.Book;
 public final class BookDtoBookConverter {
 
 	private BookDtoBookConverter() {
-
 	}
 
 	public static Book toBook(BookDto bookDto) {

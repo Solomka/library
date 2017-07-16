@@ -32,7 +32,6 @@ public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public FrontController() {
-
 	}
 
 	@Override
@@ -68,9 +67,9 @@ public class FrontController extends HttpServlet {
 			String commandResultedResource = command.execute(request, response);
 			forwardToCommandResultedPage(httpWrapper, commandResultedResource);
 		} catch (ServiceException ex) {
+			LOGGER.error("Error has occured while command execution with key: " + commandKey);
 			redirecToHomePageWithErrorMessage(httpWrapper, ex);
 		}
-
 	}
 
 	private void forwardToCommandResultedPage(HttpWrapper httpWrapper, String resultRedirectResource)

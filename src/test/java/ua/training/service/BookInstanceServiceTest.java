@@ -8,9 +8,8 @@ import org.junit.Test;
 
 import ua.training.dao.BookInstanceDao;
 import ua.training.dao.DaoFactory;
-import ua.training.entity.Book;
 import ua.training.entity.BookInstance;
-import ua.training.entity.Status;
+import ua.training.testData.BookInstanceTestData;
 
 public class BookInstanceServiceTest {
 
@@ -18,18 +17,13 @@ public class BookInstanceServiceTest {
 	private BookInstanceDao bookInstanceDao;
 	private BookInstanceService bookInstanceService;
 
-	private BookInstance generateBookInstance() {
-		return new BookInstance.Builder().setStatus(Status.AVAILABLE).setInventoryNumber("7689587645876")
-				.setBook(new Book.Builder().setId(new Long(1)).build()).build();
-	}
-
 	private void initObjectsMocking() {
 		daoFactory = mock(DaoFactory.class);
-		bookInstanceDao = mock(BookInstanceDao.class);		
+		bookInstanceDao = mock(BookInstanceDao.class);
 	}
-	
-	private void initBookInstanceService(){
-		bookInstanceService = new BookInstanceService(daoFactory);		
+
+	private void initBookInstanceService() {
+		bookInstanceService = new BookInstanceService(daoFactory);
 	}
 
 	private void initObjectsMethodsStubbing() {
@@ -39,7 +33,7 @@ public class BookInstanceServiceTest {
 	@Test
 	// @Ignore
 	public void testCreateBookInstance() {
-		BookInstance bookInstance = generateBookInstance();
+		BookInstance bookInstance = BookInstanceTestData.generateBookInstance();
 
 		initObjectsMocking();
 		initBookInstanceService();
@@ -54,7 +48,7 @@ public class BookInstanceServiceTest {
 	@Test
 	// @Ignore
 	public void testUpdateBookInstance() {
-		BookInstance bookInstance = generateBookInstance();
+		BookInstance bookInstance = BookInstanceTestData.generateBookInstance();
 
 		initObjectsMocking();
 		initBookInstanceService();
