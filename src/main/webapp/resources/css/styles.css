@@ -1,3 +1,28 @@
+html {
+	height: 100%;
+	box-sizing: border-box;
+}
+
+body {
+	position: relative;
+	margin: 0;
+	padding-bottom: 6rem;
+	min-height: 100%;
+	font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.main-container {
+	margin: 0 auto;
+}
+
+.footer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 1rem;
+}
+
 .pg-title {
 	margin-bottom: 3%;
 }
@@ -5,18 +30,6 @@
 .top-margin {
 	margin-top: 3%;
 }
-
-.main-container {
-	padding-bottom: 10%;
-}
-
-.footer {
-	width: 100%;
-	clear: both;
-	height: 5%; 
-	position : absolute;
-	bottom: 0;
-	}
 
 .error {
 	margin-top: 5%;
