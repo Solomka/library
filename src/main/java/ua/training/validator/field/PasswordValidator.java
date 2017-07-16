@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class PasswordValidator extends FieldValidator {
 
-	private static final String PASSWORD_REGEX = "^[\\wА-ЯІЇЄа-яіїє]{8,14}$";
+	private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,14}$";
 
 	private PasswordValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

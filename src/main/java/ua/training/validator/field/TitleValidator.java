@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class TitleValidator extends FieldValidator {
 
-	private static final String TITLE_REGEX = "[\\wА-ЯІЇЄа-яіїє\\d\\s’'-]{3,100}";
+	private static final String TITLE_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє\\d]+[\\wА-ЯІЇЄа-яіїє\\s’'-]{2,99}$";
 
 	private TitleValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

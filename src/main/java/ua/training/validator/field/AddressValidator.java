@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class AddressValidator extends FieldValidator {
 
-	private static final String ADDRESS_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\d\\s.’'-,]{3,100}$";
+	private static final String ADDRESS_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє\\d]+[a-zA-ZА-ЯІЇЄа-яіїє\\d\\s.’'-,]{2,99}$";
 	
 	private AddressValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class NameValidator extends FieldValidator {
 
-	private static final String NAME_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
+	private static final String NAME_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє]+([\\s’'-][A-Za-zА-ЯІЇЄа-яіїє]+)*$";
 	
 	private NameValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class CountryValidator extends FieldValidator {
 
-	private static final String COUNTRY_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
+	private static final String COUNTRY_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє]+([\\s’'-][A-Za-zА-ЯІЇЄа-яіїє]+)*$";
 	
 	private CountryValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

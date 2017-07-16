@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class SurnameValidator extends FieldValidator {
 
-	private static final String SURNAME_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s’'-]{3,100}$";
+	private static final String SURNAME_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє]+([\\s’'-][A-Za-zА-ЯІЇЄа-яіїє]+)*$";
 	
 	private SurnameValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

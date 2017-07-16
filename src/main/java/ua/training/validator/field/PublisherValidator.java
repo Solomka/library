@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class PublisherValidator extends FieldValidator {
 
-	private static final String PUBLISHER_REGEX = "^[a-zA-ZА-ЯІЇЄа-яіїє\\s\\d’'-]{3,100}$";
+	private static final String PUBLISHER_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє\\d]+[\\wА-ЯІЇЄа-яіїє\\s’'-]{2,99}$";
 	
 	private PublisherValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

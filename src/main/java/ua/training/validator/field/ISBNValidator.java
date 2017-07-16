@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class ISBNValidator extends FieldValidator {
 
-	private static final String ISBN_REGEX = "\\d{13}";
+	private static final String ISBN_REGEX = "^\\d{13}$";
 	
 	private ISBNValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

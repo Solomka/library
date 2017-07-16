@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class ReaderCardNumberValidator extends FieldValidator {
 
-	private static final String READER_CARD_NUMBER_REGEX = "[a-zA-ZА-ЯІЇЄа-яіїє\\d]{10,13}";
+	private static final String READER_CARD_NUMBER_REGEX = "^[A-ZА-ЯІЇЄ]{2}\\d{8,11}$";
 	
 	private ReaderCardNumberValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);
