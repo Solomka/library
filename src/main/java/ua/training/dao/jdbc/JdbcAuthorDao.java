@@ -21,9 +21,13 @@ public class JdbcAuthorDao implements AuthorDao {
 	private static final Logger LOGGER = LogManager.getLogger(JdbcAuthorDao.class);
 
 	private static String GET_ALL_AUTHORS = "SELECT id_author, name, surname, country FROM author";
+	
 	private static String GET_AUTHOR_BY_ID = "SELECT id_author, name, surname, country FROM author WHERE id_author=?";
+	
 	private static String CRAETE_AUTHOR = "INSERT INTO author (name, surname, country) VALUES (?, ?, ?)";
+	
 	private static String UPDATE_AUTHOR = "UPDATE author SET name=?, surname=?, country=? WHERE id_author=?";
+	
 	private static String DELETE_AUTHOR = "DELETE FROM author WHERE id_author=?";
 
 	// author table columns' names

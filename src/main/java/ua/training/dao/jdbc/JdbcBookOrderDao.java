@@ -31,47 +31,64 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " ORDER BY creation_date DESC";
+	
 	private static String GET_ORDER_BY_ID = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE id_order=?";
+	
 	private static String CREATE_ORDER = "INSERT INTO book_order (creation_date, id_book_instance, id_reader) VALUES (?, ?, ?)";
+	
 	private static String UPDATE_ORDER = "UPDATE book_order SET fulfilment_date=?, pickup_date=?, return_date=?, actual_return_date=?, id_librarian=?"
 			+ " WHERE id_order=?";
+	
 	private static String DELETE_ORDER = "DELETE FROM book_order WHERE id_order=?";
+	
 	private static String GET_NOT_RETURNED_READER_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE actual_return_date IS NULL  AND id_reader=? AND id_order NOT IN (SELECT id_order"
-			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
-			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room' AND id_reader=?)"
+			+ " WHERE actual_return_date IS NULL  AND id_reader=?"
+			+ " AND id_order NOT IN (SELECT id_order"
+				+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
+				+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room' AND id_reader=?)"
 			+ " ORDER BY creation_date DESC";
+	
 	private static String COUNT_UNRETURNED_BOOK_INSTANCES_NUMBER = "SELECT COUNT(*) AS unreturned_book_instances"
 			+ " FROM (SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
-			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
-			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE actual_return_date IS NULL AND id_reader=? AND id_order NOT IN (SELECT id_order"
-			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
-			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room' AND id_reader=?)) AS tb";
+				 + " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
+				 + " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
+			     + " WHERE actual_return_date IS NULL AND id_reader=?"
+			     + " AND id_order NOT IN (SELECT id_order"
+					+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
+					+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room' AND id_reader=?))"
+			+ " AS tb";
+	
 	private static String COUNT_UNRETURNED_SAME_BOOK_INSTANCES_NUMBER = "SELECT COUNT(id_order) unreturned_same_book_instances"
 			+ " FROM book_order JOIN reader USING(id_reader) JOIN book_instance USING(id_book_instance) JOIN book USING (id_book)"
-			+ " WHERE id_reader = ? AND actual_return_date IS NULL AND id_book IN (SELECT id_book"
-			+ " FROM book_instance" + " WHERE id_book_instance = ?) AND id_order NOT IN (SELECT id_order"
-			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
-			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room' AND id_reader=?)";
+			+ " WHERE id_reader = ? AND actual_return_date IS NULL"
+			+ " AND id_book IN (SELECT id_book"
+				+ " FROM book_instance WHERE id_book_instance = ?)"
+				+ " AND id_order NOT IN (SELECT id_order"
+					+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"
+					+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='reading room' AND id_reader=?)";
+	
 	private static String GET_UNEXECUTED_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE fulfilment_date IS NULL" + " ORDER BY creation_date ASC";
+	
 	private static String GET_OUTSTANDING_ORDERS = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING(id_reader) JOIN book_instance USING(id_book_instance) JOIN book USING (id_book)"
 			+ " WHERE return_date IS NOT NULL AND CURDATE() > return_date AND actual_return_date IS NULL AND availability='subscription'"
 			+ " ORDER BY return_date ASC";
-	private static String SEARCH_NOT_RETURNED_ORDERS_BY_READER_CARD_NUMBER = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
+	
+	private static String SEARCH_NOT_RETURNED_ORDERS_BY_READER_CARD_NUMBER = "SELECT id_order, creation_date,"
+			+ " fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
 			+ " WHERE actual_return_date IS NULL AND reader_card_number=?" + " ORDER BY creation_date DESC";
+	
 	private static String GET_ORDERS_FOR_READING_ROOM_RETURN = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance) JOIN book USING(id_book)"

@@ -28,40 +28,53 @@ public class JdbcUserDao implements UserDao {
 			+ " reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
 			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
 			+ " FROM users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian"
-			+ " UNION" + " SELECT id_user, email, password, role, salt,"
+			+ " UNION"
+			+ " SELECT id_user, email, password, role, salt,"
 			+ " reader.name, reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
 			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
 			+ " FROM users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader)"
-			+ " AS tb" + " WHERE role=?";
+			+ " AS tb"
+			+ " WHERE role=?";
+	
 	private static String GET_USER_BY_ID = "SELECT *"
 			+ " FROM (SELECT id_user, email, password, role, salt, reader.name,"
 			+ " reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
 			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
 			+ " FROM users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian"
-			+ " UNION" + " SELECT id_user, email, password, role, salt,"
+			+ " UNION"
+			+ " SELECT id_user, email, password, role, salt,"
 			+ " reader.name, reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
 			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
 			+ " FROM users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader)"
-			+ " AS tb" + " WHERE id_user=?";
+			+ " AS tb"
+			+ " WHERE id_user=?";
+	
 	private static String GET_USER_BY_EMAIL = "SELECT *"
 			+ " FROM (SELECT id_user, email, password, role, salt, reader.name,"
 			+ " reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number,"
 			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
 			+ " FROM users JOIN reader ON users.id_user = reader.id_reader LEFT JOIN librarian ON users.id_user = librarian.id_librarian"
-			+ " UNION" + " SELECT id_user, email, password, role, salt,"
+			+ " UNION"
+			+ " SELECT id_user, email, password, role, salt,"
 			+ " reader.name, reader.surname, reader.patronymic, reader.phone, reader.address, reader.reader_card_number, "
 			+ " librarian.name AS l_name, librarian.surname AS l_surname, librarian.patronymic AS l_patronymic"
 			+ " FROM users JOIN librarian ON users.id_user = librarian.id_librarian LEFT JOIN reader ON users.id_user = reader.id_reader)"
-			+ " AS tb" + " WHERE email=?";
+			+ " AS tb"
+			+ " WHERE email=?";
+	
 	private static String CREATE_USER = "INSERT INTO users (email, password, role, salt) VALUES (?, ?, ?, ?)";
-	private static String CREATE_READER = "INSERT INTO reader (id_reader, name, surname, patronymic, phone, address, reader_card_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static String CREATE_READER = "INSERT INTO reader (id_reader, name, surname, patronymic, phone, address, reader_card_number)"
+			+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static String CREATE_LIBRARIAN = "INSERT INTO librarian (id_librarian, name, surname, patronymic) VALUES (?, ?, ?, ?)";
+	
 	private static String UPDATE_READER = "UPDATE users JOIN reader ON users.id_user = reader.id_reader"
-			+ " SET users.email=?, users.password=?, users.salt=?, reader.name=?, reader.surname=?, reader.patronymic=?, reader.phone=?, reader.address=?, reader.reader_card_number=?"
+			+ " SET users.email=?, users.password=?, users.salt=?, reader.name=?, reader.surname=?, reader.patronymic=?,"
+			+ " reader.phone=?, reader.address=?, reader.reader_card_number=?"
 			+ " WHERE id_user=? ";
 	private static String UPDATE_LIBRARIAN = "UPDATE users JOIN librarian ON users.is_user = librarian.id_librarian"
 			+ " SET users.email=?, users.password=?, users.salt=?, librarian.name=?, librarian.surname=?, librarian.patronymic=?"
 			+ " WHERE id_user=?";
+	
 	private static String DELETE_USER = "DELETE FROM users WHERE id_user=?";
 
 	// user table columns' names
