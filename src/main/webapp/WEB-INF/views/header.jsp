@@ -25,8 +25,7 @@
 </head>
 
 <body>
-	<div class="container-fluid main-container">
-
+	<div class="container main-container">
 		<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -49,7 +48,8 @@
 							href="${pageContext.request.contextPath}/controller/librarian/readers"><fmt:message
 									key="library.readers" bundle="${rb}" /></a></li>
 					</c:if>
-					<li><a href="${pageContext.request.contextPath}/controller/${user.getRole().getValue()}/orders"><fmt:message
+					<li><a
+						href="${pageContext.request.contextPath}/controller/${user.getRole().getValue()}/orders"><fmt:message
 								key="library.orders" bundle="${rb}" /></a></li>
 
 				</c:if>
