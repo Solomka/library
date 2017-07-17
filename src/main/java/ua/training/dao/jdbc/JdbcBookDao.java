@@ -17,7 +17,6 @@ import ua.training.entity.Author;
 import ua.training.entity.Availability;
 import ua.training.entity.Book;
 import ua.training.entity.BookInstance;
-import ua.training.entity.Status;
 import ua.training.exception.ServerException;
 
 public class JdbcBookDao implements BookDao {
@@ -27,37 +26,35 @@ public class JdbcBookDao implements BookDao {
 	private static String GET_ALL_BOOKS_WITH_AUTHORS = "SELECT book.id_book, isbn, title, publisher, availability,"
 			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) ORDER BY title";
-	
+
 	private static String GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability,"
-			+ " author.id_author, name, surname, country,"
-			+ " id_book_instance, status, inventory_number"
+			+ " author.id_author, name, surname, country," + " id_book_instance, status, inventory_number"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) LEFT JOIN book_instance USING (id_book)"
 			+ " WHERE id_book=?";
-	
+
 	private static String CREATE_BOOK = "INSERT INTO book (isbn, title, publisher, availability) VALUES ( ?, ?, ?, ? )";
 	private static String SAVE_BOOK_AUTHORS = "INSERT INTO book_author (id_book, id_author) VALUES ( ?, ?)";
-	
+
 	private static String UPDATE_BOOK = "UPDATE book SET isbn=?, title=?, publisher=?, availability=? WHERE id_book=?";
-	
+
 	private static String DELETE_BOOK = "DELETE FROM book WHERE id_book=?";
-	
+
 	private static String GET_BOOK_WITH_AUTHORS_AND_AVAILABLE_INSTANCES_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability,"
-			+ " author.id_author, name, surname, country,"
-			+ " id_book_instance, status, inventory_number"
+			+ " author.id_author, name, surname, country," + " id_book_instance, status, inventory_number"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
 			+ " WHERE status='available' AND id_book=?";
-	
+
 	private static String SEARCH_BOOK_WITH_AUTHORS_BY_TITLE = "SELECT book.id_book, isbn, title, publisher, availability,"
 			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
 			+ " WHERE LOWER(title) LIKE CONCAT('%', LOWER(?), '%')";
-	
+
 	private static String SEARCH_BOOK_WITH_AUTHORS_BY_AUTHOR = "SELECT book.id_book, isbn, title, publisher, availability,"
 			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author)"
 			+ " WHERE LOWER(author.surname) LIKE CONCAT('%', LOWER(?), '%') OR LOWER(author.name) LIKE CONCAT('%', LOWER(?), '%')"
 			+ " OR CONCAT(LOWER(author.name), ' ', LOWER(author.surname)) LIKE CONCAT('%', LOWER(?), '%')";
-	
+
 	private static String SEARCH_BOOK_WITH_AUTHORS_BY_INSTANCE_ID = "SELECT book.id_book, isbn, title, publisher, availability,"
 			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) JOIN book_instance USING (id_book)"
@@ -70,7 +67,6 @@ public class JdbcBookDao implements BookDao {
 	private static String BOOK_PUBLISHER = "publisher";
 	private static String BOOK_AVAILABILITY = "availability";
 
-		
 	private Connection connection;
 	private boolean connectionShouldBeClosed;
 
@@ -268,7 +264,7 @@ public class JdbcBookDao implements BookDao {
 
 	protected static Book extractBookWithInstancesAndAuthorsFromResultSet(ResultSet resultSet) throws SQLException {
 		Book book = extractBookFromResultSet(resultSet);
-		Author author =JdbcAuthorDao.extractAuthorFromResultSet(resultSet);
+		Author author = JdbcAuthorDao.extractAuthorFromResultSet(resultSet);
 		BookInstance bookInstance = JdbcBookInstanceDao.extractBookInstanceFromResultSet(resultSet);
 		book.addAuthor(author);
 		book.addBookInstance(bookInstance);
@@ -286,11 +282,10 @@ public class JdbcBookDao implements BookDao {
 	}
 
 	protected static Book extractBookFromResultSet(ResultSet resultSet) throws SQLException {
-		return new Book.Builder().setId(resultSet.getLong(BOOK_ID))
-				.setIsbn(resultSet.getString(BOOK_ISBN)).setTitle(resultSet.getString(BOOK_TITLE))
-				.setPublisher(resultSet.getString(BOOK_PUBLISHER))
+		return new Book.Builder().setId(resultSet.getLong(BOOK_ID)).setIsbn(resultSet.getString(BOOK_ISBN))
+				.setTitle(resultSet.getString(BOOK_TITLE)).setPublisher(resultSet.getString(BOOK_PUBLISHER))
 				.setAvailability(Availability.forValue(resultSet.getString(BOOK_AVAILABILITY))).build();
-	}	
+	}
 
 	@Override
 	public void close() {

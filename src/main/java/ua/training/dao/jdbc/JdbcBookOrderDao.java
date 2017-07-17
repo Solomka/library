@@ -104,7 +104,6 @@ public class JdbcBookOrderDao implements BookOrderDao {
 	private	static String ORDER_PICKUP_DATE = "pickup_date";
 	private	static String ORDER_RETURN_DATE = "return_date";
 	private	static String ORDER_ACTUAL_RETURN_DATE = "actual_return_date";
-	private	static String ORDER_ID_BOOK_INSTANCE = "id_book_instance";
 	private	static String ORDER_ID_READER = "id_reader";
 	private	static String ORDER_ID_LIBRARIAN = "id_librarian";
 	

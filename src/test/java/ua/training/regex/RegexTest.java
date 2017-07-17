@@ -142,7 +142,7 @@ public class RegexTest {
 	public void testAddressRegexSuccess() {
 		String pass = "вул. Сковороди, 12";
 
-		boolean actual = pass.matches("^[A-Za-zА-ЯІЇЄа-яіїє\\d]+[a-zA-ZА-ЯІЇЄа-яіїє\\d\\s.’'-,]{2,99}$");
+		boolean actual = pass.matches("^[A-Za-zА-ЯІЇЄа-яіїє\\d](?=.*[a-zA-ZА-ЯІЇЄа-яіїє]{2,99})[a-zA-ZА-ЯІЇЄа-яіїє\\d\\s/\\.’'-,]*$");
 		boolean expected = true;
 
 		assertEquals(expected, actual);
@@ -151,9 +151,9 @@ public class RegexTest {
 	@Test
 	// @Ignore
 	public void testAddressRegexFailure() {
-		String pass = "";
+		String pass = "12345";
 
-		boolean actual = pass.matches("^[A-Za-zА-ЯІЇЄа-яіїє\\d]+[a-zA-ZА-ЯІЇЄа-яіїє\\d\\s.’'-,]{2,99}$");
+		boolean actual = pass.matches("^[A-Za-zА-ЯІЇЄа-яіїє\\d](?=.*[a-zA-ZА-ЯІЇЄа-яіїє]{2,99})[a-zA-ZА-ЯІЇЄа-яіїє\\d\\s/\\.’'-,]*$");
 		boolean expected = false;
 
 		assertEquals(expected, actual);
