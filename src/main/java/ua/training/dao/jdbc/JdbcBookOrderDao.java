@@ -303,7 +303,7 @@ public class JdbcBookOrderDao implements BookOrderDao {
 		return bookOrders;
 	}
 
-	private BookOrder extractBookOrder(ResultSet resultSet) throws SQLException {
+	protected static BookOrder extractBookOrder(ResultSet resultSet) throws SQLException {
 		return new BookOrder.Builder().setId(resultSet.getLong(ORDER_ID))
 				.setCreationDate(resultSet.getDate(ORDER_CREATION_DATE).toLocalDate())
 				.setFulfilmentDate(checkResultSetLocalDateValue(resultSet, ORDER_FULFILMENT_DATE))
@@ -317,15 +317,15 @@ public class JdbcBookOrderDao implements BookOrderDao {
 				.build();
 	}
 
-	private LocalDate checkResultSetLocalDateValue(ResultSet resultSet, String dataFieldName) throws SQLException {
+	private static LocalDate checkResultSetLocalDateValue(ResultSet resultSet, String dataFieldName) throws SQLException {
 		return (resultSet.getDate(dataFieldName) == null) ? null : resultSet.getDate(dataFieldName).toLocalDate();
 	}
 
-	private Date checkBookOrderLocalDateValue(LocalDate localDate) {
+	private static Date checkBookOrderLocalDateValue(LocalDate localDate) {
 		return (localDate == null) ? null : Date.valueOf(localDate);
 	}
 
-	private Object checkBookOrderLibrarian(Librarian librarian) {
+	private static Object checkBookOrderLibrarian(Librarian librarian) {
 		return (((librarian == null) || (librarian.getId().equals(new Long(0)))) ? null : librarian.getId());
 	}
 
