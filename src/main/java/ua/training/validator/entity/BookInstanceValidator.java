@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ua.training.entity.BookInstance;
-import ua.training.validator.field.FieldValidator;
+import ua.training.validator.field.AbstractFieldValidatorHandler;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
 public class BookInstanceValidator implements Validator<BookInstance> {
 
-	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
+	private AbstractFieldValidatorHandler fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
 	private BookInstanceValidator() {
 	}

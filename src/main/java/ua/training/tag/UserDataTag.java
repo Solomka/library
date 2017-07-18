@@ -10,6 +10,13 @@ import ua.training.locale.Message;
 import ua.training.locale.MessageLocale;
 import ua.training.locale.MessageUtils;
 
+/**
+ * Class that is responsible for creation custom tag that shows user's login
+ * info
+ * 
+ * @author Solomka
+ *
+ */
 @SuppressWarnings("serial")
 public class UserDataTag extends TagSupport {
 	private User user;
@@ -28,6 +35,11 @@ public class UserDataTag extends TagSupport {
 		return SKIP_BODY;
 	}
 
+	/**
+	 * Generates localized login user info
+	 * 
+	 * @return String localized login message
+	 */
 	private String showUserData() {
 		return new StringBuffer().append(MessageLocale.BUNDLE.getString(Message.LOGGED_IN_AS)).append(user.getEmail())
 				.append(MessageUtils.LEFT_PARENTHESIS)

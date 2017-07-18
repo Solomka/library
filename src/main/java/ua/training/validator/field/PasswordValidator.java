@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class PasswordValidator extends FieldValidator {
+public class PasswordValidator extends AbstractFieldValidatorHandler {
 
 	private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,14}$";
 

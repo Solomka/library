@@ -13,6 +13,12 @@ import org.apache.log4j.Logger;
 
 import ua.training.exception.ServerException;
 
+/**
+ * Class that is responsible for password hashing execution
+ * 
+ * @author Solomka
+ *
+ */
 public final class PasswordHashing {
 
 	private static final Logger LOGGER = LogManager.getLogger(PasswordHashing.class);
@@ -41,11 +47,28 @@ public final class PasswordHashing {
 		return Holder.INSTANCE;
 	}
 
+	/**
+	 * Generates password hash using salt unique for each password that is
+	 * stored in db and application salt that is stored in hashing.properties
+	 * file by means of sha256Hex algorithm
+	 * 
+	 * @param passwardToHash
+	 *            password to hash
+	 * @param salt
+	 *            salt using for pass hashing
+	 * @return hashing password
+	 */
 	public String generatePassHash256(String passwardToHash, byte[] salt) {
 		return DigestUtils.sha256Hex(DigestUtils.sha256Hex(passwardToHash) + DigestUtils.sha256Hex(salt)
 				+ DigestUtils.sha256Hex(WEBSITE_SALT));
 	}
 
+	/**
+	 * Generates random salt that is unique for each password and is stored with
+	 * password hash in db
+	 * 
+	 * @return random salt
+	 */
 	public byte[] generateRandomSalt() {
 		Random sr;
 		try {

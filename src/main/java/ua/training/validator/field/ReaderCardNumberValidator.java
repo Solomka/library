@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class ReaderCardNumberValidator extends FieldValidator {
+public class ReaderCardNumberValidator extends AbstractFieldValidatorHandler {
 
 	private static final String READER_CARD_NUMBER_REGEX = "^[A-ZА-ЯІЇЄ]{2}\\d{8,11}$";
 	

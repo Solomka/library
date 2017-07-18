@@ -19,8 +19,9 @@ import ua.training.dao.UserDao;
 import ua.training.exception.ServerException;
 
 /**
- * Class represents dao factory that produces many DAOs for a Jdbc database
- * implementation and use database connection pool for getting connections to db
+ * Class that represent dao factory that produces DAOs for JDBC persistent
+ * storage access implementation and use DB connection pool for getting
+ * connections to db
  * 
  * @author Solomka
  *
@@ -32,7 +33,7 @@ public class JdbcDaoFactory extends DaoFactory {
 	private DataSource dataSource;
 
 	/**
-	 * Get data source by means of JNDI mechanism
+	 * Get DataSource implementation from Initial Context by means of JNDI mechanism
 	 */
 	public JdbcDaoFactory() {
 		try {
@@ -46,7 +47,7 @@ public class JdbcDaoFactory extends DaoFactory {
 	}
 
 	/**
-	 * Get custom Connection wrapper for correct transaction execution
+	 * Get custom Connection wrapper for providing transaction execution
 	 * 
 	 * @return a connection to the data source
 	 * @exception ServerException

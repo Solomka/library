@@ -2,6 +2,9 @@ package ua.training.controller.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Class that is responsible for command key creation from incomming request url
+ */
 public final class CommandKeyGenerator {
 
 	private static String CONTROLLER_PATH = ".*/controller/";

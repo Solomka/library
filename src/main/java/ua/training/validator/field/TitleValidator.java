@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class TitleValidator extends FieldValidator {
+public class TitleValidator extends AbstractFieldValidatorHandler {
 
 	private static final String TITLE_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє\\d]+[\\wА-ЯІЇЄа-яіїє\\s’'-]{2,99}$";
 

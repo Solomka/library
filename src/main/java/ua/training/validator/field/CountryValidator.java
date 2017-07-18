@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class CountryValidator extends FieldValidator {
+public class CountryValidator extends AbstractFieldValidatorHandler {
 
 	private static final String COUNTRY_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє]+([\\s’'-][A-Za-zА-ЯІЇЄа-яіїє]+)*$";
 	

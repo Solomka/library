@@ -15,13 +15,12 @@ import ua.training.entity.Reader;
 import ua.training.entity.Role;
 import ua.training.entity.User;
 import ua.training.hashing.PasswordHashing;
-import ua.training.locale.MessageUtils;
 
 public class UserService {
 
 	private static final Logger LOGGER = LogManager.getLogger(UserService.class);
 
-	private static final PasswordHashing passwordHashing = PasswordHashing.getInstance();
+	private static final PasswordHashing PASSWORD_HASHING = PasswordHashing.getInstance();
 	private DaoFactory daoFactory;
 
 	UserService(DaoFactory daoFactory) {
@@ -92,13 +91,13 @@ public class UserService {
 	}
 
 	private void hashUserPassword(User user) {
-		byte[] salt = passwordHashing.generateRandomSalt();
-		String password = passwordHashing.generatePassHash256(user.getPassword(), salt);
+		byte[] salt = PASSWORD_HASHING.generateRandomSalt();
+		String password = PASSWORD_HASHING.generatePassHash256(user.getPassword(), salt);
 		user.setSalt(salt);
 		user.setPassword(password);
 	}
 
 	private boolean isPasswordValid(String password, User user) {
-		return passwordHashing.checkPassword(password, user.getSalt(), user.getPassword());
+		return PASSWORD_HASHING.checkPassword(password, user.getSalt(), user.getPassword());
 	}
 }

@@ -1,25 +1,31 @@
 package ua.training.validator.field;
 
+/**
+ * Class that chains all the fields validators
+ * 
+ * @author Solomka
+ *
+ */
 public final class FieldValidatorsChainGenerator {
 
 	private FieldValidatorsChainGenerator() {
 	}
 
-	public static FieldValidator getFieldValidatorsChain() {
-		FieldValidator emailFieldValidator = EmailValidator.getInstance();
-		FieldValidator passwordFieldValidator = PasswordValidator.getInstance();
+	public static AbstractFieldValidatorHandler getFieldValidatorsChain() {
+		AbstractFieldValidatorHandler emailFieldValidator = EmailValidator.getInstance();
+		AbstractFieldValidatorHandler passwordFieldValidator = PasswordValidator.getInstance();
 
-		FieldValidator nameTextValidator = NameValidator.getInstance();
-		FieldValidator surnameTextValidator = SurnameValidator.getInstance();
-		FieldValidator patronymicTextValidator = PatronymicValidator.getInstance();
-		FieldValidator countryTextValidator = CountryValidator.getInstance();
-		FieldValidator publisherTextValidator = PublisherValidator.getInstance();
-		FieldValidator phoneFieldValidator = PhoneValidator.getInstance();
-		FieldValidator addressFieldValidator = AddressValidator.getInstance();
-		FieldValidator readerCardNumberFieldValidator = ReaderCardNumberValidator.getInstance();
-		FieldValidator iSBNValidator = ISBNValidator.getInstance();
-		FieldValidator titleValidator = TitleValidator.getInstance();
-		FieldValidator inventoryNumberValidator = InventoryNumberValidator.getInstance();
+		AbstractFieldValidatorHandler nameTextValidator = NameValidator.getInstance();
+		AbstractFieldValidatorHandler surnameTextValidator = SurnameValidator.getInstance();
+		AbstractFieldValidatorHandler patronymicTextValidator = PatronymicValidator.getInstance();
+		AbstractFieldValidatorHandler countryTextValidator = CountryValidator.getInstance();
+		AbstractFieldValidatorHandler publisherTextValidator = PublisherValidator.getInstance();
+		AbstractFieldValidatorHandler phoneFieldValidator = PhoneValidator.getInstance();
+		AbstractFieldValidatorHandler addressFieldValidator = AddressValidator.getInstance();
+		AbstractFieldValidatorHandler readerCardNumberFieldValidator = ReaderCardNumberValidator.getInstance();
+		AbstractFieldValidatorHandler iSBNValidator = ISBNValidator.getInstance();
+		AbstractFieldValidatorHandler titleValidator = TitleValidator.getInstance();
+		AbstractFieldValidatorHandler inventoryNumberValidator = InventoryNumberValidator.getInstance();
 
 		emailFieldValidator.setNextFieldValidator(passwordFieldValidator);
 		passwordFieldValidator.setNextFieldValidator(nameTextValidator);

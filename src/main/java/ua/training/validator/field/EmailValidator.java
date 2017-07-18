@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class EmailValidator extends FieldValidator {
+public class EmailValidator extends AbstractFieldValidatorHandler {
 
 	private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w-]+)*@[A-Za-z\\d-]+(\\.[A-Za-z\\d]+)*(\\.[A-Za-z]{2,})$";
 

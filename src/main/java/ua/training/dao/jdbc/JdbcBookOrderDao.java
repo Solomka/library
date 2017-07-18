@@ -15,12 +15,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import ua.training.dao.BookOrderDao;
-import ua.training.entity.Book;
-import ua.training.entity.BookInstance;
 import ua.training.entity.BookOrder;
 import ua.training.entity.Librarian;
 import ua.training.entity.Reader;
-import ua.training.entity.Status;
 import ua.training.exception.ServerException;
 
 public class JdbcBookOrderDao implements BookOrderDao {
@@ -87,7 +84,8 @@ public class JdbcBookOrderDao implements BookOrderDao {
 			+ " fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"
 			+ " FROM book_order JOIN reader USING (id_reader) JOIN book_instance USING (id_book_instance)"
-			+ " WHERE actual_return_date IS NULL AND reader_card_number=?" + " ORDER BY creation_date DESC";
+			+ " WHERE actual_return_date IS NULL AND reader_card_number=?"
+			+ " ORDER BY creation_date DESC";
 	
 	private static String GET_ORDERS_FOR_READING_ROOM_RETURN = "SELECT id_order, creation_date, fulfilment_date, pickup_date, return_date, actual_return_date,"
 			+ " id_book_instance, status, inventory_number, id_reader, reader_card_number, id_librarian"

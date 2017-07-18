@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class PublisherValidator extends FieldValidator {
+public class PublisherValidator extends AbstractFieldValidatorHandler {
 
 	private static final String PUBLISHER_REGEX = "^[A-Za-zА-ЯІЇЄа-яіїє\\d]+[\\wА-ЯІЇЄа-яіїє\\s’'-]{2,99}$";
 	

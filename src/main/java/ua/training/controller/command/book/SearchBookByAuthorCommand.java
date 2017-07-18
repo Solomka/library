@@ -19,7 +19,7 @@ import ua.training.controller.utils.RedirectionManager;
 import ua.training.entity.Book;
 import ua.training.locale.Message;
 import ua.training.service.BookService;
-import ua.training.validator.field.FieldValidator;
+import ua.training.validator.field.AbstractFieldValidatorHandler;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
@@ -64,7 +64,7 @@ public class SearchBookByAuthorCommand implements Command {
 	private List<String> validateUserInput(String author) {
 		List<String> errors = new ArrayList<>();
 
-		FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
+		AbstractFieldValidatorHandler fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 		fieldValidator.validateField(FieldValidatorKey.NAME, author, errors);
 		return errors;
 	}

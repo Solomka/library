@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class InventoryNumberValidator extends FieldValidator {
+public class InventoryNumberValidator extends AbstractFieldValidatorHandler {
 
 	private static final String INVENTORY_NUMBER_REGEX = "^\\d{7,13}$";
 	

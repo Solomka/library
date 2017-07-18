@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
+import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.controller.utils.SessionManager;
 
@@ -17,7 +18,7 @@ public class LogoutCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		SessionManager.getInstance().invalidateSession(request.getSession());
-		RedirectionManager.getInstance().redirect(request, response, ServletPath.HOME);
+		RedirectionManager.getInstance().redirect(new HttpWrapper(request, response), ServletPath.HOME);
 		return RedirectionManager.REDIRECTION;
 	}
 }

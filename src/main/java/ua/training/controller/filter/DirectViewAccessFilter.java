@@ -22,6 +22,13 @@ import ua.training.constants.ServletPath;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.locale.Message;
 
+/**
+ * Class that represents filter resposible for controlling unauthorized direct
+ * access to jsp-pages
+ * 
+ * @author Solomka
+ *
+ */
 @WebFilter(urlPatterns = { "/views/*" })
 public class DirectViewAccessFilter implements Filter {
 

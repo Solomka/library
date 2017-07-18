@@ -10,10 +10,13 @@ import org.apache.log4j.Logger;
 import ua.training.exception.ServerException;
 
 /**
- * Abstract class that represents dao factory that produces many DAOs for a
- * single database implementation
+ * Abstract class that represents abstract dao factory that can construct
+ * various types of concrete DAO factories that support different types of
+ * persistent storage access implementation.
  * <p>
- * Abstract class instance implementation is loaded from db.properties
+ * 
+ * Each concrete dao factory that support particular kind of persistent storage access
+ * implementation has to extend this abstract class
  * 
  * @author Solomka
  *
@@ -29,14 +32,14 @@ public abstract class DaoFactory {
 
 	public abstract DaoConnection getConnection();
 
+	// class level dao
 	public abstract UserDao createUserDao();
 
+	// business level dao
 	public abstract UserDao createUserDao(DaoConnection connection);
 
-	// class level dao
 	public abstract BookDao createBookDao();
 
-	// business level dao
 	public abstract BookDao createBookDao(DaoConnection connection);
 
 	public abstract BookInstanceDao createBookInstancesDao();
@@ -51,6 +54,13 @@ public abstract class DaoFactory {
 
 	public abstract BookOrderDao createBookOrderDao(DaoConnection connection);
 
+	/**
+	 * Method that returns concrete dao factory that support particular kind of
+	 * persistent storage access implementation(JDBC implementation). This factory implementation is loaded
+	 * from db.properties file
+	 * 
+	 * @return DaoFactory concrete dao factory implementation
+	 */
 	public static DaoFactory getDaoFactory() {
 		if (daoFactory == null) {
 			try {

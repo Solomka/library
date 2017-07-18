@@ -25,6 +25,13 @@ import ua.training.entity.Role;
 import ua.training.entity.User;
 import ua.training.locale.Message;
 
+/**
+ * Class that represent filter responsible for controlling unauthorized access
+ * to app resources
+ * 
+ * @author Solomka
+ *
+ */
 @WebFilter(urlPatterns = { "/controller/librarian/*", "/controller/reader/*" })
 public class UrlUnauthorizedAccessFilter implements Filter {
 

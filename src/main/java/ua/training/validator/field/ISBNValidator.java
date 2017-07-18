@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.training.locale.Message;
 
-public class ISBNValidator extends FieldValidator {
+public class ISBNValidator extends AbstractFieldValidatorHandler {
 
 	private static final String ISBN_REGEX = "^\\d{13}$";
 	

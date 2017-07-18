@@ -19,7 +19,7 @@ import ua.training.controller.utils.RedirectionManager;
 import ua.training.entity.BookOrder;
 import ua.training.locale.Message;
 import ua.training.service.BookOrderService;
-import ua.training.validator.field.FieldValidator;
+import ua.training.validator.field.AbstractFieldValidatorHandler;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
@@ -62,7 +62,7 @@ public class SearchOrderByReaderCardNumberCommand implements Command {
 	private List<String> validateUserInput(String readerCardNumber) {
 		List<String> errors = new ArrayList<>();
 
-		FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
+		AbstractFieldValidatorHandler fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 		fieldValidator.validateField(FieldValidatorKey.READER_CARD_NUMBER, readerCardNumber, errors);
 		return errors;
 	}

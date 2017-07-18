@@ -5,13 +5,13 @@ import java.util.List;
 
 import ua.training.dto.BookDto;
 import ua.training.locale.Message;
-import ua.training.validator.field.FieldValidator;
+import ua.training.validator.field.AbstractFieldValidatorHandler;
 import ua.training.validator.field.FieldValidatorKey;
 import ua.training.validator.field.FieldValidatorsChainGenerator;
 
 public class BookValidator implements Validator<BookDto> {
 
-	private FieldValidator fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
+	private AbstractFieldValidatorHandler fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
 
 	private BookValidator() {
 	}

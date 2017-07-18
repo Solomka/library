@@ -25,7 +25,7 @@
 	</error-page>
 
 	<resource-ref>
-		<description>Library Pool</description>
+		<description>Library MySQL DB Connection Pool</description>
 		<res-ref-name>jdbc/library</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>

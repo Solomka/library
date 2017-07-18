@@ -22,7 +22,7 @@ import ua.training.controller.utils.RedirectionManager;
 import ua.training.exception.ServiceException;
 
 /**
- * Application HTTP Front Servlet
+ * Application HTTP Front Servlet that processes all the incoming requests
  */
 
 @WebServlet(urlPatterns = { "/controller/*" }, loadOnStartup = 1)
@@ -58,6 +58,16 @@ public class FrontController extends HttpServlet {
 		processRequest(req, resp);
 	}
 
+	/**
+	 * Processes all the requests by proper concrete command that implements
+	 * {@link Command} interface depends on the request path
+	 * 
+	 * @param request
+	 *            incoming request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpWrapper httpWrapper = new HttpWrapper(request, response);
@@ -72,14 +82,33 @@ public class FrontController extends HttpServlet {
 		}
 	}
 
-	private void forwardToCommandResultedPage(HttpWrapper httpWrapper, String resultRedirectResource)
+	/**
+	 * Forwards to the returned by the concrete command that implements
+	 * {@link Command} interface resulted resource or do nothing if redirection
+	 * has occured
+	 * 
+	 * @param httpWrapper
+	 * @param resultRedirectResource
+	 *            returned by the concrete command resulted
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void forwardToCommandResultedPage(HttpWrapper httpWrapper, String resultedRedirectResource)
 			throws ServletException, IOException {
-		if (!resultRedirectResource.contains(RedirectionManager.REDIRECTION)) {
-			httpWrapper.getRequest().getRequestDispatcher(resultRedirectResource).forward(httpWrapper.getRequest(),
+		if (!resultedRedirectResource.contains(RedirectionManager.REDIRECTION)) {
+			httpWrapper.getRequest().getRequestDispatcher(resultedRedirectResource).forward(httpWrapper.getRequest(),
 					httpWrapper.getResponse());
 		}
 	}
 
+	/**
+	 * Redirect to the Home page with appropriate error message if error in
+	 * service layer occured
+	 * 
+	 * @param httpWrapper
+	 * @param ex
+	 * @throws IOException
+	 */
 	private void redirecToHomePageWithErrorMessage(HttpWrapper httpWrapper, ServiceException ex) throws IOException {
 		Map<String, String> urlParams = new HashMap<>();
 		urlParams.put(Attribute.ERROR, ex.getMessage());

@@ -13,6 +13,7 @@ import ua.training.constants.Attribute;
 import ua.training.constants.Page;
 import ua.training.constants.ServletPath;
 import ua.training.controller.command.Command;
+import ua.training.controller.utils.HttpWrapper;
 import ua.training.controller.utils.RedirectionManager;
 import ua.training.controller.utils.SessionManager;
 import ua.training.dto.CredentialsDto;
@@ -36,7 +37,7 @@ public class PostLoginCommand implements Command {
 		HttpSession session = request.getSession();
 
 		if (SessionManager.getInstance().isUserLoggedIn(session)) {
-			RedirectionManager.getInstance().redirect(request, response, ServletPath.HOME);
+			RedirectionManager.getInstance().redirect(new HttpWrapper(request, response), ServletPath.HOME);
 			return RedirectionManager.REDIRECTION;
 		}
 
@@ -51,7 +52,7 @@ public class PostLoginCommand implements Command {
 		Optional<User> user = userService.getUserByEmail(credentialsDto);
 		if (user.isPresent()) {
 			SessionManager.getInstance().addUserToSession(session, user.get());
-			RedirectionManager.getInstance().redirect(request, response, ServletPath.HOME);
+			RedirectionManager.getInstance().redirect(new HttpWrapper(request, response), ServletPath.HOME);
 			return RedirectionManager.REDIRECTION;
 		}
 		errors.add(Message.INVALID_CREDENTIALS);

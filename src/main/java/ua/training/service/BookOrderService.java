@@ -59,6 +59,11 @@ public class BookOrderService {
 		}
 	}
 
+	/**
+	 * Returns subscription book instances orders that were not returned on time
+	 * 
+	 * @return outstanding orders
+	 */
 	public List<BookOrder> getOutstandingOrders() {
 		LOGGER.info("Get outstanding orders");
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
@@ -73,6 +78,11 @@ public class BookOrderService {
 		}
 	}
 
+	/**
+	 * Returns reading room book instances orders that were not returned on time
+	 * 
+	 * @return
+	 */
 	public List<BookOrder> getOrdersForReadingRoomReturn() {
 		LOGGER.info("Get orders for reading room return: ");
 		try (BookOrderDao bookOrderDao = daoFactory.createBookOrderDao()) {
@@ -87,35 +97,45 @@ public class BookOrderService {
 			connection.begin();
 			BookOrderDao bookOrderDao = daoFactory.createBookOrderDao(connection);
 			BookInstanceDao bookInstanceDao = daoFactory.createBookInstancesDao(connection);
-			
+
 			Optional<BookInstance> optionalBookInsatnce = bookInstanceDao.getById(bookInstanceId);
 
 			if (!optionalBookInsatnce.isPresent()) {
 				LOGGER.error("Such bookInstance doesn't exist: " + bookInstanceId);
 				throw new ServiceException(Message.BOOK_INSTANCE_IS_NOT_FOUND + bookInstanceId);
 			}
-			
+
 			BookInstance bookInsatnce = optionalBookInsatnce.get();
-						
-			if(bookInsatnce.getStatus().equals(Status.UNAVAILABLE)){
+
+			if (bookInsatnce.getStatus().equals(Status.UNAVAILABLE)) {
 				LOGGER.error("Such bookInstance is already ordered: " + bookInstanceId);
 				throw new ServiceException(Message.BOOK_INSTANCE_IS_ALREADY_ORDERED);
-			}	
-			
-			checkReaderOrderCreationAbility(bookOrderDao, readerId, bookInstanceId);			
-			
+			}
+
+			checkReaderOrderCreationAbility(bookOrderDao, readerId, bookInstanceId);
+
 			bookInsatnce.setStatus(Status.UNAVAILABLE);
 			bookOrderDao.create(order);
 			bookInstanceDao.update(bookInsatnce);
 			connection.commit();
 		}
 	}
-	
-	private void checkReaderOrderCreationAbility(BookOrderDao bookOrderDao, Long readerId, Long bookInstanceId){
+
+	/**
+	 * Check if reader has already ordered same book instance or max number of
+	 * allowed orders is exeeded
+	 * 
+	 * @param bookOrderDao
+	 * @param readerId
+	 *            id reader that performs order creation
+	 * @param bookInstanceId
+	 *            id book instance that's going to be ordered
+	 */
+	private void checkReaderOrderCreationAbility(BookOrderDao bookOrderDao, Long readerId, Long bookInstanceId) {
 		int unreturnedBookInstancesNumber = bookOrderDao.countUnreturnedBookInstancesNumber(readerId);
 		int unreturnedSameBookInstancesNumber = bookOrderDao.countUnreturnedSameBookInstancesNumber(readerId,
 				bookInstanceId);
-		
+
 		if (!isReaderAllowedToCreateConcreteBookOrder(unreturnedSameBookInstancesNumber)) {
 			LOGGER.error("Can't create order 'cause reader with id: " + readerId
 					+ " has already ordered same book instance");
@@ -126,8 +146,8 @@ public class BookOrderService {
 			LOGGER.error("Can't create order 'cause max number of allowed orders is exeeded for reader with id: "
 					+ readerId);
 			throw new ServiceException(Message.BOOK_INSTANCES_MAX_NUMBER_ORDER_CREATION_RESTRICTION);
-		}		
-		
+		}
+
 	}
 
 	private BookOrder buildOrder(Long readerId, Long bookInsatnceId) {
@@ -138,7 +158,7 @@ public class BookOrderService {
 	}
 
 	/**
-	 * check if reader hasn't already ordered max allowed number of book
+	 * Check if reader hasn't already ordered max allowed number of book
 	 * instances
 	 * 
 	 * @param unreturnedReaderBookInstancesNumber
@@ -151,7 +171,7 @@ public class BookOrderService {
 	}
 
 	/**
-	 * check if reader has already ordered bookInstance of the same book
+	 * Check if reader has already ordered bookInstance of the same book
 	 * 
 	 * @param unreturnedSameBookInstancesNumber
 	 *            number of reader's unreturned same book instance's orders
@@ -193,7 +213,7 @@ public class BookOrderService {
 			BookOrder order = optionalOrder.get();
 
 			checkOrderIssuanceAbility(orderId, order);
-			
+
 			LocalDate pickUpDate = getCurrentLocalDate();
 			order.setPickUpDate(pickUpDate);
 			order.setReturnDate(getReturnOrderDate(pickUpDate));
@@ -202,6 +222,12 @@ public class BookOrderService {
 		}
 	}
 
+	/**
+	 * Check if order is not already fulfilled or is already issued
+	 * 
+	 * @param orderId
+	 * @param order
+	 */
 	private void checkOrderIssuanceAbility(Long orderId, BookOrder order) {
 		if (!isOrderFulfilled(order)) {
 			LOGGER.error("Can't issue Order 'cause Order is not fulfilled: " + orderId);
@@ -212,7 +238,7 @@ public class BookOrderService {
 			throw new ServiceException(Message.BOOK_ALREADY_ISSUED);
 		}
 	}
-	
+
 	public void returnOrder(Long orderId) {
 		LOGGER.info("Return order: " + orderId);
 		try (DaoConnection connection = daoFactory.getConnection()) {
@@ -226,7 +252,7 @@ public class BookOrderService {
 			BookOrder order = optionalOrder.get();
 
 			checkOrderReturningAbility(orderId, order);
-			
+
 			prepareOrderForReturning(order);
 			bookOrderDao.update(order);
 			bookInstanceDao.update(order.getBookInstance());
@@ -234,6 +260,13 @@ public class BookOrderService {
 		}
 	}
 
+	/**
+	 * Check if order is not already fulfilled or is already issued or is
+	 * already returned
+	 * 
+	 * @param orderId
+	 * @param order
+	 */
 	private void checkOrderReturningAbility(Long orderId, BookOrder order) {
 		if (!isOrderFulfilled(order)) {
 			LOGGER.error("Can't return Order 'cause it's not fulfilled: " + orderId);
@@ -248,7 +281,7 @@ public class BookOrderService {
 			throw new ServiceException(Message.BOOK_ALREADY_RETURNED);
 		}
 	}
-	
+
 	private void isOrderPresent(Long orderId, Optional<BookOrder> optionalOrder) {
 		if (!optionalOrder.isPresent()) {
 			LOGGER.error("Such order doesn't exist: " + orderId);

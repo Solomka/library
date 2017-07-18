@@ -8,6 +8,12 @@ import org.apache.log4j.Logger;
 import ua.training.constants.Attribute;
 import ua.training.entity.User;
 
+/**
+ * Class responsible for executing manipulations with Session object
+ * 
+ * @author Solomka
+ *
+ */
 public class SessionManager {
 
 	private static final Logger LOGGER = LogManager.getLogger(SessionManager.class);
