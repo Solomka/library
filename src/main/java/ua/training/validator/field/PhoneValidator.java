@@ -6,7 +6,7 @@ import ua.training.locale.Message;
 
 public class PhoneValidator extends AbstractFieldValidatorHandler {
 
-	private static final String PHONE_REGEX = "^(\\+)?\\d{7,13}$";
+	private static final String PHONE_REGEX = "^(\\+)?\\d{7,12}$";
 	
 	private PhoneValidator(FieldValidatorKey fieldValidatorKey) {
 		super(fieldValidatorKey);

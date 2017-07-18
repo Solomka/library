@@ -99,7 +99,7 @@ public class RegexTest {
 	public void testPhoneRegexSuccess() {
 		String pass = "+380958039884";
 
-		boolean actual = pass.matches("^(\\+)?\\d{7,13}$");
+		boolean actual = pass.matches("^(\\+)?\\d{7,12}$");
 		boolean expected = true;
 
 		assertEquals(expected, actual);
