@@ -24,8 +24,22 @@ public class AllBooksCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Book> books = bookService.getAllBooksWithAuthors();
-		request.setAttribute(Attribute.BOOKS, books);
-		return Page.ALL_BOOKS_VIEW;
+		// List<Book> books = bookService.getAllBooksWithAuthors();
+
+				int page = 1;
+				if (request.getParameter(Attribute.PAGE) != null) {
+					page = Integer.parseInt(request.getParameter(Attribute.PAGE));
+				}
+
+				int offset = PaginationManager.getInstance().getOffset(page);
+				List<Book> books = bookService.getAllBooksWithAuthorsPagination(AppConstants.LIMIT, offset);
+
+				int numberOfBooks = bookService.countAllBooks();
+				int numberOfPages = PaginationManager.getInstance().getNumberOfPages(numberOfBooks);
+
+				request.setAttribute(Attribute.BOOKS, books);
+				request.setAttribute(Attribute.NUMBER_OF_PAGES, numberOfPages);
+				request.setAttribute(Attribute.CURRENT_PAGE, page);
+				return Page.ALL_BOOKS_VIEW;
 	}
 }

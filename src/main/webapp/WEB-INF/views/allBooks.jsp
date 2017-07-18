@@ -36,7 +36,9 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<form action="${pageContext.request.contextPath}/controller/books/title" method="POST" role="form">
+					<form
+						action="${pageContext.request.contextPath}/controller/books/title"
+						method="POST" role="form">
 
 						<div class="form-group">
 							<label for="title"><fmt:message key="library.title"
@@ -68,7 +70,9 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<form action="${pageContext.request.contextPath}/controller/books/author" method="POST" role="form">
+					<form
+						action="${pageContext.request.contextPath}/controller/books/author"
+						method="POST" role="form">
 
 						<div class="form-group">
 							<label for="author"><fmt:message key="library.author"
@@ -112,7 +116,9 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th>#</th>
+					<c:if test="${empty currentPage}">
+						<th>#</th>
+					</c:if>
 					<th>ISBN</th>
 					<th><fmt:message key="library.title" bundle="${rb}" /></th>
 					<th><fmt:message key="library.authors" bundle="${rb}" /></th>
@@ -124,7 +130,9 @@
 			<tbody>
 				<c:forEach items="${books}" var="book" varStatus="status">
 					<tr>
-						<td>${status.index + 1}</td>
+						<c:if test="${empty currentPage}">
+							<td>${status.index + 1}</td>
+						</c:if>
 						<td>${book.getIsbn()}</td>
 						<td>${book.getTitle()}</td>
 						<td><c:forEach items="${book.getAuthors()}" var="author">
@@ -140,6 +148,46 @@
 			</tbody>
 		</table>
 	</div>
+
+	<%--show pagination if currentPage attr was setted --%>
+	<c:if test="${not empty currentPage}">
+		<div class="row">
+			<nav aria-label="...">
+				<ul class="pager">
+
+					<!-- display Previous link except for the 1st page -->
+					<c:choose>
+						<c:when test="${currentPage != 1}">
+							<li><a href="./books?page=${currentPage - 1}"><span
+									aria-hidden="true">&larr;</span>
+								<fmt:message key="library.pagination.previous" bundle="${rb}" /></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a
+								href="./books?page=${currentPage - 1}"><span
+									aria-hidden="true">&larr;</span>
+								<fmt:message key="library.pagination.previous" bundle="${rb}" /></a></li>
+						</c:otherwise>
+					</c:choose>
+					<!-- 	display Next link except for the last page -->
+					<c:choose>
+						<c:when test="${currentPage lt numberOfPages}">
+							<li><a href="./books?page=${currentPage + 1}"><fmt:message
+										key="library.pagination.next" bundle="${rb}" /><span
+									aria-hidden="true">&rarr;</span></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a
+								href="./controller/books?page=${currentPage + 1}"><fmt:message
+										key="library.pagination.next" bundle="${rb}" /><span
+									aria-hidden="true">&rarr;</span></a></li>
+						</c:otherwise>
+					</c:choose>
+
+				</ul>
+			</nav>
+		</div>
+	</c:if>
 </div>
 
 <%@include file="footer.jsp"%>

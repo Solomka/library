@@ -26,6 +26,12 @@ public class JdbcBookDao implements BookDao {
 	private static String GET_ALL_BOOKS_WITH_AUTHORS = "SELECT book.id_book, isbn, title, publisher, availability,"
 			+ " author.id_author, name, surname, country"
 			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) ORDER BY title";
+	
+	private static String GET_ALL_BOOKS_WITH_AUTHORS_PAGINATION = "SELECT book.id_book, isbn, title, publisher, availability,"
+			+ " author.id_author, name, surname, country"
+			+ " FROM book JOIN book_author USING (id_book) JOIN author USING (id_author) ORDER BY title"
+			+ " LIMIT ? OFFSET ?";
+	private static String COUNT_ALL_BOOKS = "SELECT COUNT(*) AS books_number FROM book";
 
 	private static String GET_BOOK_WITH_AUTHORS_AND_INSTANCES_BY_ID = "SELECT book.id_book, isbn, title, publisher, availability,"
 			+ " author.id_author, name, surname, country," + " id_book_instance, status, inventory_number"
@@ -66,9 +72,11 @@ public class JdbcBookDao implements BookDao {
 	private static String BOOK_TITLE = "title";
 	private static String BOOK_PUBLISHER = "publisher";
 	private static String BOOK_AVAILABILITY = "availability";
+	
+	private static String BOOKS_NUMBER = "books_number";
 
 	private Connection connection;
-	private boolean connectionShouldBeClosed;
+	private boolean connectionShouldBeClosed;	
 
 	public JdbcBookDao(Connection connection) {
 		this.connection = connection;
@@ -98,6 +106,39 @@ public class JdbcBookDao implements BookDao {
 			throw new ServerException(e);
 		}
 		return books;
+	}
+	
+	@Override
+	public List<Book> getAllWithPagination(int limit, int offset) {
+		List<Book> books = new ArrayList<>();
+
+		try (PreparedStatement query = connection.prepareStatement(GET_ALL_BOOKS_WITH_AUTHORS_PAGINATION)) {
+			query.setInt(1, limit);
+			query.setInt(2, offset);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				books.add(extractBookWithAuthorsFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao getAllWithPagination SQL exception", e);
+			throw new ServerException(e);
+		}
+		return books;
+	}
+	
+	@Override
+	public int countAllBooks() {
+		int booksNumber = 0;
+		try (Statement query = connection.createStatement()) {
+			ResultSet resultSet = query.executeQuery(COUNT_ALL_BOOKS);
+			while (resultSet.next()) {
+				booksNumber = resultSet.getInt(BOOKS_NUMBER);
+			}
+		} catch (SQLException e) {
+			LOGGER.error("JdbcBookDao countAllBooks SQL exception", e);
+			throw new ServerException(e);
+		}
+		return booksNumber;
 	}
 
 	@Override

@@ -37,6 +37,20 @@ public class BookService {
 			return bookDao.getAll();
 		}
 	}
+	
+	public int countAllBooks(){
+		LOGGER.info("count all books");
+		try (BookDao bookDao = daoFactory.createBookDao()) {
+			return bookDao.countAllBooks();
+		}	
+	}
+	
+	public List<Book> getAllBooksWithAuthorsPagination(int limit, int offset){
+		LOGGER.info("Get all books with authors and pagination: " + "limit: " + limit + ", " + "offset: " + offset);
+		try (BookDao bookDao = daoFactory.createBookDao()) {
+			return bookDao.getAllWithPagination(limit, offset);
+		}		
+	}
 
 	public Optional<Book> getBookWithAuthorsAndInstancesById(Long bookId) {
 		LOGGER.info("Get book with authors and instances by id: " + bookId);
