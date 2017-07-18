@@ -126,13 +126,20 @@
 				</tr>
 			</thead>
 			<tbody>
-
+			<%-- pagination limit and offset --%>
 				<c:set var="limit" value="${limit}" />
-				<c:set var="iteration" value="${(currentPage-1)*limit}" />
+				<c:set var="offset" value="${(currentPage-1)*limit}" />
 
 				<c:forEach items="${books}" var="book" varStatus="status">
 					<tr>
-						<td>${iteration + (status.index + 1)}</td>
+						<c:choose>
+							<c:when test="${not empty currentPage}">
+								<td>${offset + (status.index + 1)}</td>
+							</c:when>
+							<c:otherwise>
+								<td>${status.index + 1}</td>
+							</c:otherwise>
+						</c:choose>
 						<td>${book.getIsbn()}</td>
 						<td>${book.getTitle()}</td>
 						<td><c:forEach items="${book.getAuthors()}" var="author">
@@ -150,37 +157,39 @@
 	</div>
 
 	<%--show pagination --%>
-	<div class="row">
-		<nav aria-label="...">
-			<ul class="pager">
-				<!-- display Previous link except for the 1st page -->
-				<c:choose>
-					<c:when test="${currentPage != 1}">
-						<li><a href="./books?page=${currentPage - 1}"><span
-								aria-hidden="true">&larr;</span> <fmt:message
-									key="library.pagination.previous" bundle="${rb}" /></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href=""><span aria-hidden="true">&larr;</span>
-								<fmt:message key="library.pagination.previous" bundle="${rb}" /></a></li>
-					</c:otherwise>
-				</c:choose>
-				<!-- 	display Next link except for the last page -->
-				<c:choose>
-					<c:when test="${currentPage lt numberOfPages}">
-						<li><a href="./books?page=${currentPage + 1}"><fmt:message
-									key="library.pagination.next" bundle="${rb}" /><span
-								aria-hidden="true">&rarr;</span></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href=""><fmt:message
-									key="library.pagination.next" bundle="${rb}" /><span
-								aria-hidden="true">&rarr;</span></a></li>
-					</c:otherwise>
-				</c:choose>
-			</ul>
-		</nav>
-	</div>
+	<c:if test="${not empty currentPage}">
+		<div class="row">
+			<nav aria-label="...">
+				<ul class="pager">
+					<!-- display Previous link except for the 1st page -->
+					<c:choose>
+						<c:when test="${currentPage != 1}">
+							<li><a href="./books?page=${currentPage - 1}"><span
+									aria-hidden="true">&larr;</span> <fmt:message
+										key="library.pagination.previous" bundle="${rb}" /></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href=""><span aria-hidden="true">&larr;</span>
+									<fmt:message key="library.pagination.previous" bundle="${rb}" /></a></li>
+						</c:otherwise>
+					</c:choose>
+					<!-- 	display Next link except for the last page -->
+					<c:choose>
+						<c:when test="${currentPage lt numberOfPages}">
+							<li><a href="./books?page=${currentPage + 1}"><fmt:message
+										key="library.pagination.next" bundle="${rb}" /><span
+									aria-hidden="true">&rarr;</span></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href=""><fmt:message
+										key="library.pagination.next" bundle="${rb}" /><span
+									aria-hidden="true">&rarr;</span></a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+			</nav>
+		</div>
+	</c:if>
 </div>
 
 <%@include file="footer.jsp"%>
