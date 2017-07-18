@@ -43,6 +43,7 @@ public class AllBooksCommand implements Command {
 		request.setAttribute(Attribute.BOOKS, books);
 		request.setAttribute(Attribute.NUMBER_OF_PAGES, numberOfPages);
 		request.setAttribute(Attribute.CURRENT_PAGE, page);
+		request.setAttribute(Attribute.LIMIT, AppConstants.LIMIT);
 		return Page.ALL_BOOKS_VIEW;
 	}
 }

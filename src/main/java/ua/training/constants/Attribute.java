@@ -58,4 +58,5 @@ public final class Attribute {
 	public static String PAGE = "page";
 	public static String NUMBER_OF_PAGES = "numberOfPages";
 	public static String CURRENT_PAGE = "currentPage";
+	public static String LIMIT = "limit";
 }

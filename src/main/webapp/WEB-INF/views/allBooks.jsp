@@ -116,9 +116,7 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<c:if test="${empty currentPage}">
-						<th>#</th>
-					</c:if>
+					<th>#</th>
 					<th>ISBN</th>
 					<th><fmt:message key="library.title" bundle="${rb}" /></th>
 					<th><fmt:message key="library.authors" bundle="${rb}" /></th>
@@ -128,11 +126,13 @@
 				</tr>
 			</thead>
 			<tbody>
+
+				<c:set var="limit" value="${limit}" />
+				<c:set var="iteration" value="${(currentPage-1)*limit}" />
+
 				<c:forEach items="${books}" var="book" varStatus="status">
 					<tr>
-						<c:if test="${empty currentPage}">
-							<td>${status.index + 1}</td>
-						</c:if>
+						<td>${iteration + (status.index + 1)}</td>
 						<td>${book.getIsbn()}</td>
 						<td>${book.getTitle()}</td>
 						<td><c:forEach items="${book.getAuthors()}" var="author">
@@ -150,7 +150,6 @@
 	</div>
 
 	<%--show pagination --%>
-	<c:if test="${not empty currentPage}">
 	<div class="row">
 		<nav aria-label="...">
 			<ul class="pager">
@@ -182,7 +181,6 @@
 			</ul>
 		</nav>
 	</div>
-	</c:if>
 </div>
 
 <%@include file="footer.jsp"%>
