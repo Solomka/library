@@ -54,4 +54,8 @@ public final class Attribute {
 	public static String ID_READER = "id_reader";
 	
 	public static String BACK_TO_READING_ROOM = "back_to_reading_room";	
+	
+	public static String PAGE = "page";
+	public static String NUMBER_OF_PAGES = "numberOfPages";
+	public static String CURRENT_PAGE = "currentPage";
 }

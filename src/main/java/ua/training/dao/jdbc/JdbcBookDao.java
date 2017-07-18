@@ -109,7 +109,7 @@ public class JdbcBookDao implements BookDao {
 	}
 	
 	@Override
-	public List<Book> getAllWithPagination(int limit, int offset) {
+	public List<Book> getAllBooksWithAuthorsPagination(int limit, int offset) {
 		List<Book> books = new ArrayList<>();
 
 		try (PreparedStatement query = connection.prepareStatement(GET_ALL_BOOKS_WITH_AUTHORS_PAGINATION)) {

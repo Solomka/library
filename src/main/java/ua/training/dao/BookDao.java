@@ -17,7 +17,7 @@ public interface BookDao extends GenericDao<Book, Long>, AutoCloseable {
 	
 	Optional<Book> searchBookWithAuthorsByInstanceId(Long instanceId);
 	
-	List<Book> getAllWithPagination(int limit, int offset);
+	List<Book> getAllBooksWithAuthorsPagination(int limit, int offset);
 	
 	int countAllBooks();
 

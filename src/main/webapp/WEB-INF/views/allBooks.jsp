@@ -149,45 +149,38 @@
 		</table>
 	</div>
 
-	<%--show pagination if currentPage attr was setted --%>
-	<c:if test="${not empty currentPage}">
-		<div class="row">
-			<nav aria-label="...">
-				<ul class="pager">
-
-					<!-- display Previous link except for the 1st page -->
-					<c:choose>
-						<c:when test="${currentPage != 1}">
-							<li><a href="./books?page=${currentPage - 1}"><span
-									aria-hidden="true">&larr;</span>
+	<%--show pagination --%>
+	<div class="row">
+		<nav aria-label="...">
+			<ul class="pager">
+				<!-- display Previous link except for the 1st page -->
+				<c:choose>
+					<c:when test="${currentPage != 1}">
+						<li><a href="./books?page=${currentPage - 1}"><span
+								aria-hidden="true">&larr;</span> <fmt:message
+									key="library.pagination.previous" bundle="${rb}" /></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href=""><span aria-hidden="true">&larr;</span>
 								<fmt:message key="library.pagination.previous" bundle="${rb}" /></a></li>
-						</c:when>
-						<c:otherwise>
-							<li class="disabled"><a
-								href="./books?page=${currentPage - 1}"><span
-									aria-hidden="true">&larr;</span>
-								<fmt:message key="library.pagination.previous" bundle="${rb}" /></a></li>
-						</c:otherwise>
-					</c:choose>
-					<!-- 	display Next link except for the last page -->
-					<c:choose>
-						<c:when test="${currentPage lt numberOfPages}">
-							<li><a href="./books?page=${currentPage + 1}"><fmt:message
-										key="library.pagination.next" bundle="${rb}" /><span
-									aria-hidden="true">&rarr;</span></a></li>
-						</c:when>
-						<c:otherwise>
-							<li class="disabled"><a
-								href="./controller/books?page=${currentPage + 1}"><fmt:message
-										key="library.pagination.next" bundle="${rb}" /><span
-									aria-hidden="true">&rarr;</span></a></li>
-						</c:otherwise>
-					</c:choose>
-
-				</ul>
-			</nav>
-		</div>
-	</c:if>
+					</c:otherwise>
+				</c:choose>
+				<!-- 	display Next link except for the last page -->
+				<c:choose>
+					<c:when test="${currentPage lt numberOfPages}">
+						<li><a href="./books?page=${currentPage + 1}"><fmt:message
+									key="library.pagination.next" bundle="${rb}" /><span
+								aria-hidden="true">&rarr;</span></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href=""><fmt:message
+									key="library.pagination.next" bundle="${rb}" /><span
+								aria-hidden="true">&rarr;</span></a></li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</nav>
+	</div>
 </div>
 
 <%@include file="footer.jsp"%>
