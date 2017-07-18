@@ -150,6 +150,7 @@
 	</div>
 
 	<%--show pagination --%>
+	<c:if test="${not empty currentPage}">
 	<div class="row">
 		<nav aria-label="...">
 			<ul class="pager">
@@ -181,6 +182,7 @@
 			</ul>
 		</nav>
 	</div>
+	</c:if>
 </div>
 
 <%@include file="footer.jsp"%>
