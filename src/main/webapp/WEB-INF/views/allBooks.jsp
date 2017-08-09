@@ -169,7 +169,7 @@
 										key="library.pagination.previous" bundle="${rb}" /></a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="disabled"><a href=""><span aria-hidden="true">&larr;</span>
+							<li class="disabled"><a href="javascript:void(0)"><span aria-hidden="true">&larr;</span>
 									<fmt:message key="library.pagination.previous" bundle="${rb}" /></a></li>
 						</c:otherwise>
 					</c:choose>
@@ -181,7 +181,7 @@
 									aria-hidden="true">&rarr;</span></a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="disabled"><a href=""><fmt:message
+							<li class="disabled"><a href="javascript:void(0)"><fmt:message
 										key="library.pagination.next" bundle="${rb}" /><span
 									aria-hidden="true">&rarr;</span></a></li>
 						</c:otherwise>
