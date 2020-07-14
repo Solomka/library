@@ -49,7 +49,11 @@ public class RedirectionManager {
 			throws IOException {
 		String urlPathWithParams = generateUrlPath(httpWrapper.getRequest(), redirectionPath)
 				+ generateUrlParams(urlParameters);
-		redirect(httpWrapper, urlPathWithParams);
+		try {
+			httpWrapper.getResponse().sendRedirect(urlPathWithParams);
+		} catch (IOException e) {
+			throw new ServerException(e);
+		}
 	}
 
 	public void redirect(HttpWrapper httpWrapper, String path) {

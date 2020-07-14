@@ -2,6 +2,6 @@
 <Context>
 	<Resource name="jdbc/library" auth="Container"
 		type="javax.sql.DataSource" maxActive="50" maxIdle="30" maxWait="10000"
-		username="Solomka" password="solomka77" driverClassName="com.mysql.jdbc.Driver"
+		username="Solomka" password="solomiya777" driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://localhost/training_library?characterEncoding=UTF-8" />
 </Context>

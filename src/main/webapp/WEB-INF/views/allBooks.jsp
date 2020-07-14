@@ -6,7 +6,7 @@
 		<div class="btn-group" role="group" aria-label="buttons">
 			<c:if test="${user.getRole().getValue() eq 'librarian' }">
 				<button type="button" class="btn btn-default"
-					onclick="location.href='./librarian/addBook';">
+					onclick="location.href='${pageContext.request.contextPath}/controller/librarian/addBook';">
 					<fmt:message key="library.add" bundle="${rb}" />
 				</button>
 			</c:if>
